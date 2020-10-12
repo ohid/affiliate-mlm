@@ -1,0 +1,13 @@
+{
+    "name": "hp/affiliate-mlm",
+    "authors": [
+        {
+            "name": "ohid",
+            "email": "ohidul.islam951@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {"AMLM\\": "./inc"}
+    }
+}
