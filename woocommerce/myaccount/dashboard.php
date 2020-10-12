@@ -30,22 +30,25 @@ $allowed_html = array(
 global $wp_roles;
 $current_role = amlm_current_user_role();
 
+// get the current points
+$my_points = get_user_meta( get_current_user_id(), 'amlm_points', true );
+
 ?>
 
 <p>
 	<?php
-		printf(
-			__('Your rank is: <b>%s</b> '),
-			$wp_roles->roles[ $current_role ]['name']
-		);
+		// Only display the rank when the user has minimum 400 points and is a distributor or has above role
+		if( $my_points >= 400 ) {
+			printf(
+				__('Your rank is: <b>%s</b> '),
+				$wp_roles->roles[ $current_role ]['name']
+			);
+		}
 	?>
 </p>
 
 <p>
 	<?php
-
-		$my_points = get_user_meta( get_current_user_id(), 'amlm_points', true );
-
 		printf(
 			__('Your points: <b>%s</b> '),
 			$my_points ? $my_points : 0

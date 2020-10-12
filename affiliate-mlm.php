@@ -51,15 +51,12 @@ function amlm_plugin_deactivate() {
 }
 register_deactivation_hook( __FILE__, 'amlm_plugin_deactivate');
 
-
 if( file_exists( dirname( __FILE__ ) . '/functions.php') ) {
     require_once dirname( __FILE__ ) . '/functions.php';
 }
 
 // Initializes the plugin services
 if ( class_exists( 'AMLM\AMLM_Init' ) ) {
-
     AMLM\AMLM_Init::register_classes();
-
 }
 

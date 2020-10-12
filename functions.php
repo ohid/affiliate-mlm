@@ -33,6 +33,22 @@ if (!function_exists('dd')) {
     }
 }
 
+if (! function_exists('amlm_earning_money')) {
+    function amlm_earning_money()
+    {
+        if (is_user_logged_in()) {
+            $user = wp_get_current_user();
+            
+            // Get the amlm_earning
+            $amlm_earning = get_user_meta( $user->ID, 'amlm_earning', true );
+
+            return $amlm_earning;
+        }
+
+        return;
+    }
+}
+
 
 /**
  * Replace 'customer' role (WooCommerce use by default) with your own one.
