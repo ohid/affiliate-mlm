@@ -34,7 +34,6 @@ class Class_User_Rank
         $this->setCurrentPoints();
 
         if( ! wp_doing_ajax() ) {
-            error_log('not doing ajax');
             $this->userRank();
         }
     }

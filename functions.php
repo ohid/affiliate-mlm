@@ -6,7 +6,6 @@
  * @return void
  */
 
-
 function amlm_current_user_role( $user = null ) {
     if( is_user_logged_in() ) {
         if( $user === null ) {
