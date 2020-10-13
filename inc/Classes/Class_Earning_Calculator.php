@@ -6,23 +6,17 @@ class Class_Earning_Calculator
 {
     protected $user;
 
-    protected $wpdb;
-
     protected $amlm_user_current_points;
 
     protected $distributor_points = 400;
 
-    public function  __construct(){
-        global $wpdb;
-        $this->wpdb = $wpdb;
-    }
-
     public function register()
     {
+
         add_action( 'init', array( $this, 'mainInit' ) );
         
-        add_action( 'woocommerce_payment_complete', array( $this, 'earningGenerator' ), 10, 1 );
-        add_action( 'woocommerce_order_status_completed', array( $this, 'earningGenerator' ), 10, 1 );
+        add_action( 'woocommerce_payment_complete', array( $this, 'earningGenerator' ), 11, 1 );
+        add_action( 'woocommerce_order_status_completed', array( $this, 'earningGenerator' ), 11, 1 );
     }
 
     public function mainInit()
@@ -35,15 +29,20 @@ class Class_Earning_Calculator
      *
      * @return void
      */
-    public function setCurrentPoints() {
-        if( is_user_logged_in() ) {
+    public function setCurrentPoints( $user_id = null ) {
+        if( $user_id !== null ) {
+            if( is_user_logged_in() ) {
     
-            $this->user = wp_get_current_user();
-            
-            $amlm_points = get_user_meta( $this->user->ID, 'amlm_points', true );
-    
+                $this->user = wp_get_current_user();
+                
+                $amlm_points = get_user_meta( $this->user->ID, 'amlm_points', true );
+        
+                $this->amlm_user_current_points = $amlm_points;
+            }
+        } else {
+            $amlm_points = get_user_meta( $user_id, 'amlm_points', true );
+        
             $this->amlm_user_current_points = $amlm_points;
-
         }
     
         return;
@@ -57,15 +56,18 @@ class Class_Earning_Calculator
      */
     public function earningGenerator( $order_id )
     {
-        // Users can only earn when they have minimum 400 poinsts and equal or above distributor role
-        if( $this->amlm_user_current_points < $this->distributor_points ) {
-            return;
-        }
-
         // get the order object
         $order = wc_get_order( $order_id );
         $order_total = $order->get_total();
         $user_id = $order->get_user_id();
+
+        // Get the product ordered user points
+        $user_points = get_user_meta( $user_id, 'amlm_points', true );
+
+        // Users can only earn when they have minimum 400 poinsts and equal or above distributor role
+        if( $user_points < $this->distributor_points ) {
+            return;
+        }
 
         if( $user_id ){
 
@@ -148,7 +150,9 @@ class Class_Earning_Calculator
      */
     public function findParent(int $user_id)
     {
-        $parentUserId = $this->wpdb->get_var("SELECT user_id from {$this->wpdb->prefix}amlm_referrals WHERE referral_id = $user_id");
+        global $wpdb;
+
+        $parentUserId = $wpdb->get_var("SELECT user_id from {$wpdb->prefix}amlm_referrals WHERE referral_id = $user_id");
 
         return $parentUserId;
     }
@@ -163,6 +167,7 @@ class Class_Earning_Calculator
      */
     public function updateUserBalance(int $user_id, $order_total, $bonus)
     {
+
         $currentBalance = get_user_meta( $user_id, 'amlm_earning', true );
 
         // If member already earned
@@ -175,6 +180,7 @@ class Class_Earning_Calculator
             update_user_meta( $user_id, 'amlm_earning', $currentBalance + $bonus_balance );
 
         } else {
+
             // Give bonus balance depending on purchase
             $bonus_balance = ( $bonus / 100 ) * $order_total;
 
