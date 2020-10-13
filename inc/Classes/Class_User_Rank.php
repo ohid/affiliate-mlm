@@ -32,7 +32,11 @@ class Class_User_Rank
      */
     public function userRankInit() {
         $this->setCurrentPoints();
-        $this->userRank();
+
+        if( ! wp_doing_ajax() ) {
+            error_log('not doing ajax');
+            $this->userRank();
+        }
     }
 
     /**
