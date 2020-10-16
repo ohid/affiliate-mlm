@@ -33,17 +33,6 @@ class Class_Main
      */
     public function mainInit() {
 
-        global $wpdb;
-
-        $table_name = $wpdb->prefix.'amlm_referrals';
-
-        $query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table_name ) );
- 
-        if ( $wpdb->get_var( $query ) !== $table_name ) {
-            echo 'table does not exists';
-        }
-
-
         if( is_user_logged_in() ) {
     
             $this->user = wp_get_current_user();
