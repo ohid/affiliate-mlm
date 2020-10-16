@@ -3,9 +3,11 @@
 namespace AMLM\Classes;
 
 class Class_Main
-{   
+{
 
     protected $user;
+
+    protected $referral_limit = 3;
 
     /**
      * Plugin initialization
@@ -16,8 +18,8 @@ class Class_Main
 
         add_action( 'init', array( $this, 'mainInit' ) );
 
-        add_action( 'woocommerce_payment_complete', array( $this, 'amlm_payment_complete' ), 10, 1 );
-        add_action( 'woocommerce_order_status_completed', array( $this, 'amlm_payment_complete' ), 10, 1 );
+        // add_action( 'woocommerce_payment_complete', array( $this, 'amlm_payment_complete' ), 10, 1 );
+        // add_action( 'woocommerce_order_status_completed', array( $this, 'amlm_payment_complete' ), 10, 1 );
 
         add_filter( 'woocommerce_locate_template', array( $this, 'amlm_woocommerce_locate_template'), 10, 3 );
 
@@ -30,6 +32,17 @@ class Class_Main
      * @return void
      */
     public function mainInit() {
+
+        global $wpdb;
+
+        $table_name = $wpdb->prefix.'amlm_referrals';
+
+        $query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table_name ) );
+ 
+        if ( $wpdb->get_var( $query ) !== $table_name ) {
+            echo 'table does not exists';
+        }
+
 
         if( is_user_logged_in() ) {
     
@@ -47,34 +60,15 @@ class Class_Main
      * @param [type] $order_id
      * @return void
      */
-    public function amlm_payment_complete( $order_id ){
+    // public function amlm_payment_complete( $order_id ){
         
-        // get the order object
-        $order = wc_get_order( $order_id );
-        $order_total = $order->get_total();
-        $user_id = $order->get_user_id();
+    //     // get the order object
+    //     $order = wc_get_order( $order_id );
+    //     $order_total = $order->get_total();
+    //     $user_id = $order->get_user_id();
 
-        if( $user_id ){
-            $amlm_points = get_user_meta( $user_id, 'amlm_points', true);
 
-            if( ! empty( $amlm_points ) && $amlm_points > 0 ) {
-                
-                // Set the bonus point after purchasing
-                $bonus_point = ( 10 / 100 ) * $order_total;
-                $previous_points = $amlm_points;
-
-                // update the user meta
-                update_user_meta( $user_id, 'amlm_points', $previous_points + $bonus_point );
-
-            } else {
-                // Set the bonus point after purchasing
-                $bonus_point = ( 10 / 100 ) * $order_total;
-
-                // update the user meta
-                update_user_meta( $user_id, 'amlm_points', $bonus_point );
-            }
-        }
-    }
+    // }
     
     /**
      * Custom WooCommerce templates

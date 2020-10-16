@@ -59,3 +59,19 @@ function wc_assign_custom_role($args) {
   
   return $args;
 }
+
+
+session_start();
+
+$_SESSION['fav-color'] = 'red';
+
+if (isset($_SESSION['fav-color'])) {
+    $sessions = $_SESSION;
+    $cookie = $_COOKIE;
+
+    // dd($cookie);
+
+    // 'affwp_ref' => '1',
+    // 'affwp_ref_visit_id' => '1',
+    // 'affwp_campaign' => 'monday',
+}

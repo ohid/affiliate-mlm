@@ -10,6 +10,8 @@ class Class_Earning_Calculator
 
     protected $distributor_points = 400;
 
+    protected $distributor_order_value = 4000;
+
     public function register()
     {
 
@@ -61,22 +63,117 @@ class Class_Earning_Calculator
         $order_total = $order->get_total();
         $user_id = $order->get_user_id();
 
-        // Get the product ordered user points
-        $user_points = get_user_meta( $user_id, 'amlm_points', true );
-
-        // Users can only earn when they have minimum 400 poinsts and equal or above distributor role
-        if( $user_points < $this->distributor_points ) {
-            return;
-        }
-
+        // If ordered user exists
         if( $user_id ){
+            // Get the current amlm_points of the users
+            $amlm_points = get_user_meta( $user_id, 'amlm_points', true);
 
-            // Update the user balance
-            $this->updateUserBalance($user_id, $order_total, $bonus = 10);
+            // If the user already have points
+            if( ! empty( $amlm_points ) && $amlm_points > 0 ) {
 
+                // Check if the is already a distributor
+                // If not a distribut then proceed
+                if ($amlm_points <= $this->distributor_points) {
+                    // Subtract the amlm_points from the required distributor points
+                    // So we can get the value that needs to become a distributor
+                    $need_to_become_distributor = $this->distributor_points - $amlm_points;
 
-            $this->parentEarningCalculation( $user_id, $order_total );
+                    // Set the bonus point after purchasing                    
+                    $bonus_point = ( 10 / 100 ) * $order_total;
+
+                    // Get the total point adding the previous point with new point
+                    $sum_of_total_point = $amlm_points + $bonus_point;
+
+                    // Check if the total points exceeds the required distributor point 
+                    // So they will earn money that order exceeds more than 400 points
+                    if( $sum_of_total_point > $this->distributor_points ) {
+                        // Get the amount that is applicable for earning balance
+                        $applicable_earning_value = $sum_of_total_point - $this->distributor_points;
+
+                        // update the user meta
+                        update_user_meta( $user_id, 'amlm_points', $amlm_points + $bonus_point );
+
+                        $generate_order_amount = $applicable_earning_value * 10;
+
+                        // Update the user balance for the amount that exceeds 400 points
+                        $this->updateUserBalance($user_id, $generate_order_amount, $bonus = 10);
+
+                        // Update the parent earning balance for the amount that exceeds 400 points
+                        $this->parentEarningCalculation($user_id, $generate_order_amount);
+                    } else {
+                        // Set the bonus point after purchasing
+                        $bonus_point = ( 10 / 100 ) * $order_total;
+
+                        // update the user meta
+                        update_user_meta( $user_id, 'amlm_points', $amlm_points + $bonus_point );
+                    }
+
+                } else {
+                    // Proceed with general things as the member is a distrubutor and 
+                    // can have points and earn money for the total order made
+
+                    // Set the bonus point after purchasing                    
+                    $bonus_point = ( 10 / 100 ) * $order_total;
+
+                    // update the user meta
+                    update_user_meta( $user_id, 'amlm_points', $amlm_points + $bonus_point );
+
+                    // Update the user balance for the amount that exceeds 400 points
+                    $this->updateUserBalance($user_id, $order_total, $bonus = 10);
+
+                    // Update the parent earning balance for the amount that exceeds 400 points
+                    $this->parentEarningCalculation($user_id, $order_total);
+
+                }
+
+            } else {
+                // For the first order
+                // If the ordered amount is less than 4000 BDT then just calculate the bonus point 
+                if( $order_total <= $this->distributor_order_value) {
+                    // Set the bonus point after purchasing
+                    $bonus_point = ( 10 / 100 ) * $order_total;
+
+                    // update the user meta
+                    update_user_meta( $user_id, 'amlm_points', $bonus_point );
+                } elseif( $order_total > $this->distributor_order_value ) {
+
+                    // If the ordered amount is more than 4000 BDT then
+                    // User will receive bonus point for 4000 BDT 
+                    // And will earn money for the amount that exceeds 4000 BDT limit
+                    $earning_value = $order_total - $this->distributor_order_value;
+                    $bonus_point = ( 10 / 100 ) * $order_total;
+                    
+                    // update the user meta
+                    update_user_meta($user_id, 'amlm_points', $bonus_point);
+
+                    // Update the user balance
+                    // The user will only earn for the amount that exceeds 4000 BDT limit
+                    $this->updateUserBalance($user_id, $earning_value, $bonus = 10);
+
+                    // Give referral earning balance for the parent users
+                    // The parent users will only also earn for the amount that exceeds 4000 BDT limit
+                    $this->parentEarningCalculation($user_id, $earning_value);
+                }
+
+            }
         }
+
+        // Get the product ordered user points
+        // $user_points = get_user_meta( $user_id, 'amlm_points', true );
+
+        // // Users can only earn when they have minimum 400 poinsts and equal or above distributor role
+        // if( $user_points < $this->distributor_points ) {
+        //     return;
+        // }
+
+        // if( $user_id ){
+
+        //     // Update the user balance
+        //     $this->updateUserBalance($user_id, $order_total, $bonus = 10);
+
+
+        //     $this->parentEarningCalculation( $user_id, $order_total );
+        // }
     }
 
     /**

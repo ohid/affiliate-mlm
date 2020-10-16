@@ -17,9 +17,12 @@ class AMLM_Deactivate
         // remove_role('amlm_ass_g_manager');
         // remove_role('amlm_general_manager');
 
+        // global $wpdb;
+        // $table_name = $wpdb->prefix . 'amlm_referrals';
+
+        // $wpdb->query('TRUNCATE TABLE ' . $table_name);
 
         // Flush the rewrite rules
         flush_rewrite_rules();
-
     }
 }
