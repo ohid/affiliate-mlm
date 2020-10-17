@@ -75,3 +75,39 @@ if (isset($_SESSION['fav-color'])) {
     // 'affwp_ref_visit_id' => '1',
     // 'affwp_campaign' => 'monday',
 }
+
+function affiliate_links_pagination($wpdb, $user, $pageno, $offset, $no_of_records_per_page) {
+
+    $total_rows = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}amlm_affiliates_link WHERE user_id = $user->ID");
+    $total_pages = ceil($total_rows / $no_of_records_per_page);
+
+    ?>
+
+    <p class="page-current"><?php printf('Currently at page: %s', $pageno); ?></p>
+    <ul class="links-pagination">
+        <?php 
+            // Display the first button 
+            
+            if($pageno != 1) { 
+                printf('<li><a href="?pageno=%s">&#8656;</a></li>', 1);
+            }
+
+            // Display the previous button
+            if($pageno > 1) { 
+                printf('<li><a href="?pageno=%s">Prev</a></li>', ($pageno - 1));
+            }
+
+            // Display the next button
+            if($pageno < $total_pages) { 
+                printf('<li><a href="?pageno=%s">Next</a></li>', ($pageno + 1));
+            }
+
+            // Display the last button 
+            if($pageno < $total_pages) { 
+                printf('<li><a href="?pageno=%s">&#8658;</a></li>', $total_pages);
+            }
+        ?>
+    </ul>
+
+<?php
+}
