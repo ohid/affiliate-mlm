@@ -83,6 +83,7 @@ class Class_MyAccount_Tabs
         
         if( $this->is_distributor ) {
             add_rewrite_endpoint( 'referrals', EP_ROOT | EP_PAGES );
+            add_rewrite_endpoint( 'affiliates', EP_ROOT | EP_PAGES );
             add_rewrite_endpoint( 'withdraw', EP_ROOT | EP_PAGES );
             add_rewrite_endpoint( 'earnings', EP_ROOT | EP_PAGES );
             add_rewrite_endpoint( 'reports', EP_ROOT | EP_PAGES );
@@ -129,6 +130,7 @@ class Class_MyAccount_Tabs
 
         if( $this->is_distributor ) {
             $menuOrder[ 'referrals' ]  = __( 'Referrals', 'woocommerce' );
+            $menuOrder[ 'affiliates' ]  = __( 'Affiliates', 'woocommerce' );
             $menuOrder[ 'withdraw' ]   = __( 'Withdraw', 'woocommerce' );
             $menuOrder[ 'earnings' ]   = __( 'Earnings', 'woocommerce' );
             $menuOrder[ 'reports' ]    = __( 'Reports', 'woocommerce' );
