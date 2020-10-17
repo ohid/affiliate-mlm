@@ -104,7 +104,7 @@ CREATE TABLE {$amlm_referrals_table} (
 CREATE TABLE {$amlm_affiliates_link_table} (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     user_id mediumint(9) NOT NULL,
-    affliate_link varchar(255) NOT NULL,
+    affiliate_link varchar(255) NOT NULL,
     campaign_name varchar(255) NOT NULL,
     visits mediumint(9) NOT NULL,
     orders mediumint(9) NOT NULL,

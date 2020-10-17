@@ -79,7 +79,7 @@ if( $affiliate_links > 0 ) :
                         <td>%s</td>
                         <td>%s</td>
                     </tr>', 
-                    $link->affliate_link,
+                    $link->affiliate_link,
                     $link->campaign_name,
                     $link->visits,
                     $link->orders

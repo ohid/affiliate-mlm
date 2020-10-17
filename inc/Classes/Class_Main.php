@@ -222,12 +222,19 @@ class Class_Main
             'campaign' => $campaign_name
         ), $product_link);
 
+        $link_exists = $wpdb->get_var("SELECT affiliate_link from {$wpdb->prefix}amlm_affiliates_link WHERE affiliate_link = '{$affiliate_link}'");
+
+        if( $link_exists ) {
+            $this->returnJSON( 'error', __('You have already created a affiliate for the URL with same campaign name, try creating a new one', 'amlm-locale') );
+            return;
+        }
+
         // Inserting the data into the table
         $wpdb->insert(
             "{$wpdb->prefix}amlm_affiliates_link",
             array(
                 'user_id' => $this->user->ID,
-                'affliate_link' => $affiliate_link,
+                'affiliate_link' => $affiliate_link,
                 'campaign_name' => $campaign_name,
                 'visits' => 0,
                 'orders' => 0,
