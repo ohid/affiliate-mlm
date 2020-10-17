@@ -53,7 +53,12 @@ printf(
 <?php
 
 // Get the referral users
-$affiliate_links = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}amlm_affiliates_link WHERE user_id = $user->ID LIMIT $offset, $no_of_records_per_page");
+$affiliate_links = $wpdb->get_results(
+    "SELECT * FROM {$wpdb->prefix}amlm_affiliates_link 
+    WHERE user_id = $user->ID
+    ORDER BY created_at DESC
+    LIMIT $offset, $no_of_records_per_page"
+);
 
 // Only show the table when there are referral users
 if( $affiliate_links > 0 ) :

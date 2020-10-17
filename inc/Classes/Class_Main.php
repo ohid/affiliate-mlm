@@ -229,6 +229,7 @@ class Class_Main
             return;
         }
 
+
         // Inserting the data into the table
         $wpdb->insert(
             "{$wpdb->prefix}amlm_affiliates_link",
@@ -238,8 +239,9 @@ class Class_Main
                 'campaign_name' => $campaign_name,
                 'visits' => 0,
                 'orders' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
             ),
-            array("%d", "%s", "%s", "%d", "%d")
+            array("%d", "%s", "%s", "%d", "%d", "%s")
         );
         
         $this->returnJSON( 'success', $affiliate_link );

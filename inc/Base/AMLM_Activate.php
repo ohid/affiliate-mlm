@@ -108,6 +108,7 @@ CREATE TABLE {$amlm_affiliates_link_table} (
     campaign_name varchar(255) NOT NULL,
     visits mediumint(9) NOT NULL,
     orders mediumint(9) NOT NULL,
+    created_at datetime NOT NULL,
     UNIQUE KEY id (id)
 )$charset_collate;";
         }
