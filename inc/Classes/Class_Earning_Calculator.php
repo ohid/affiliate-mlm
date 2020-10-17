@@ -14,6 +14,8 @@ class Class_Earning_Calculator
 
     public function register()
     {
+        global $wpdb;
+        $this->wpdb = $wpdb;
 
         add_action( 'init', array( $this, 'mainInit' ) );
         
@@ -62,6 +64,13 @@ class Class_Earning_Calculator
         $order = wc_get_order( $order_id );
         $order_total = $order->get_total();
         $user_id = $order->get_user_id();
+
+        // Check if the order was an affiliate sale
+        $affiliate_user_id = $this->wpdb->get_var("SELECT user_id from {$this->wpdb->prefix}amlm_affiliate_earnings WHERE order_id = $order_id AND paid_status = 'unpaid'");
+
+        if( $affiliate_user_id ) {
+            $user_id = $affiliate_user_id;
+        }
 
         // If ordered user exists
         if( $user_id ){
@@ -156,24 +165,34 @@ class Class_Earning_Calculator
                 }
 
             }
+
+            $affiliate_link_id = $this->wpdb->get_var("SELECT affiliate_link_id from {$this->wpdb->prefix}amlm_affiliate_earnings WHERE order_id = $order_id");
+
+            $affiliate = $this->wpdb->get_row("SELECT id, orders from {$this->wpdb->prefix}amlm_affiliates_link WHERE id = $affiliate_link_id");
+
+            $orders = $affiliate->orders;
+
+            // Update the affiliate earning table
+            $this->wpdb->update(
+                "{$this->wpdb->prefix}amlm_affiliates_link",
+                array('orders' => ($orders + 1)),
+                array('id' => $affiliate->id),
+                array('%d'),
+                array('%d')
+            );
+            
+            // Update the affiliate earning table
+            $this->wpdb->update(
+                "{$this->wpdb->prefix}amlm_affiliate_earnings",
+                array(
+                    'order_status' => $order->get_status(), 
+                    'paid_status' => 'paid'
+                ),
+                array('order_id' => $order_id),
+                array('%s', '%s'),
+                array('%d')
+            );
         }
-
-        // Get the product ordered user points
-        // $user_points = get_user_meta( $user_id, 'amlm_points', true );
-
-        // // Users can only earn when they have minimum 400 poinsts and equal or above distributor role
-        // if( $user_points < $this->distributor_points ) {
-        //     return;
-        // }
-
-        // if( $user_id ){
-
-        //     // Update the user balance
-        //     $this->updateUserBalance($user_id, $order_total, $bonus = 10);
-
-
-        //     $this->parentEarningCalculation( $user_id, $order_total );
-        // }
     }
 
     /**

@@ -107,3 +107,7 @@ function affiliate_links_pagination($wpdb, $user, $pageno, $offset, $no_of_recor
 
 <?php
 }
+
+// $cookie = $_COOKIE;
+
+// dd($cookie);
