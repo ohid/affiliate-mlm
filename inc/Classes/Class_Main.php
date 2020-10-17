@@ -24,6 +24,7 @@ class Class_Main
         add_filter( 'woocommerce_locate_template', array( $this, 'amlm_woocommerce_locate_template'), 10, 3 );
 
         add_action( 'wp_ajax_referral_form', array( $this, 'referralForm' ) );
+        add_action( 'wp_ajax_affiliate_form', array( $this, 'affiliateForm' ) );
     }
 
     /**
@@ -183,6 +184,58 @@ class Class_Main
             // Send the JSON error message
             $this->returnJSON( 'error', 'Username or email already exists.' );
         }
+    }
+
+    /**
+     * Affiliate Form uses on AJAX action
+     *
+     * @return void
+     */
+    public function affiliateForm() {
+
+        if( DOING_AJAX ) {
+
+            if( ! isset( $_POST['affiliate_nonce'] ) && ! wp_verify_nonce( $_POST['affiliate_nonce'], 'amlm_nonce' ) ) {
+                $this->returnJSON( 'error', 'Form validation failed.' );
+                return; 
+            }
+                        
+            $product_link = filter_var( $_POST['product_link'], FILTER_VALIDATE_URL );
+
+            // if( $product_link === false ) {
+            //     $this->returnJSON( 'error', 'Product link is invalid.' );
+            // }
+
+            $product_link = esc_url_raw( $_POST['product_link'] );
+            $campaign_name = sanitize_text_field( $_POST['campaign_name'] );
+
+            $this->createAffiliateLink($product_link, $campaign_name);
+        }
+    }
+
+    public function createAffiliateLink($product_link, $campaign_name) {
+        global $wpdb;
+
+        // Generate the affiliate link
+        $affiliate_link = add_query_arg(array(
+            'ref' => $this->user->ID,
+            'campaign' => $campaign_name
+        ), $product_link);
+
+        // Inserting the data into the table
+        $wpdb->insert(
+            "{$wpdb->prefix}amlm_affiliates_link",
+            array(
+                'user_id' => $this->user->ID,
+                'affliate_link' => $affiliate_link,
+                'campaign_name' => $campaign_name,
+                'visits' => 0,
+                'orders' => 0,
+            ),
+            array("%d", "%s", "%s", "%d", "%d")
+        );
+        
+        $this->returnJSON( 'success', $affiliate_link );
     }
 
     /**

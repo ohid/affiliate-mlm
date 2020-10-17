@@ -16,14 +16,14 @@ if( $referral_count >= $referral_limit ) {
     // do nothing
 } else {
     printf(
-        '<p>You can add <b>%s Sales Representitives</b> <button id="test" class="add-new-referral button">Add new</button> </p>',
+        '<p>You can add <b>%s Sales Representitives</b> <button id="test" class="add-new-referral create-btn button">Add new</button> </p>',
         $referral_limit - $referral_count
     );
     
 
     ?>
 
-    <div class="referral-form">
+    <div class="referral-form amlm-form">
         <form action="" method="post" id="referral-form">
             <div class="form-group">
                 <label for="username"><?php esc_html_e('Username:', 'amlm-locale'); ?></label>
