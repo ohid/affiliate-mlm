@@ -21,6 +21,7 @@ class Class_MyAccount_Tabs
         add_action( 'init', array( $this, 'tabInit' ) );
 
         add_action( 'woocommerce_account_referrals_endpoint', array( $this, 'referralsEndpointContent' ) );        
+        add_action( 'woocommerce_account_affiliates_endpoint', array( $this, 'affiliatesEndpointContent' ) );        
         add_action( 'woocommerce_account_withdraw_endpoint', array( $this, 'withdrawEndpointContent' ) );        
         add_action( 'woocommerce_account_earnings_endpoint', array( $this, 'earningsEndpointContent' ) );        
         add_action( 'woocommerce_account_reports_endpoint', array( $this, 'reportsEndpointContent' ) );        
@@ -100,6 +101,10 @@ class Class_MyAccount_Tabs
 
     public function referralsEndpointContent() {
         include_once AMLM_PLUGIN_PATH . '/templates/referrals.php';
+    }
+
+    public function affiliatesEndpointContent() {
+        include_once AMLM_PLUGIN_PATH . '/templates/affiliates.php';
     }
 
     public function withdrawEndpointContent() {
