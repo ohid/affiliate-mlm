@@ -5,7 +5,6 @@
  *
  * @return void
  */
-
 function amlm_current_user_role( $user = null ) {
     if( is_user_logged_in() ) {
         if( $user === null ) {
@@ -32,6 +31,9 @@ if (!function_exists('dd')) {
     }
 }
 
+/**
+ * Get the balance of the current user
+ */
 if (! function_exists('amlm_earning_money')) {
     function amlm_earning_money()
     {
@@ -48,7 +50,6 @@ if (! function_exists('amlm_earning_money')) {
     }
 }
 
-
 /**
  * Replace 'customer' role (WooCommerce use by default) with your own one.
 **/
@@ -61,21 +62,16 @@ function wc_assign_custom_role($args) {
 }
 
 
-session_start();
-
-$_SESSION['fav-color'] = 'red';
-
-if (isset($_SESSION['fav-color'])) {
-    $sessions = $_SESSION;
-    $cookie = $_COOKIE;
-
-    // dd($cookie);
-
-    // 'affwp_ref' => '1',
-    // 'affwp_ref_visit_id' => '1',
-    // 'affwp_campaign' => 'monday',
-}
-
+/**
+ * Generate the pagiation for the affilaites link template
+ *
+ * @param [type] $wpdb
+ * @param [type] $user
+ * @param [type] $pageno
+ * @param [type] $offset
+ * @param [type] $no_of_records_per_page
+ * @return void
+ */
 function affiliate_links_pagination($wpdb, $user, $pageno, $offset, $no_of_records_per_page) {
 
     $total_rows = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}amlm_affiliates_link WHERE user_id = $user->ID");
