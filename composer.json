@@ -6,7 +6,9 @@
             "email": "ohidul.islam951@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "squizlabs/php_codesniffer": "*"
+    },
     "autoload": {
         "psr-4": {"AMLM\\": "./inc"}
     }
