@@ -230,7 +230,7 @@ class Class_Earning_Calculator
      * 
      * @return void
      */
-    public function parentEarningCalculation(int $user_id, int $order_total)
+    public function parentEarningCalculation(int $user_id, float $order_total)
     {
         $parentLevelTwo = $this->findParent($user_id);
 
@@ -306,7 +306,7 @@ class Class_Earning_Calculator
      * 
      * @return void
      */
-    public function updateUserBalance(int $user_id, int $order_total, int $bonus)
+    public function updateUserBalance(int $user_id, float $order_total, float $bonus)
     {
 
         $currentBalance = get_user_meta($user_id, 'amlm_earning', true);
