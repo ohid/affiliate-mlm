@@ -3,10 +3,10 @@
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
-$amlm_earning_money = amlm_earning_money();
+$amlmEarningMoney = amlmEarningMoney();
 
-if ($amlm_earning_money) {
-    printf(__('Your current balance: <b>%1$s %2$s</b>', 'amlm-locale'), $amlm_earning_money, get_option('woocommerce_currency'));
+if ($amlmEarningMoney) {
+    printf(__('Your current balance: <b>%1$s %2$s</b>', 'amlm-locale'), $amlmEarningMoney, get_option('woocommerce_currency'));
 } else {
     _e('You have not earned yet.', 'amlm-locale');
 }

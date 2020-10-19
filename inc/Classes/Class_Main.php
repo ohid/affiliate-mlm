@@ -1,5 +1,15 @@
-<?php 
-
+<?php
+/** 
+ * The main class of the plugin
+ * PHP version 7.0
+ * 
+ * @category   Component
+ * @package    WordPress
+ * @subpackage AffiliateMLM
+ * @author     Ohid <ohidul.islam951@gmail.com>
+ * @license    GPLv2 or later https://www.gnu.org/licenses/gpl-2.0.html
+ * @link       https://site.com
+ */
 namespace AMLM\Classes;
 
 class Class_Main
@@ -10,21 +20,18 @@ class Class_Main
     protected $referral_limit = 3;
 
     /**
-     * Plugin initialization
+     * The function registerer that gets called the the function loads
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
+        add_action('init', array($this, 'mainInit'));
 
-        add_action( 'init', array( $this, 'mainInit' ) );
+        add_filter('woocommerce_locate_template', [$this, 'woocommerceLocaleTemplate'], 10, 3);
 
-        // add_action( 'woocommerce_payment_complete', array( $this, 'amlm_payment_complete' ), 10, 1 );
-        // add_action( 'woocommerce_order_status_completed', array( $this, 'amlm_payment_complete' ), 10, 1 );
-
-        add_filter( 'woocommerce_locate_template', array( $this, 'amlm_woocommerce_locate_template'), 10, 3 );
-
-        add_action( 'wp_ajax_referral_form', array( $this, 'referralForm' ) );
-        add_action( 'wp_ajax_affiliate_form', array( $this, 'affiliateForm' ) );
+        add_action('wp_ajax_referral_form', [$this, 'referralForm']);
+        add_action('wp_ajax_affiliate_form', [$this, 'affiliateForm']);
     }
 
     /**
@@ -32,65 +39,49 @@ class Class_Main
      *
      * @return void
      */
-    public function mainInit() {
-
-        if( is_user_logged_in() ) {
-    
+    public function mainInit()
+    {
+        // If the user logged in
+        if (is_user_logged_in()) {
             $this->user = wp_get_current_user();
-
         }
     
         return;
     }
-
-    /**
-     * After the WooCommerce payment / order has been completed 
-     * Update the user points
-     *
-     * @param [type] $order_id
-     * @return void
-     */
-    // public function amlm_payment_complete( $order_id ){
-        
-    //     // get the order object
-    //     $order = wc_get_order( $order_id );
-    //     $order_total = $order->get_total();
-    //     $user_id = $order->get_user_id();
-
-
-    // }
     
     /**
      * Custom WooCommerce templates
-     *
-     * @param [type] $template
-     * @param [type] $template_name
-     * @param [type] $template_path
+     * 
+     * @param [type] $template      get the template
+     * @param [type] $template_name get the template name
+     * @param [type] $template_path get the template path
+     * 
      * @return void
      */
-    public function amlm_woocommerce_locate_template( $template, $template_name, $template_path ) {
+    public function woocommerceLocaleTemplate($template, $template_name, $template_path)
+    {
         global $woocommerce;
     
         $_template = $template;
     
-        if ( ! $template_path ) $template_path = $woocommerce->template_url;
+        if (!$template_path) $template_path = $woocommerce->template_url;
         
         $plugin_path  = AMLM_PLUGIN_PATH . '/woocommerce/';
     
         // Look within passed path within the theme - this is priority
         $template = locate_template(
-            array(
+            [
                 $template_path . $template_name,
                 $template_name
-            )
+            ]
         );
     
         // Modification: Get the template from this plugin, if it exists
-        if ( ! $template && file_exists( $plugin_path . $template_name ) )
+        if (! $template && file_exists($plugin_path . $template_name))
         $template = $plugin_path . $template_name;
     
         // Use default template
-        if ( ! $template )
+        if (! $template)
         $template = $_template;
     
         // Return what we found
@@ -102,7 +93,8 @@ class Class_Main
      *
      * @return void
      */
-    public function userReferralCount() {
+    public function userReferralCount()
+    {
         global $wpdb;
 
         $user = wp_get_current_user();
@@ -116,27 +108,27 @@ class Class_Main
      *
      * @return void
      */
-    public function referralForm() {
+    public function referralForm()
+    {
+        // Check if the request is an AJAX request
+        if (DOING_AJAX) {
 
-        if( DOING_AJAX ) {
-
-            if( $this->userReferralCount() >= $this->referral_limit ) {
-                $this->returnJSON( 'error', 'You can not add more referral users.' );
+            if ($this->userReferralCount() >= $this->referral_limit) {
+                $this->returnJSON('error', 'You can not add more referral users.');
             }
 
-            if( isset( $_POST['referral_nonce'] ) && wp_verify_nonce( $_POST['referral_nonce'], 'amlm_nonce' ) ) {
+            if (isset($_POST['referral_nonce']) && wp_verify_nonce($_POST['referral_nonce'], 'amlm_nonce')) {
 
-                $username = sanitize_text_field( $_POST['username'] );
-                $email = filter_var( $_POST['email'], FILTER_VALIDATE_EMAIL );
+                $username = sanitize_text_field($_POST['username']);
+                $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 
-                if( $email === false ) {
-                    $this->returnJSON( 'error', 'Email is invalid.' );
+                if ($email === false) {
+                    $this->returnJSON('error', 'Email is invalid.');
                 }
 
                 $this->createReferralUser($username, $email);
-
             } else {
-                $this->returnJSON( 'error', 'Form validation failed.' );
+                $this->returnJSON('error', 'Form validation failed.');
             }
         }
     }
@@ -144,45 +136,46 @@ class Class_Main
     /**
      * Create the referral user
      *
-     * @param [type] $username
-     * @param [type] $email
+     * @param [type] $username get the username
+     * @param [type] $email    get the email
+     * 
      * @return void
      */
-    public function createReferralUser( $username, $email ) {
+    public function createReferralUser($username, $email)
+    {
         global $wpdb;
 
         // Check if the username is already exists
-        $user_id = username_exists( $username );
+        $user_id = username_exists($username);
 
-        if( ! $user_id && false == email_exists( $email ) ) {
+        if (! $user_id && false == email_exists($email)) {
             // Generate a random password
-            $random_password =  wp_generate_password( 12, $false );
+            $random_password =  wp_generate_password(12, $false);
 
             // Create the users
-            $user_id = wp_create_user( $username, $random_password, $email );
+            $user_id = wp_create_user($username, $random_password, $email);
 
-            if( $user_id ) {
+            if ($user_id) {
                 // Set the referral relation
-                $wpdb->insert( $wpdb->prefix . 'amlm_referrals', array( 'user_id' => $this->user->ID, 'referral_id' => $user_id ) );
+                $wpdb->insert($wpdb->prefix . 'amlm_referrals', ['user_id' => $this->user->ID, 'referral_id' => $user_id]);
 
                 // Add the amlm_points meta data for the user
-                add_user_meta( $user_id, 'amlm_points', 0 );
+                add_user_meta($user_id, 'amlm_points', 0);
 
-                $user = get_user_by( 'id', $user_id );
+                $user = get_user_by('id', $user_id);
 
                 $user->remove_role('subscriber');
                 $user->add_role('amlm_sales_representative');
 
                 // Send a notification to the user
-                wp_send_new_user_notifications( $user_id, 'both' );
+                wp_send_new_user_notifications($user_id, 'both');
                 
                 // Send the JSON success message
-                $this->returnJSON( 'success', 'Referral user created successfully!' );
+                $this->returnJSON('success', 'Referral user created successfully!');
             }
-
         } else {
             // Send the JSON error message
-            $this->returnJSON( 'error', 'Username or email already exists.' );
+            $this->returnJSON('error', 'Username or email already exists.');
         }
     }
 
@@ -191,75 +184,91 @@ class Class_Main
      *
      * @return void
      */
-    public function affiliateForm() {
+    public function affiliateForm() 
+    {
+        if (DOING_AJAX) {
 
-        if( DOING_AJAX ) {
-
-            if( ! isset( $_POST['affiliate_nonce'] ) && ! wp_verify_nonce( $_POST['affiliate_nonce'], 'amlm_nonce' ) ) {
-                $this->returnJSON( 'error', 'Form validation failed.' );
+            if (! isset($_POST['affiliate_nonce']) && ! wp_verify_nonce($_POST['affiliate_nonce'], 'amlm_nonce')) {
+                $this->returnJSON('error', 'Form validation failed.');
                 return; 
             }
                         
-            $product_link = filter_var( $_POST['product_link'], FILTER_VALIDATE_URL );
+            $product_link = filter_var($_POST['product_link'], FILTER_VALIDATE_URL);
 
             // if( $product_link === false ) {
             //     $this->returnJSON( 'error', 'Product link is invalid.' );
             // }
 
-            $product_link = esc_url_raw( $_POST['product_link'] );
-            $campaign_name = sanitize_text_field( $_POST['campaign_name'] );
+            $product_link = esc_url_raw($_POST['product_link']);
+            $campaign_name = sanitize_text_field($_POST['campaign_name']);
 
             $this->createAffiliateLink($product_link, $campaign_name);
         }
     }
 
-    public function createAffiliateLink($product_link, $campaign_name) {
+    /**
+     * Create the affiliate link
+     * Using AJAX method
+     *
+     * @param [string] $product_link  link of the product grab from the form
+     * @param [string] $campaign_name get the campaign name
+     * 
+     * @return void
+     */
+    public function createAffiliateLink($product_link, $campaign_name)
+    {
         global $wpdb;
 
         // Generate the affiliate link
-        $affiliate_link = add_query_arg(array(
-            'ref' => $this->user->ID,
-            'campaign' => $campaign_name
-        ), $product_link);
+        $affiliate_link = add_query_arg(
+            [
+                'ref' => $this->user->ID,
+                'campaign' => $campaign_name
+            ],
+            $product_link
+        );
 
         $link_exists = $wpdb->get_var("SELECT affiliate_link from {$wpdb->prefix}amlm_affiliates_link WHERE affiliate_link = '{$affiliate_link}'");
 
-        if( $link_exists ) {
-            $this->returnJSON( 'error', __('You have already created a affiliate for the URL with same campaign name, try creating a new one', 'amlm-locale') );
+        if ($link_exists) {
+            $this->returnJSON('error', __('You have already created a affiliate for the URL with same campaign name, try creating a new one', 'amlm-locale'));
             return;
         }
-
 
         // Inserting the data into the table
         $wpdb->insert(
             "{$wpdb->prefix}amlm_affiliates_link",
-            array(
+            [
                 'user_id' => $this->user->ID,
                 'affiliate_link' => $affiliate_link,
                 'campaign_name' => $campaign_name,
                 'visits' => 0,
                 'orders' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
-            ),
-            array("%d", "%s", "%s", "%d", "%d", "%s")
+            ],
+            ["%d", "%s", "%s", "%d", "%d", "%s"]
         );
         
-        $this->returnJSON( 'success', $affiliate_link );
+        $this->returnJSON('success', $affiliate_link);
     }
 
     /**
      * Return a JSON message to the AJAX call
      *
-     * @param $status
-     * @param $message
+     * @param $status  get the JSON status
+     * @param $message get the JSON message
+     * 
      * @return void
      */
-    public function returnJSON( $status, $message = null ) {
-        
-        wp_send_json( array(
-            'status' => $status,
-            'message' => $message
-        ) );
+    public function returnJSON($status, $message = null)
+    {
+
+        wp_send_json(
+            [
+                'status' => $status,
+                'message' => $message
+            ]
+        );
 
         wp_die();
     }

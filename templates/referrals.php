@@ -68,7 +68,7 @@ if( $referral_count > 0 ) :
             $points = get_user_meta( $user_id, 'amlm_points', true);
             
             $user = get_user_by( 'id', $user_id );
-            $current_role = amlm_current_user_role( $user );
+            $current_role = aMLMCurrentUserRole( $user );
 
             if( $user ) {
                 printf(

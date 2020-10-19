@@ -28,7 +28,7 @@ $allowed_html = array(
 );
 
 global $wp_roles;
-$current_role = amlm_current_user_role();
+$current_role = aMLMCurrentUserRole();
 
 // get the current points
 $my_points = get_user_meta( get_current_user_id(), 'amlm_points', true );

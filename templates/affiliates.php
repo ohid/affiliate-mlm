@@ -98,4 +98,4 @@ endif;
     ?>
 </table>
 
-<?php affiliate_links_pagination($wpdb, $user, $pageno, $offset, $no_of_records_per_page); ?>
+<?php affiliateLinksPagination($wpdb, $user, $pageno, $offset, $no_of_records_per_page); ?>

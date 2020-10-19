@@ -1,52 +1,63 @@
 <?php
+/** 
+ * The the initializer class of the plugin
+ * It includes all the required classes
+ * 
+ * PHP version 7.0
+ * 
+ * @category   Class
+ * @package    WordPress
+ * @subpackage AffiliateMLM
+ * @author     Ohid <ohidul.islam951@gmail.com>
+ * @license    GPLv2 or later https://www.gnu.org/licenses/gpl-2.0.html
+ * @link       https://site.com
+ */
 
 namespace AMLM;
 
 final class AMLM_Init
 {
-
     /**
      * Store all the classes inside an array
      *
      * @return array full list of classes
      */
-    public static function get_services()
+    public static function getServices()
     {
-        return array(
+        return [
             Classes\Class_Main::class,
             Classes\Class_Earning_Calculator::class,
             Classes\Affiliate_Link::class,
             Classes\Class_MyAccount_Tabs::class,
             Classes\Class_User_Rank::class,
             Classes\Class_Enqueue::class,
-        );
+        ];
     }
 
-    
     /**
      * Loop through the classes, initialize them
      * and call the register() method if exists
      *
-     * @return
+     * @return void
      */
-    public static function register_classes()
+    public static function registerClasses()
     {
-        foreach( self::get_services() as $service )  {
+        foreach (self::getServices() as $service) {
             $service = self::instantiate($service);
-            if( method_exists( $service, 'register' ) ) {
+            if (method_exists($service, 'register')) {
                 $service->register();
             }
         }
     }
 
-
     /**
      * Initialize the classes
      *
      * @param class $class from the service array  
+     * 
      * @return class instance new instance of the new class
      */
-    public static function instantiate( $class )
+    public static function instantiate($class)
     {
         return new $class;
     }

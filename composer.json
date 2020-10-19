@@ -1,12 +1,32 @@
 {
-    "name": "hp/affiliate-mlm",
+    "name": "ohid/affiliate-mlm",
+    "description": "An MLM user system plugin that has affiliate features and highly integrated with WooCommerce shop system.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0",
+    "minimum-stability": "stable",
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "woocommerce",
+        "affiliate",
+        "mlm"
+    ],
     "authors": [
         {
             "name": "ohid",
             "email": "ohidul.islam951@gmail.com"
         }
     ],
+    "homepage": "https://github.com/ohid/affiliate-mlm",
+    "support": {
+        "issues": "https://github.com/ohid/affiliate-mlm/issues",
+        "source": "https://github.com/ohid/affiliate-mlm"
+    },
     "require": {
+		"composer/installers": "^1.9",
+		"php": ">=7.0"
+	},
+    "require-dev": {
         "squizlabs/php_codesniffer": "*"
     },
     "autoload": {

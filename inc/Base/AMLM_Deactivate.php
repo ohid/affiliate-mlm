@@ -1,27 +1,27 @@
-<?php 
+<?php
+/** 
+ * The deactivator class of the plugin
+ * PHP version 7.0
+ * 
+ * @category   Class
+ * @package    WordPress
+ * @subpackage AffiliateMLM
+ * @author     Ohid <ohidul.islam951@gmail.com>
+ * @license    GPLv2 or later https://www.gnu.org/licenses/gpl-2.0.html
+ * @link       https://site.com
+ */
 
 namespace AMLM\Base;
 
-class AMLM_Deactivate 
+class AMLM_Deactivate
 {
-    
-    public static function deactivate(){
-
-        // Remove all the defined roles
-        // remove_role('amlm_sales_representative');
-        // remove_role('amlm_distributor');
-        // remove_role('amlm_unit_manager');
-        // remove_role('amlm_manager');
-        // remove_role('amlm_senior_manager');
-        // remove_role('amlm_executive_manager');
-        // remove_role('amlm_ass_g_manager');
-        // remove_role('amlm_general_manager');
-
-        // global $wpdb;
-        // $table_name = $wpdb->prefix . 'amlm_affiliates_link';
-
-        // $wpdb->query('DROP TABLE ' . $table_name);
-
+    /**
+     * Run the method on plugin deactivation
+     *
+     * @return void
+     */
+    public static function deactivate()
+    {
         // Flush the rewrite rules
         flush_rewrite_rules();
     }
