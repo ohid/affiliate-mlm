@@ -13,9 +13,18 @@
 }
 .amlm-form .form-group label{
     margin-bottom: 5px;
+    display: block;
 }
 .amlm-form .form-control{
     width: 100%;;
+}
+
+.amlm-form select.form-control {
+    line-height: 1.618;
+    padding: 0.6180469716em;
+    background: #f2f2f2;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125);
+    border: none;
 }
 
 .form-response{

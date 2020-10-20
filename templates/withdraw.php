@@ -13,7 +13,7 @@ if ($amlmEarningMoney) {
 
 ?>
 
-<h4><?php esc_html_e('Withdraw', 'amlm-locale'); ?></h4>
+<h4><b> <?php esc_html_e('Make a withdraw request', 'amlm-locale'); ?><b/></h4>
 
 <form action="#" class="withdraw-form amlm-form" id="withdraw-form" method="post">
     <div class="form-group">
