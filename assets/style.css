@@ -65,3 +65,9 @@
 .page-current{
     margin-bottom: 5px;
 }
+
+
+/* Withdraw Template */
+.withdraw-form.amlm-form{
+    display: block !important;
+}
