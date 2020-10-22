@@ -80,3 +80,17 @@
 .withdraw-form.amlm-form{
     display: block !important;
 }
+
+.withdraw-form .group-bkash-account,
+.withdraw-form .group-rocket-account,
+.withdraw-form .group-bank-account {
+    display: none;
+}
+
+.withdraw-form .form-group.show{
+    display: block;
+}
+
+.withdraw-form .form-group.hide{
+    display: none;
+}

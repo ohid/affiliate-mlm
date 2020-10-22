@@ -78,11 +78,6 @@
                     return;
                 }
 
-                // if( false === validateUrl( productLink ) ) {
-                //     resetResponse( 'error', 'Product link is not valid');
-                //     return;
-                // }
-
                 if( campaignName == '' || campaignName.length <= 1 ) {
                     resetResponse( 'error', 'Campaign name should be at least 2 characters');
                     return;
@@ -121,6 +116,101 @@
                 this.select();
             });
         });
+
+        
+        // 
+        // Withdraw form conditioanl output
+        // 
+        $('#payment-type').on('change', function() {
+            const paymentType = $(this).val();
+            resetResponse();
+
+            // Display the conditinal form fields
+            displayFormFields(paymentType);
+        });
+
+        // Display the form fields conditionally
+        function displayFormFields( type ) {
+            $('.group-bkash-account').addClass('hide').removeClass('show');
+            $('.group-rocket-account').addClass('hide').removeClass('show');
+            $('.group-bank-account').addClass('hide').removeClass('show');
+
+            $(`.group-${type}-account`).addClass('show').removeClass('hide');
+        }
+
+        //
+        // Withdraw form request
+        //
+        let withdrawForm = document.getElementById('withdraw-form');
+        
+        if( withdrawForm ) {
+            withdrawForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const paymentType = document.getElementById('payment-type').value,
+                      bkashNumber = document.getElementById('bkash-number').value,
+                      rocketNumber = document.getElementById('rocket-number').value,
+                      bankAccountName = document.getElementById('bank-account-name').value,
+                      bankAccountNumber = document.getElementById('bank-account-number').value,
+                      bankName = document.getElementById('bank-name').value,
+                      bankBranch = document.getElementById('bank-branch').value,
+                      withdrawAmount = document.getElementById('withdraw-amount').value;
+
+                resetResponse();
+
+                if( paymentType == 'selectcard' ) {
+                    resetResponse('error', 'Please select a payment type');
+                    return;
+                }
+
+                if( paymentType === 'bkash' ) {
+                    if( bkashNumber.length < 11 ) {
+                        resetResponse('error', 'bKash number should be at least 11 characters long');    
+                        return;                    
+                    }
+                }
+
+                if( paymentType === 'rocket' ) {
+                    if( rocketNumber.length < 12 ) {
+                        resetResponse('error', 'Rocket number should be at least 12 characters long');    
+                        return;                    
+                    }
+                }
+
+                if( paymentType === 'bank' ) {
+                    if( bankAccountName == '' ) {
+                        resetResponse('error', 'Please enter your full bank account name');    
+                        return;                    
+                    }
+
+                    if( bankAccountNumber.length < 10 ) {
+                        resetResponse('error', 'The bank account number should be at least 10 characters');    
+                        return;                    
+                    }
+
+                    if( bankName == '' ) {
+                        resetResponse('error', 'Please enter bank account name');    
+                        return;                    
+                    }
+
+                    if( bankBranch == '' ) {
+                        resetResponse('error', 'Please enter the branch name');    
+                        return;                    
+                    }
+                }
+
+                if( withdrawAmount == '' || withdrawAmount.length < 1 ) {
+                    resetResponse('error', 'Please enter an amount');
+                    return;
+                }
+
+                if( isNaN(withdrawAmount) ) {
+                    resetResponse('error', 'Please enter a valid amount');
+                    return;   
+                }
+
+            });
+        }
 
         // Reset the response message
         function resetResponse( status = null, message = null ) {

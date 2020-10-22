@@ -19,18 +19,19 @@ if ($amlmEarningMoney) {
     <div class="form-group">
         <label for="payment-type"><?php esc_html_e('Payment type', 'amlm-locale'); ?></label>
         <select name="" id="payment-type" class="form-control payment-type">
+            <option selected disabled value="selectcard">Select payment type</option>
             <option value="bkash">bKash</option>
             <option value="rocket">Rocket</option>
             <option value="bank">Bank</option>
         </select>
     </div>
 
-    <div class="form-group group-bkash-number">
+    <div class="form-group group-bkash-account">
         <label for="bkash-number"><?php esc_html_e('bKash number', 'amlm-locale'); ?></label>
         <input type="text" class="form-control bkash-number" id="bkash-number" placeholder="<?php esc_html_e('Enter your bKash number', 'amlm-locale'); ?>">
     </div>
 
-    <div class="form-group group-rocket-number">
+    <div class="form-group group-rocket-account">
         <label for="rocket-number"><?php esc_html_e('Rocket number', 'amlm-locale'); ?></label>
         <input type="text" class="form-control rocket-number" id="rocket-number" placeholder="<?php esc_html_e('Enter your Rocket number', 'amlm-locale'); ?>">
     </div>
@@ -55,7 +56,7 @@ if ($amlmEarningMoney) {
         <input type="text" class="form-control bank-branch" id="bank-branch" placeholder="<?php esc_html_e('Enter the branch name', 'amlm-locale'); ?>">
     </div>
 
-    <div class="form-group">
+    <div class="form-group group-withdraw-amount">
         <label for="withdraw-amount"><?php esc_html_e('Withdraw amount', 'amlm-locale'); ?></label>
         <input type="text" class="form-control withdraw-amount" id="withdraw-amount" placeholder="<?php esc_html_e('Amount e.g. 100', 'amlm-locale'); ?>">
     </div>
@@ -64,4 +65,5 @@ if ($amlmEarningMoney) {
         <button type="submit" class="request-withdraw"><?php esc_html_e('Request withdraw', 'amlm-locale'); ?></button>
     </div>
 
+    <p class="form-response"></p>
 </form>
