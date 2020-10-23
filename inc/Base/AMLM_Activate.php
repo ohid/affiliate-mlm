@@ -150,6 +150,45 @@ CREATE TABLE {$amlm_affiliate_earnings_table} (
     UNIQUE KEY id (id)
 )$charset_collate;";
         }
+        
+        // Check if the amlm_withdraw table does not exists then create the table
+        $amlm_withdraw_table = $wpdb->prefix.'amlm_withdraw';
+
+        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($amlm_withdraw_table));
+ 
+        if ($wpdb->get_var($query) !== $amlm_withdraw_table) {
+            $sql .= "
+CREATE TABLE {$amlm_withdraw_table} (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    payment_type varchar(255) NOT NULL,
+    bkash_number varchar(255) NOT NULL,
+    rocket_number varchar(255) NOT NULL,
+    bank_account_name varchar(255) NOT NULL,
+    bank_account_number varchar(255) NOT NULL,
+    bank_name varchar(255) NOT NULL,
+    bank_branch varchar(255) NOT NULL,
+    amount int(10) NOT NULL,
+    payment_status varchar(255) NOT NULL,
+    created_at datetime NOT NULL,
+    UNIQUE KEY id (id)
+)$charset_collate;";
+        }
+
+        // Check if the amlm_report table does not exists then create the table
+        $amlm_report_table = $wpdb->prefix.'amlm_report';
+
+        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($amlm_report_table));
+ 
+        if ($wpdb->get_var($query) !== $amlm_report_table) {
+            $sql .= "
+CREATE TABLE {$amlm_report_table} (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    report text NOT NULL,
+    amount int(10) NOT NULL,
+    created_at datetime NOT NULL,
+    UNIQUE KEY id (id)
+)$charset_collate;";
+        }
 
         include_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta($sql);
