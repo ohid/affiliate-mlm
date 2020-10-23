@@ -147,6 +147,10 @@
             withdrawForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
+                
+                const url = wc_add_to_cart_params.ajax_url;
+                const params = new URLSearchParams( new FormData( withdrawForm ) );
+
                 const paymentType = document.getElementById('payment-type').value,
                       bkashNumber = document.getElementById('bkash-number').value,
                       rocketNumber = document.getElementById('rocket-number').value,
@@ -158,56 +162,76 @@
 
                 resetResponse();
 
-                if( paymentType == 'selectcard' ) {
-                    resetResponse('error', 'Please select a payment type');
-                    return;
-                }
+                // if( paymentType == 'selectcard' ) {
+                //     resetResponse('error', 'Please select a payment type');
+                //     return;
+                // }
 
-                if( paymentType === 'bkash' ) {
-                    if( bkashNumber.length < 11 ) {
-                        resetResponse('error', 'bKash number should be at least 11 characters long');    
-                        return;                    
+                // if( paymentType === 'bkash' ) {
+                //     if( bkashNumber.length < 11 ) {
+                //         resetResponse('error', 'bKash number should be at least 11 characters long');    
+                //         return;                    
+                //     }
+                // }
+
+                // if( paymentType === 'rocket' ) {
+                //     if( rocketNumber.length < 12 ) {
+                //         resetResponse('error', 'Rocket number should be at least 12 characters long');    
+                //         return;                    
+                //     }
+                // }
+
+                // if( paymentType === 'bank' ) {
+                //     if( bankAccountName == '' ) {
+                //         resetResponse('error', 'Please enter your full bank account name');    
+                //         return;                    
+                //     }
+
+                //     if( bankAccountNumber.length < 10 ) {
+                //         resetResponse('error', 'The bank account number should be at least 10 characters');    
+                //         return;                    
+                //     }
+
+                //     if( bankName == '' ) {
+                //         resetResponse('error', 'Please enter bank account name');    
+                //         return;                    
+                //     }
+
+                //     if( bankBranch == '' ) {
+                //         resetResponse('error', 'Please enter the branch name');    
+                //         return;                    
+                //     }
+                // }
+
+                // if( withdrawAmount == '' || withdrawAmount.length < 1 ) {
+                //     resetResponse('error', 'Please enter an amount');
+                //     return;
+                // }
+
+                // if( isNaN(withdrawAmount) ) {
+                //     resetResponse('error', 'Please enter a valid amount');
+                //     return;   
+                // }
+
+
+                resetResponse( 'success', 'Submitting request, please wait...' );
+
+                fetch(url, {
+                    method: "POST",
+                    body: params
+                }).then( res => res.json() )
+                .catch( error => {
+                })
+                .then( response => {
+                    if( response === 0 || response.status === 'error' ) {
+                        resetResponse( 'error', response.message );
+                        return;
+                    } else if( response === 1  || response.status === 'success' ) {
+                        resetResponse( 'success', 'Withdraw form successful' );
+
+                        console.log(response.message);
                     }
-                }
-
-                if( paymentType === 'rocket' ) {
-                    if( rocketNumber.length < 12 ) {
-                        resetResponse('error', 'Rocket number should be at least 12 characters long');    
-                        return;                    
-                    }
-                }
-
-                if( paymentType === 'bank' ) {
-                    if( bankAccountName == '' ) {
-                        resetResponse('error', 'Please enter your full bank account name');    
-                        return;                    
-                    }
-
-                    if( bankAccountNumber.length < 10 ) {
-                        resetResponse('error', 'The bank account number should be at least 10 characters');    
-                        return;                    
-                    }
-
-                    if( bankName == '' ) {
-                        resetResponse('error', 'Please enter bank account name');    
-                        return;                    
-                    }
-
-                    if( bankBranch == '' ) {
-                        resetResponse('error', 'Please enter the branch name');    
-                        return;                    
-                    }
-                }
-
-                if( withdrawAmount == '' || withdrawAmount.length < 1 ) {
-                    resetResponse('error', 'Please enter an amount');
-                    return;
-                }
-
-                if( isNaN(withdrawAmount) ) {
-                    resetResponse('error', 'Please enter a valid amount');
-                    return;   
-                }
+                })
 
             });
         }

@@ -28,6 +28,7 @@ final class AMLM_Init
             Classes\Class_Main::class,
             Classes\Class_Earning_Calculator::class,
             Classes\Affiliate_Link::class,
+            Classes\Withdraw::class,
             Classes\Class_MyAccount_Tabs::class,
             Classes\Class_User_Rank::class,
             Classes\Class_Enqueue::class,
