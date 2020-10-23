@@ -94,3 +94,7 @@
 .withdraw-form .form-group.hide{
     display: none;
 }
+
+.withdraw-form .field-info{
+    font-size: 14px;
+}

@@ -162,57 +162,73 @@
 
                 resetResponse();
 
-                // if( paymentType == 'selectcard' ) {
-                //     resetResponse('error', 'Please select a payment type');
-                //     return;
-                // }
+                if( paymentType == 'selectcard' ) {
+                    resetResponse('error', 'Please select a payment type');
+                    return;
+                }
 
-                // if( paymentType === 'bkash' ) {
-                //     if( bkashNumber.length < 11 ) {
-                //         resetResponse('error', 'bKash number should be at least 11 characters long');    
-                //         return;                    
-                //     }
-                // }
+                if( paymentType === 'bkash' ) {
 
-                // if( paymentType === 'rocket' ) {
-                //     if( rocketNumber.length < 12 ) {
-                //         resetResponse('error', 'Rocket number should be at least 12 characters long');    
-                //         return;                    
-                //     }
-                // }
+                    if( bkashNumber.length == '' ) {
+                        resetResponse('error', 'Please enter bKash number');    
+                        return;                    
+                    }
 
-                // if( paymentType === 'bank' ) {
-                //     if( bankAccountName == '' ) {
-                //         resetResponse('error', 'Please enter your full bank account name');    
-                //         return;                    
-                //     }
+                    if( bkashNumber.length < 11 ) {
+                        resetResponse('error', 'bKash number should be at least 11 characters long');    
+                        return;                    
+                    }
+                }
 
-                //     if( bankAccountNumber.length < 10 ) {
-                //         resetResponse('error', 'The bank account number should be at least 10 characters');    
-                //         return;                    
-                //     }
+                if( paymentType === 'rocket' ) {
 
-                //     if( bankName == '' ) {
-                //         resetResponse('error', 'Please enter bank account name');    
-                //         return;                    
-                //     }
+                    if( bkashNumber.length == '' ) {
+                        resetResponse('error', 'Please enter Rocket number');    
+                        return;                    
+                    }
 
-                //     if( bankBranch == '' ) {
-                //         resetResponse('error', 'Please enter the branch name');    
-                //         return;                    
-                //     }
-                // }
+                    if( rocketNumber.length < 12 ) {
+                        resetResponse('error', 'Rocket number should be at least 12 characters long');    
+                        return;                    
+                    }
+                }
 
-                // if( withdrawAmount == '' || withdrawAmount.length < 1 ) {
-                //     resetResponse('error', 'Please enter an amount');
-                //     return;
-                // }
+                if( paymentType === 'bank' ) {
+                    if( bankAccountName == '' ) {
+                        resetResponse('error', 'Please enter your full bank account name');    
+                        return;                    
+                    }
 
-                // if( isNaN(withdrawAmount) ) {
-                //     resetResponse('error', 'Please enter a valid amount');
-                //     return;   
-                // }
+                    if( bankAccountNumber.length < 10 ) {
+                        resetResponse('error', 'The bank account number should be at least 10 characters');    
+                        return;                    
+                    }
 
+                    if( bankName == '' ) {
+                        resetResponse('error', 'Please enter bank account name');    
+                        return;                    
+                    }
+
+                    if( bankBranch == '' ) {
+                        resetResponse('error', 'Please enter the branch name');    
+                        return;                    
+                    }
+                }
+
+                if( withdrawAmount == '' || withdrawAmount.length < 1 ) {
+                    resetResponse('error', 'Please enter an amount');
+                    return;
+                }
+
+                if( isNaN(withdrawAmount) ) {
+                    resetResponse('error', 'Please enter a valid amount');
+                    return;   
+                }
+
+                if( parseInt(withdrawAmount) < 99 ) {
+                    resetResponse('error', 'You can not withdraw less than 100 BDT');
+                    return;
+                }
 
                 resetResponse( 'success', 'Submitting request, please wait...' );
 
@@ -227,9 +243,9 @@
                         resetResponse( 'error', response.message );
                         return;
                     } else if( response === 1  || response.status === 'success' ) {
-                        resetResponse( 'success', 'Withdraw form successful' );
+                        resetResponse( 'success', response.message );
 
-                        console.log(response.message);
+                        withdrawForm.reset();
                     }
                 })
 

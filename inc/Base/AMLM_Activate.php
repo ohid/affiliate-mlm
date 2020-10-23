@@ -160,15 +160,16 @@ CREATE TABLE {$amlm_affiliate_earnings_table} (
             $sql .= "
 CREATE TABLE {$amlm_withdraw_table} (
     id bigint(20) NOT NULL AUTO_INCREMENT,
+    user_id bigint(20) NOT NULL,
     payment_type varchar(255) NOT NULL,
-    bkash_number varchar(255) NOT NULL,
-    rocket_number varchar(255) NOT NULL,
-    bank_account_name varchar(255) NOT NULL,
-    bank_account_number varchar(255) NOT NULL,
-    bank_name varchar(255) NOT NULL,
-    bank_branch varchar(255) NOT NULL,
-    amount int(10) NOT NULL,
-    payment_status varchar(255) NOT NULL,
+    bkash_number varchar(255) NULL,
+    rocket_number varchar(255) NULL,
+    bank_account_name varchar(255) NULL,
+    bank_account_number varchar(255) NULL,
+    bank_name varchar(255) NULL,
+    bank_branch varchar(255) NULL,
+    amount int(10) NULL,
+    payment_status varchar(255) NULL,
     created_at datetime NOT NULL,
     UNIQUE KEY id (id)
 )$charset_collate;";
@@ -183,8 +184,12 @@ CREATE TABLE {$amlm_withdraw_table} (
             $sql .= "
 CREATE TABLE {$amlm_report_table} (
     id bigint(20) NOT NULL AUTO_INCREMENT,
+    user_id bigint(20) NOT NULL,
+    withdraw_id bigint(20) NOT NULL,
     report text NOT NULL,
+    payment_type text NOT NULL,
     amount int(10) NOT NULL,
+    service_charge int(10) NULL,
     created_at datetime NOT NULL,
     UNIQUE KEY id (id)
 )$charset_collate;";

@@ -5,12 +5,6 @@ defined('ABSPATH') || exit;
 
 $amlmEarningMoney = amlmEarningMoney();
 
-if ($amlmEarningMoney) {
-    // printf(__('Your current balance: <b>%1$s %2$s</b>', 'amlm-locale'), $amlmEarningMoney, get_option('woocommerce_currency'));
-} else {
-    _e('You have not earned yet.', 'amlm-locale');
-}
-
 ?>
 
 <h4><b> <?php esc_html_e('Make a withdraw request', 'amlm-locale'); ?><b/></h4>
@@ -59,6 +53,15 @@ if ($amlmEarningMoney) {
     <div class="form-group group-withdraw-amount">
         <label for="withdraw-amount"><?php esc_html_e('Withdraw amount', 'amlm-locale'); ?></label>
         <input type="text" class="form-control withdraw-amount" id="withdraw-amount" name="withdraw-amount" placeholder="<?php esc_html_e('Amount e.g. 100', 'amlm-locale'); ?>">
+        <span class="field-info">
+            <?php
+            if ($amlmEarningMoney) {
+                printf(__('Your current balance: <b>%1$s %2$s</b>', 'amlm-locale'), $amlmEarningMoney, get_option('woocommerce_currency'));
+            } else {
+                printf(__('Your current balance: <b>%1$s %2$s</b>', 'amlm-locale'), 0, get_option('woocommerce_currency'));
+            }
+            ?>
+        </span>
     </div>
 
     <input type="hidden" name="action" value="withdraw_form">
