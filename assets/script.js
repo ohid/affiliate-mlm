@@ -158,7 +158,8 @@
                       bankAccountNumber = document.getElementById('bank-account-number').value,
                       bankName = document.getElementById('bank-name').value,
                       bankBranch = document.getElementById('bank-branch').value,
-                      withdrawAmount = document.getElementById('withdraw-amount').value;
+                      withdrawAmount = document.getElementById('withdraw-amount').value,
+                      priceField = document.querySelector('#withdraw-form .field-info .price');
 
                 resetResponse();
 
@@ -244,6 +245,7 @@
                         return;
                     } else if( response === 1  || response.status === 'success' ) {
                         resetResponse( 'success', response.message );
+                        priceField.innerHTML = response.balance;
 
                         withdrawForm.reset();
                     }

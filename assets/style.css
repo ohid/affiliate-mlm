@@ -95,6 +95,6 @@
     display: none;
 }
 
-.withdraw-form .field-info{
-    font-size: 14px;
+.report-table td{
+    font-weight: normal;
 }

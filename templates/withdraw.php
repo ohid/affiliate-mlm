@@ -56,7 +56,7 @@ $amlmEarningMoney = amlmEarningMoney();
         <span class="field-info">
             <?php
             if ($amlmEarningMoney) {
-                printf(__('Your current balance: <b>%1$s %2$s</b>', 'amlm-locale'), $amlmEarningMoney, get_option('woocommerce_currency'));
+                printf(__('Your current balance: <b><span class="price">%1$s</span> <span class="currency">%2$s</span></b>', 'amlm-locale'), $amlmEarningMoney, get_option('woocommerce_currency'));
             } else {
                 printf(__('Your current balance: <b>%1$s %2$s</b>', 'amlm-locale'), 0, get_option('woocommerce_currency'));
             }
