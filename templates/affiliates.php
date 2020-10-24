@@ -98,4 +98,4 @@ endif;
     ?>
 </table>
 
-<?php affiliateLinksPagination($wpdb, $user, $pageno, $offset, $no_of_records_per_page); ?>
+<?php amlmLinksPagination($wpdb, 'amlm_affiliates_link', $user, $pageno, $offset, $no_of_records_per_page); ?>

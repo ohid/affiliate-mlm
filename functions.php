@@ -106,9 +106,9 @@ function wcAssignCustomRole($args)
  * 
  * @return void
  */
-function affiliateLinksPagination($wpdb, $user, $pageno, $offset, $no_of_records_per_page)
+function amlmLinksPagination($wpdb, $table, $user, $pageno, $offset, $no_of_records_per_page)
 {
-    $total_rows = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}amlm_affiliates_link WHERE user_id = $user->ID");
+    $total_rows = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}$table WHERE user_id = $user->ID");
     $total_pages = ceil($total_rows / $no_of_records_per_page);
 
     ?>
