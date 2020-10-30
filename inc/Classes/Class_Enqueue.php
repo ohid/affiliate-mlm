@@ -33,7 +33,7 @@ class Class_Enqueue
      */
     public function siteEnqueue()
     {
-        wp_enqueue_style('amlm-style', AMLM_PLUGIN_URL . 'assets/style.css');
-        wp_enqueue_script('amlm-script', AMLM_PLUGIN_URL . 'assets/script.js', ['jquery'], true);
+        wp_enqueue_style('amlm-style', AMLM_PLUGIN_URL . 'assets/css/main.css');
+        wp_enqueue_script('amlm-script', AMLM_PLUGIN_URL . 'assets/js/build/script.js', ['jquery'], true);
     }
 }
