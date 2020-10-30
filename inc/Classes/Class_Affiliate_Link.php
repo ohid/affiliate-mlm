@@ -13,7 +13,7 @@
 
 namespace AMLM\Classes;
 
-class Affiliate_Link
+class Class_Affiliate_Link
 {
     protected $wpdb;
 

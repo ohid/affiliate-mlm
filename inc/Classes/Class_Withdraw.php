@@ -13,7 +13,7 @@
 
 namespace AMLM\Classes;
 
-class Withdraw
+class Class_Withdraw
 {
     protected $wpdb;
 
