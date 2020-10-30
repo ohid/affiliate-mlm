@@ -24,6 +24,18 @@ class Class_Enqueue
     public function register()
     {
         add_action('wp_enqueue_scripts', [$this, 'siteEnqueue']);
+        add_action('admin_enqueue_scripts', [$this, 'adminEnqueue']);
+    }
+
+    /**
+     * Enqueue the site scripts and styles
+     * 
+     * @return void
+     */
+    public function siteEnqueue()
+    {
+        wp_enqueue_style('amlm-style', AMLM_PLUGIN_URL . 'assets/css/main.css');
+        wp_enqueue_script('amlm-script', AMLM_PLUGIN_URL . 'assets/js/build/script.js', ['jquery'], '', true);
     }
 
     /**
@@ -31,9 +43,10 @@ class Class_Enqueue
      * 
      * @return void
      */
-    public function siteEnqueue()
+    public function adminEnqueue()
     {
-        wp_enqueue_style('amlm-style', AMLM_PLUGIN_URL . 'assets/css/main.css');
-        wp_enqueue_script('amlm-script', AMLM_PLUGIN_URL . 'assets/js/build/script.js', ['jquery'], true);
+        wp_enqueue_style('amlm-admin-style', AMLM_PLUGIN_URL . 'assets/css/admin.css');
+        wp_enqueue_script('chart-js', '//cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js', ['jquery'], '', true);
+        wp_enqueue_script('admin-charts', AMLM_PLUGIN_URL . 'assets/js/build/admin-charts.js', ['jquery', 'chart-js'], '', true);
     }
 }

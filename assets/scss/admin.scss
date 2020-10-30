@@ -1,0 +1,96 @@
+/* start commented backslash hack \*/
+* html .clearfix { 
+    height: 1%; 
+}
+.clearfix { 
+    display: block;
+
+    &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+}
+/* close commented backslash hack */
+
+.amlm-wrap {
+    max-width: 980px;
+
+    .header {
+        margin-top: 20px;
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: flex-end;
+
+        .user-info {
+            width: 250px;
+            display: flex;
+            justify-content: space-between;
+
+            .user-detail {
+                h4 {
+                    font-size: 20px;
+                    text-transform: uppercase;
+                    margin: 15px 0 0 0;
+                }
+
+                p {
+                    text-transform: uppercase;
+                    margin: 5px 0;
+                }
+            }
+
+            .user-avater {
+                max-width: 40px;
+                padding: 15px;
+                
+                img {
+                    max-width: 100%;
+                    border-radius: 100%;
+                    border: 1px solid #000;
+                }
+            }
+        }
+    }
+
+    .content-body {
+        margin-top: 20px;
+
+        .content-left {
+            width: 71.3%;
+            float: left;
+
+            
+            .content-info-box {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+        .content-right {
+            width: 25.7%;
+            float: left;
+            margin-left: 3%;
+        }
+
+        .content-info-box {
+            .info-box {
+                background-color: #fff;
+                border: 1px solid #e0d7d7;
+                padding: 15px;
+                min-width: 43%;
+
+                h3 {
+                    margin: 10px 0 0 0;
+                }
+
+                p {
+                    margin: 5px 0 0 0;
+                }
+            }
+        }
+    }
+}

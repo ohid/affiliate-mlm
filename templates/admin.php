@@ -1,11 +1,17 @@
+<?php 
+
+// Exit if accessed directly.
+defined('ABSPATH') || exit;
+
+?>
 <div class="wrap amlm-wrap">
     <h2><?php esc_html_e('Affiliate MLM', 'amlm-locale'); ?></h2>
 
-    <div class="header">
+    <div class="header ">
         <div class="user-info">
             <div class="user-detail">
-                <h4>User name</h4>
-                <p>Admin</p>
+                <h4><?php echo userFullName(); ?></h4>
+                <p><?php echo aMLMCurrentUserRole(); ?></p>
             </div>
             <div class="user-avater">
                 <img src="http://0.gravatar.com/avatar/369ddaf0a5c93430811ad4a48c3ca84a?s=60&d=mm&r=g" alt="">
@@ -13,7 +19,7 @@
         </div>
     </div>
 
-    <div class="content-body">
+    <div class="content-body clearfix">
         <div class="content-left">
             <div class="content-info-box">
                 <div class="info-box">
@@ -39,7 +45,7 @@
             </div>
 
             <div class="members-circle-chart">
-                Circle chart here
+                <canvas id="membersChart" width="400" height="400"></canvas>
             </div>
         </div>
     </div>

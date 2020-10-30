@@ -33,6 +33,31 @@ function aMLMCurrentUserRole($user = null)
     }
 }
 
+if (!function_exists('userFullName')) {
+
+    /**
+     * Return the user full name
+     *
+     * @return void
+     */
+    function userFullName()
+    {
+        $name = '';
+
+        if (is_user_logged_in()) {
+            $user = wp_get_current_user();
+
+            if ($user->user_firstname || $user->user_lastname) {
+                $name = $user->user_firstname . ' ' . $user->user_lastname;
+            } else {
+                $name = $user->display_name;
+            }
+
+            return $name;
+        }
+    }
+}
+
 if (!function_exists('dd')) {
 
     /**

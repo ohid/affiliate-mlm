@@ -42,6 +42,11 @@ class Class_Admin
         );
     }
 
+    /**
+     * The affiliate MLM settings page template file
+     *
+     * @return void
+     */
     public function affiliateMLMFunc()
     {
         require_once AMLM_PLUGIN_PATH . 'templates/admin.php';
