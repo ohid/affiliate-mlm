@@ -40,6 +40,15 @@ class Class_Admin
             'affiliate-mlm', 
             [$this, 'affiliateMLMFunc']
         );
+
+        add_submenu_page(
+            'affiliate-mlm', 
+            'Withdraw Requests', 
+            'Withdraw Requests', 
+            'manage_options', 
+            'affiliate-withdraw-requests', 
+            [$this, 'withdrawRequestsFunc']
+        );
     }
 
     /**
@@ -49,6 +58,16 @@ class Class_Admin
      */
     public function affiliateMLMFunc()
     {
-        require_once AMLM_PLUGIN_PATH . 'templates/admin.php';
+        require_once AMLM_PLUGIN_PATH . 'templates/admin/admin.php';
+    }
+
+    /**
+     * The admin withdraw requests page template
+     *
+     * @return void
+     */
+    public function withdrawRequestsFunc()
+    {
+        require_once AMLM_PLUGIN_PATH . 'templates/admin/withdraw-requests.php';
     }
 }
