@@ -3,6 +3,8 @@
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
+global $wpdb, $wp_roles;
+
 ?>
 <div class="wrap amlm-wrap">
     <h2><?php esc_html_e('Affiliate MLM', 'amlm-locale'); ?></h2>
@@ -14,7 +16,7 @@ defined('ABSPATH') || exit;
                 <p><?php echo aMLMCurrentUserRole(); ?></p>
             </div>
             <div class="user-avater">
-                <img src="http://0.gravatar.com/avatar/369ddaf0a5c93430811ad4a48c3ca84a?s=60&d=mm&r=g" alt="">
+                <?php printf('<img src="%s">', get_avatar_url(get_current_user_id()));?>
             </div>
         </div>
     </div>
@@ -23,12 +25,15 @@ defined('ABSPATH') || exit;
         <div class="content-left">
             <div class="content-info-box">
                 <div class="info-box">
-                    <h3>Total Members</h3>
-                    <p>21354</p>
+                    <h3><?php echo $total_members = count( get_users( [ 'role__in' => 
+                        [ 'amlm_sales_representative', 'amlm_distributor', 'amlm_unit_manager', 'amlm_manager', 'amlm_senior_manager', 'amlm_executive_manager', 'amlm_ass_g_manager', 'amlm_general_manager' ] 
+                    ] ) );
+                    ?></h3>
+                    <p>Total Members</p>
                 </div>
                 <div class="info-box">
-                    <h3>Total</h3>
-                    <p>21354</p>
+                    <h3>$21354</h3>
+                    <p>Total payment</p>
                 </div>
             </div>
 
@@ -41,14 +46,14 @@ defined('ABSPATH') || exit;
         <div class="content-right">
             <div class="content-info-box">
                 <div class="info-box">
-                    <h3>Total Market Due</h3>
-                    <p>21354</p>
+                    <h3>$21354</h3>
+                    <p>Total Market Due</p>
                 </div>
             </div>
 
             <div class="members-circle-chart chart-box">
                 <h3>Top</h3>
-                <canvas id="membersChart" width="400" height="400"></canvas>
+                <canvas id="membersChart" width="400" height="450"></canvas>
             </div>
         </div>
     </div>
@@ -57,104 +62,181 @@ defined('ABSPATH') || exit;
         <h3>Client's overview: High to Low</h3>
         <table>
 
-        <tr>
-                <th>Jerry Mattedi</th>
-                <td class="cell-role">
-                    <span class="role-label">Position</span>
-                    <span class="role-title">General Manager</span>
-                </td>
-                <td class="cell-point">
-                    <span class="point-label">Point</span>
-                    <span class="point-value">4578</span>
-                </td>
-                <td class="cell-payment">
-                    <span class="payment-label">Payment</span>
-                    <span class="payment-value">48785</span>
-                </td>
-                <td class="cell-actions">
-                    <a href="#" class="options overview-button">Options</a>
-                    <a href="#" class="details overview-button">Details</a>
-                </td>
-            </tr>
-            
-            <tr>
-                <th>Jerry Mattedi</th>
-                <td class="cell-role">
-                    <span class="role-label">Position</span>
-                    <span class="role-title">General Manager</span>
-                </td>
-                <td class="cell-point">
-                    <span class="point-label">Point</span>
-                    <span class="point-value">4578</span>
-                </td>
-                <td class="cell-payment">
-                    <span class="payment-label">Payment</span>
-                    <span class="payment-value">48785</span>
-                </td>
-                <td class="cell-actions">
-                    <a href="#" class="options overview-button">Options</a>
-                    <a href="#" class="details overview-button">Details</a>
-                </td>
-            </tr>
-            
-            <tr>
-                <th>Jerry Mattedi</th>
-                <td class="cell-role">
-                    <span class="role-label">Position</span>
-                    <span class="role-title">General Manager</span>
-                </td>
-                <td class="cell-point">
-                    <span class="point-label">Point</span>
-                    <span class="point-value">4578</span>
-                </td>
-                <td class="cell-payment">
-                    <span class="payment-label">Payment</span>
-                    <span class="payment-value">48785</span>
-                </td>
-                <td class="cell-actions">
-                    <a href="#" class="options overview-button">Options</a>
-                    <a href="#" class="details overview-button">Details</a>
-                </td>
-            </tr>
-            <tr>
-                <th>Jerry Mattedi</th>
-                <td class="cell-role">
-                    <span class="role-label">Position</span>
-                    <span class="role-title">General Manager</span>
-                </td>
-                <td class="cell-point">
-                    <span class="point-label">Point</span>
-                    <span class="point-value">4578</span>
-                </td>
-                <td class="cell-payment">
-                    <span class="payment-label">Payment</span>
-                    <span class="payment-value">48785</span>
-                </td>
-                <td class="cell-actions">
-                    <a href="#" class="options overview-button">Options</a>
-                    <a href="#" class="details overview-button">Details</a>
-                </td>
-            </tr>
-            <tr>
-                <th>Jerry Mattedi</th>
-                <td class="cell-role">
-                    <span class="role-label">Position</span>
-                    <span class="role-title">General Manager</span>
-                </td>
-                <td class="cell-point">
-                    <span class="point-label">Point</span>
-                    <span class="point-value">4578</span>
-                </td>
-                <td class="cell-payment">
-                    <span class="payment-label">Payment</span>
-                    <span class="payment-value">48785</span>
-                </td>
-                <td class="cell-actions">
-                    <a href="#" class="options overview-button">Options</a>
-                    <a href="#" class="details overview-button">Details</a>
-                </td>
-            </tr>
+        <?php
+            // Query for the users
+            $users = $wpdb->get_results("SELECT u.ID, um.meta_value
+            FROM $wpdb->users u 
+            LEFT JOIN $wpdb->usermeta um ON u.ID = um.user_id
+            WHERE um.meta_key = 'amlm_points'
+            ORDER BY um.meta_value DESC
+            LIMIT 5");
+
+            foreach ($users as $user) {
+$output = '<tr>';
+
+$user_obj = get_user_by( 'id', $user->ID );
+
+$output .= sprintf('<th>%s</th>', userFullName($user_obj));
+
+$output .= '<td class="cell-role">
+    <span class="role-label">Position</span>';
+$output .=  sprintf('<span class="role-title">%s</span>', $wp_roles->roles[ aMLMCurrentUserRole($user_obj) ]['name']);
+
+$output .= '</td>
+<td class="cell-point">
+    <span class="point-label">Point</span>';
+
+    $output .= sprintf('<span class="point-value">%s</span>', $user->meta_value) ;
+
+$output .= '</td>
+<td class="cell-payment">
+    <span class="payment-label">Payment</span>
+    <span class="payment-value">48785</span>
+</td>
+<td class="cell-actions">
+    <a href="#" class="options overview-button">Options</a>';
+
+    $output .= sprintf('<a href="%s" class="details overview-button">%s</a>', get_edit_user_link($user->ID), esc_html__('Details', 'amlm_locale'));
+
+$output .= '</td>
+</tr>';
+
+echo $output;
+
+            }
+        ?>
             
         </table>
     </div>
 </div>
+
+
+<?php
+
+// Get the members count
+$membersCount = count_users();
+
+// The the members available role
+$availRoles = $membersCount['avail_roles'];
+
+// Unset the unnecessary roles
+unset($availRoles['administrator']);
+unset($availRoles['editor']);
+unset($availRoles['author']);
+unset($availRoles['contributor']);
+unset($availRoles['subscriber']);
+unset($availRoles['shop_manager']);
+unset($availRoles['customer']);
+unset($availRoles['none']);
+
+$membersRoles = array_keys($availRoles);
+$membersCount = array_values($availRoles);
+
+// Sorting the array
+arsort($availRoles);
+
+$sMembersRoles = array_keys($availRoles);
+$sMembersCount = array_values($availRoles);
+?>
+
+
+<script>
+// Groth chart configuration
+var growthChartConfig = {
+    type: 'line',
+    data: {
+        labels: [
+            <?php
+                $countMembers = count($membersRoles);
+                $count = 1;
+
+                foreach ($membersRoles as $member) {
+                    if ($count == $countMembers) {
+                        echo "'" . $wp_roles->roles[ $member ]['name'] . "'";
+                    } else {
+                        echo "'" . $wp_roles->roles[ $member ]['name'] . "',";
+                    }
+                    $count++;
+                }
+            ?>
+        ],
+        datasets: [{
+            backgroundColor: '#70a1ff',
+            borderColor: '#1e90ff',
+            data: [
+                <?php printf("'%s'", implode("','", $membersCount) ); ?>
+            ],
+            label: 'Dataset',
+            fill: 'start'
+        }]
+    },
+    options: {
+        responsive: true,
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+        },
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        }
+    }
+};
+
+// Members chart configuration
+var membersChartConfig = {
+    type: 'doughnut',
+    data: {
+        datasets: [{
+            data: [
+                <?php printf("'%s'", implode("','", $sMembersCount) ); ?>
+            ],
+            backgroundColor: [
+                '#63cdda',
+                '#f8a5c2',
+                '#34ace0',
+            ],
+            label: 'Dataset 1'
+        }],
+        labels: [
+            <?php
+                $countMembers = count($membersRoles);
+                $count = 1;
+
+                foreach ($sMembersRoles as $member) {
+                    if ($count == $countMembers) {
+                        echo "'" . $wp_roles->roles[ $member ]['name'] . "'";
+                    } else {
+                        echo "'" . $wp_roles->roles[ $member ]['name'] . "',";
+                    }
+                    $count++;
+                }
+            ?>
+        ]
+    },
+    options: {
+        responsive: true,
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+        },
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        }
+    }
+};
+
+// Members chart
+var topCtx = document.getElementById('membersChart').getContext('2d');
+window.membersDoughnut = new Chart(topCtx, membersChartConfig);
+
+// Growth chart
+var growthCtx = document.getElementById('growthChart').getContext('2d');
+window.growthChart = new Chart(growthCtx, growthChartConfig);
+
+</script>

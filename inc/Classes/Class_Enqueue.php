@@ -46,7 +46,7 @@ class Class_Enqueue
     public function adminEnqueue()
     {
         wp_enqueue_style('amlm-admin-style', AMLM_PLUGIN_URL . 'assets/css/admin.css');
-        wp_enqueue_script('chart-js', '//cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js', ['jquery'], '', true);
+        wp_enqueue_script('chart-js', '//cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js', ['jquery'], '', false);
         wp_enqueue_script('admin-charts', AMLM_PLUGIN_URL . 'assets/js/build/admin-charts.js', ['jquery', 'chart-js'], '', true);
     }
 }

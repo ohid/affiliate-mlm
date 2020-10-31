@@ -40,12 +40,14 @@ if (!function_exists('userFullName')) {
      *
      * @return void
      */
-    function userFullName()
+    function userFullName( $user = null)
     {
         $name = '';
 
         if (is_user_logged_in()) {
-            $user = wp_get_current_user();
+            if ($user === null) {
+                $user = wp_get_current_user();
+            }
 
             if ($user->user_firstname || $user->user_lastname) {
                 $name = $user->user_firstname . ' ' . $user->user_lastname;
