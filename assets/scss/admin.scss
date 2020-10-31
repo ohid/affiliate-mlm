@@ -122,7 +122,7 @@
         }
     }
 
-    .clients-overview {
+    .clients-overview, .all-requests {
         margin-top: 20px;
         background-color: #fff;
         border: 1px solid #e0d7d7;
@@ -171,14 +171,11 @@
                         line-height: 1.4;
                     }
 
-                    .role-label,
-                    .point-label,
-                    .payment-label {
+                    .cell-label{
                         display: block;
                     }
-                    .role-title,
-                    .point-value,
-                    .payment-value {
+                    
+                    .cell-value {
                         font-weight: 500;
                     }
 
@@ -197,6 +194,23 @@
 
                 &:nth-child(odd) {
                     background-color: #FBFBFB;
+                }
+            }
+        }
+    }
+}
+
+.withdraw-requests-wrap {
+    .content-body {
+        .content-info-box {
+            display: flex;
+
+            .info-box {
+                min-width: initial;
+                width: 30%;
+
+                &:not(:last-child) {
+                    margin-right: 2%;
                 }
             }
         }

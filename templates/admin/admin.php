@@ -9,17 +9,7 @@ global $wpdb, $wp_roles;
 <div class="wrap amlm-wrap">
     <h2><?php esc_html_e('Affiliate MLM', 'amlm-locale'); ?></h2>
 
-    <div class="header ">
-        <div class="user-info">
-            <div class="user-detail">
-                <h4><?php echo userFullName(); ?></h4>
-                <p><?php echo aMLMCurrentUserRole(); ?></p>
-            </div>
-            <div class="user-avater">
-                <?php printf('<img src="%s">', get_avatar_url(get_current_user_id()));?>
-            </div>
-        </div>
-    </div>
+    <?php include_once AMLM_PLUGIN_PATH . 'templates/admin/partials/header.php'; ?>
 
     <div class="content-body clearfix">
         <div class="content-left">
@@ -59,7 +49,7 @@ global $wpdb, $wp_roles;
     </div>
 
     <div class="clients-overview">
-        <h3>Client's overview: High to Low</h3>
+        <h3><?php esc_html_e( "Client's overview: High to Low", 'amlm-locale' ); ?></h3>
         <table>
 
         <?php
@@ -79,19 +69,19 @@ $user_obj = get_user_by( 'id', $user->ID );
 $output .= sprintf('<th>%s</th>', userFullName($user_obj));
 
 $output .= '<td class="cell-role">
-    <span class="role-label">Position</span>';
-$output .=  sprintf('<span class="role-title">%s</span>', $wp_roles->roles[ aMLMCurrentUserRole($user_obj) ]['name']);
+    <span class="cell-label">Position</span>';
+$output .=  sprintf('<span class="cell-value">%s</span>', $wp_roles->roles[ aMLMCurrentUserRole($user_obj) ]['name']);
 
 $output .= '</td>
 <td class="cell-point">
-    <span class="point-label">Point</span>';
+    <span class="cell-label">Point</span>';
 
-    $output .= sprintf('<span class="point-value">%s</span>', $user->meta_value) ;
+    $output .= sprintf('<span class="cell-value">%s</span>', $user->meta_value) ;
 
 $output .= '</td>
 <td class="cell-payment">
-    <span class="payment-label">Payment</span>
-    <span class="payment-value">48785</span>
+    <span class="cell-label">Payment</span>
+    <span class="cell-value">48785</span>
 </td>
 <td class="cell-actions">
     <a href="#" class="options overview-button">Options</a>';
