@@ -212,6 +212,11 @@
                 &:not(:last-child) {
                     margin-right: 2%;
                 }
+
+                a {
+                    text-decoration: none;
+                    color: #002332;
+                }
             }
         }
     }

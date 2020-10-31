@@ -46,8 +46,17 @@ class Class_Admin
             'Withdraw Requests', 
             'Withdraw Requests', 
             'manage_options', 
-            'affiliate-withdraw-requests', 
+            'amlm-withdraw-requests', 
             [$this, 'withdrawRequestsFunc']
+        );
+
+        add_submenu_page(
+            '', 
+            'Withdraw Requests', 
+            'Withdraw Requests', 
+            'manage_options', 
+            'amlm-single-requests', 
+            [$this, 'withdrawSingleRequestsFunc']
         );
     }
 
@@ -69,5 +78,15 @@ class Class_Admin
     public function withdrawRequestsFunc()
     {
         require_once AMLM_PLUGIN_PATH . 'templates/admin/withdraw-requests.php';
+    }
+
+    /**
+     * The single withdraw requests page template
+     *
+     * @return void
+     */
+    public function withdrawSingleRequestsFunc()
+    {
+        require_once AMLM_PLUGIN_PATH . 'templates/admin/withdraw-single-requests.php';
     }
 }
