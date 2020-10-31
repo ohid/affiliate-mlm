@@ -1,37 +1,83 @@
-var ctx = document.getElementById('membersChart').getContext('2d');
-var myChart = new Chart(ctx, {
+var randomScalingFactor = function() {
+    return Math.round(Math.random() * 100);
+};
+
+var membersChartConfig = {
     type: 'doughnut',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            data: [
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
+            ],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                '#63cdda',
+                '#f8a5c2',
+                '#34ace0',
             ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+            label: 'Dataset 1'
+        }],
+        labels: [
+            'Distributor',
+            'Unit Manager',
+            'Manager'
+        ]
+    },
+    options: {
+        responsive: true,
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+        },
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        }
+    }
+};
+
+var growthChartConfig = {
+    type: 'line',
+    data: {
+        labels: [
+            'Distributor',
+            'Unit Manager',
+            'Manager'
+        ],
+        datasets: [{
+            backgroundColor: '#70a1ff',
+            borderColor: '#1e90ff',
+            data: [
+                randomScalingFactor(),
+                randomScalingFactor(),
+                randomScalingFactor(),
             ],
-            borderWidth: 1
+            label: 'Dataset',
+            fill: 'start'
         }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+        responsive: true,
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+        },
+        animation: {
+            animateScale: true,
+            animateRotate: true
         }
     }
-});
+};
+
+window.onload = function() {
+    var topCtx = document.getElementById('membersChart').getContext('2d');
+    window.membersDoughnut = new Chart(topCtx, membersChartConfig);
+
+    var growthCtx = document.getElementById('growthChart').getContext('2d');
+    window.growthChart = new Chart(growthCtx, growthChartConfig);
+};
