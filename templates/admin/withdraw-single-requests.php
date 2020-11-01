@@ -20,7 +20,7 @@ $withdrawRow = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}amlm_withdraw W
 // Redirect the request to the affiliate-amlm page
 if (!$withdrawRow) {
     wp_safe_redirect(admin_url('admin.php?page=affiliate-mlm'));
-    exit;        
+    exit;
 }
 
 ?>
@@ -31,20 +31,22 @@ if (!$withdrawRow) {
     <?php include_once AMLM_PLUGIN_PATH . 'templates/admin/partials/header.php'; ?>
     
     <div class="request-body">
+
+        <h4><?php esc_html_e( 'Review request', 'amlm-locale' ); ?></h4>
+
         <div class="review-request">
-            <h4>Review request</h4>
 
             <div class="request-information">
                 <p>
-                    Requester name: Ohidul Islam <br>
-                    Payment type: bKash <br>
-                    Mobile No: 01920784644
+                    <span class="info-label">Requester name</span>: <span class="info-value">Ohidul Islam</span> <br>
+                    <span class="info-label">Payment type</span>: <span class="info-value">bKash </span> <br>
+                    <span class="info-label">Mobile No</span>: <span class="info-value">01587854</span> <br>
                 </p>
             </div>
         </div>
 
         <div class="request-action">
-            <h4>Take action</h4>
+            <h5><?php esc_html_e( 'Take action', 'amlm-locale' ); ?></h5>
 
             <form action="#" method="post" id="withdrawActionForm">
                 <div class="form-group">
@@ -61,9 +63,7 @@ if (!$withdrawRow) {
                 <input type="hidden" name="action" value="withdraw_action">
                 <?php wp_nonce_field( 'amlm_nonce', 'withdraw_action' ); ?>
 
-                <div class="form-group">
-                    <button type="submit" class="amlm-wc-btn"><?php esc_html_e('Submit', 'amlm-locale'); ?></button>
-                </div>
+                <button type="submit" class="amlm-wc-btn"><?php esc_html_e('Submit', 'amlm-locale'); ?></button>
 
                 <p class="form-response"></p>
             </form>            

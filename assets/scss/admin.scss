@@ -258,4 +258,71 @@
             }
         }
     }
+
+    .request-body {
+        margin-top: 20px;
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+        padding: 20px;
+
+        h4 {
+            margin: 10px 0 0 0;
+            position: relative;
+            font-size: 20px;
+
+            &:after {
+                position: absolute;
+                content: '';
+                width: 100px;
+                height: 1px;
+                background-color: #ddd;
+                bottom: -20px;
+                left: -16px;
+            }
+        }
+
+        h5 {
+            font-size: 16px;
+        }
+
+        .review-request {
+            margin-top: 40px;
+            max-width: 300px;
+
+            .request-information {
+                p {
+                    font-size: 16px;
+                    line-height: 2;
+                }
+            }
+        }
+        .request-action {
+            max-width: 300px;
+
+            .form-group {
+                margin-bottom: 20px;
+                
+                label {
+                    display: block;
+                    line-height: 2;
+                    font-size: 16px;
+                }
+            }
+
+            .amlm-wc-btn {
+                background-color: #616161;
+                color: #e0d7d7;
+                padding: 10px 15px;
+                text-decoration: none;
+                transition: all .3s ease;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #464343;
+                }
+            }
+        }
+    }
 }
