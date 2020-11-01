@@ -38,7 +38,8 @@ class Class_Admin
             'Affiliate MLM', 
             'manage_options', 
             'affiliate-mlm', 
-            [$this, 'affiliateMLMFunc']
+            [$this, 'affiliateMLMFunc'],
+            'dashicons-buddicons-buddypress-logo'
         );
 
         add_submenu_page(
