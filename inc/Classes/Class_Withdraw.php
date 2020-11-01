@@ -191,7 +191,7 @@ class Class_Withdraw
             [
                 'user_id' => $this->user->ID,
                 'payment_type' => $paymentType,
-                'bkash_number' => $number,
+                'mobile_number' => $number,
                 'amount' => $withdrawAmount,
                 'payment_status' => 'pending',
                 'created_at' => date('Y-m-d H:i:s'),
