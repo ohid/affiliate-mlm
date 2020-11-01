@@ -103,7 +103,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
         </h3>
         <table>
             <?php
-
+ 
             $output = '';
 
             foreach ($withdraw_requests as $request) {
@@ -111,7 +111,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
 
                 $output .= '<tr>';
                     
-                    $output .= sprintf('<th>%s</th>', userFullName($requestedUser));
+                    $output .= sprintf('<th><a href="%s">%s</a></th>', get_edit_user_link($request->user_id), userFullName($requestedUser));
 
                     $output .= '<td>
                         <span class="cell-label">Amount requested</span>';

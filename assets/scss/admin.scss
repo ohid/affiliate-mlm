@@ -90,6 +90,7 @@
 
                 p {
                     margin: 5px 0 0 0;
+                    font-size: 16px;
                 }
             }
         }
@@ -184,10 +185,23 @@
                         text-decoration: none;
                         background: #ebebeb;
                         color: #565656;
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            background-color: #dedede;
+                        }
 
                         &.details {
                             background-color: #616161;
                             color: #e0d7d7;
+
+                            &:hover {
+                                background-color: #464343;
+                            }
+                        }
+
+                        &:not(.details) {
+                            margin-right: 10px;
                         }
                     }
                 }
@@ -215,7 +229,31 @@
 
                 a {
                     text-decoration: none;
-                    color: #002332;
+                    color: #444;
+
+                    &:focus{
+                        box-shadow: none;
+                        outline: 1px solid transparent;
+                    }
+                }
+
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    .all-requests {
+        table {
+            th {
+                a {
+                    color: #444;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
                 }
             }
         }
