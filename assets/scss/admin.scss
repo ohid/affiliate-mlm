@@ -329,3 +329,19 @@
         }
     }
 }
+
+
+.form-response{
+    display: none;
+    margin: 15px 0 0 0;
+
+    &.success{
+        color: #51bb15;
+        display: block;
+    }
+
+    &.error{
+        color: #e81616;
+        display: block;
+    }
+}

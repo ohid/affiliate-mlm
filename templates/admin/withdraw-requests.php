@@ -124,6 +124,12 @@ $offset = ($pageno-1) * $no_of_records_per_page;
                         $output .= sprintf('<span class="cell-value">%s</span>', ucfirst($request->payment_type));
                 
                     $output .= '</td>';
+                    
+                    $output .= '<td>
+                        <span class="cell-label">Payment status</span>';
+                        $output .= sprintf('<span class="cell-value">%s</span>', ucfirst($request->payment_status));
+                
+                    $output .= '</td>';
                 
                     $output .= '<td>
 

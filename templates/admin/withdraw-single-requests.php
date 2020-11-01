@@ -56,7 +56,16 @@ if (!$withdraw) {
                             printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Branch'), $withdraw->bank_branch );
                         }
 
-                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Amount'), get_option('woocommerce_currency') . ' ' .$withdraw->amount);
+                        echo '<br>';
+
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Requested Amount'), get_option('woocommerce_currency') . ' ' .$withdraw->amount);
+
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Amount should pay'), get_option('woocommerce_currency') . ' ' . ( (70 / 100) * $withdraw->amount ) );
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Service charge deduct'), get_option('woocommerce_currency') . ' ' . ( (30 / 100) * $withdraw->amount ));
+
+                        echo '<br>';
+
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Withdraw status'), ucfirst($withdraw->payment_status));
 
                     ?>
                     
@@ -68,27 +77,28 @@ if (!$withdraw) {
             <h5><?php esc_html_e( 'Take action', 'amlm-locale' ); ?></h5>
 
             <?php if ($withdraw->payment_status == 'pending'): ?>
-                <form action="#" method="post" id="withdrawActionForm">
+                <form action="#" method="post" id="withdraw-action-form">
                     <div class="form-group">
 
                         <label for="approve-request">
-                            <input type="radio" name="withdraw-action" id="approve-request" value="approve"> <?php esc_html_e('Approve request'); ?>
+                            <input type="radio" name="withdraw-action" id="approve-request" value="approved"> <?php esc_html_e('Approve request'); ?>
                         </label>
                         
                         <label for="decline-request">
-                            <input type="radio" name="withdraw-action" id="decline-request" value="decline"> <?php esc_html_e('Decline request'); ?>
+                            <input type="radio" name="withdraw-action" id="decline-request" value="declined"> <?php esc_html_e('Decline request'); ?>
                         </label>
                     </div>
 
+                    <input type="hidden" name="witdhraw_id" value="<?php echo $withdraw->id; ?>">
                     <input type="hidden" name="action" value="withdraw_action">
                     <?php wp_nonce_field( 'amlm_nonce', 'withdraw_action' ); ?>
 
                     <button type="submit" class="amlm-wc-btn"><?php esc_html_e('Submit', 'amlm-locale'); ?></button>
 
-                    <p class="form-response"></p>
+                    <p class="form-response">ad</p>
                 </form>  
-            <?php elseif ($withdraw->payment_status == 'approved') : ?>
-                <p><?php esc_html_e('The withdraw request is approved'); ?></p>
+            <?php elseif ($withdraw->payment_status == 'approved' || $withdraw->payment_status == 'declined') : ?>
+                <p><?php echo __('The withdraw request is ', 'amlm-locale') . $withdraw->payment_status . __(' and no further action can be taken!', 'amlm-locale'); ?></p>
             <?php endif; ?>
         </div>
     </div>

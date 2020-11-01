@@ -33,6 +33,7 @@ class Class_Withdraw
 
         add_action('init', array($this, 'mainInit'));
         add_action('wp_ajax_withdraw_form', [$this, 'withdrawForm']);
+        add_action('wp_ajax_withdraw_action', [$this, 'withdrawAction']);
     }
     
     /**
@@ -206,8 +207,10 @@ class Class_Withdraw
             // Update the current balance
             update_user_meta($this->user->ID, 'amlm_earning', $newBalance);
 
+            $reportName = __('Your withdraw request has been made', 'amlm-locale');
+
             // Generate withdraw report
-            $this->generateReport($this->user->ID, $this->wpdb->insert_id, $paymentType, $withdrawAmount);
+            $this->generateReport($this->user->ID, $this->wpdb->insert_id, $reportName, $paymentType, $withdrawAmount);
 
             $this->returnJSON('success', __('Payment has been requested', 'amlm-locale'), $newBalance);
         } else {
@@ -215,6 +218,15 @@ class Class_Withdraw
         }
     }
 
+    /**
+     * Make the bank withdraw request
+     *
+     * @param string $paymentType provide the payment type 
+     * @param int|float $currentBalance provide the current balance
+     * @param int|float $withdrawAmount provide the witdhrawal amount
+     * 
+     * @return void
+     */
     public function makeBankWithdrawRequest($paymentType, $currentBalance, $withdrawAmount)
     {
         // Sanitize the Rocket number field
@@ -247,14 +259,99 @@ class Class_Withdraw
             // Update the current balance
             update_user_meta($this->user->ID, 'amlm_earning', $newBalance);
 
+            $reportName = __('Your withdraw request has been made', 'amlm-locale');
+
             // Generate withdraw report
-            $this->generateReport($this->user->ID, $this->wpdb->insert_id, $paymentType, $withdrawAmount);
+            $this->generateReport($this->user->ID, $this->wpdb->insert_id, $reportName, $paymentType, $withdrawAmount);
 
             $this->returnJSON('success', __('Payment has been requested', 'amlm-locale'), $newBalance);
         } else {
             $this->returnJSON('error', __('Sorry, some unexpected error occurred', 'amlm-locale'));
         }
     }
+    
+    /**
+     * Take the witdhraw request action
+     *
+     * @return void
+     */
+    public function withdrawAction()
+    {
+        if (DOING_AJAX) {
+
+            if (! isset($_POST['withdraw_action']) && ! wp_verify_nonce($_POST['withdraw_action'], 'amlm_nonce')) {
+                $this->returnJSON('error', __('Something went wrong', 'amlm-locale'));
+            }
+
+            if (! isset($_POST['withdraw-action']) || empty($_POST['withdraw-action']) ) {
+                $this->returnJSON('error', __('', 'amlm-locale'));
+            }
+
+            // Sanitize the values
+            $withdrawAction = filter_var($_POST['withdraw-action'], FILTER_SANITIZE_STRING);
+            $witdhrawID = filter_var($_POST['witdhraw_id'], FILTER_SANITIZE_NUMBER_INT);
+
+            // Get the withdraw request from the database
+            $withdrawRow = $this->wpdb->get_row("SELECT * FROM {$this->wpdb->prefix}amlm_withdraw WHERE id = $witdhrawID");
+
+            if (!$withdrawRow) {
+                $this->returnJSON('error', __('Don\'t try to hijack us, you silly hooman!'));
+            }
+            
+            if ($withdrawRow->payment_status == 'approved') {
+                $this->returnJSON('error', __('You can not take action on already approved requests.'));
+            }
+            
+            // Update the withdraw request
+            $this->updateWithdrawRequest($withdrawAction, $withdrawRow);
+
+            // If the withdraw request is declined 
+            // Return the money to the users
+            if ($withdrawAction == 'declined') {
+                $amlm_earning = get_user_meta($withdrawRow->user_id, 'amlm_earning', true);
+
+                update_user_meta($withdrawRow->user_id, 'amlm_earning', $amlm_earning + $withdrawRow->amount);
+            }
+            
+    
+            // Calculate the amount should pay and service charge
+            $paid_amount = (70 / 100) * $withdrawRow->amount;
+            $amount_charge = (30 / 100) * $withdrawRow->amount;
+            
+            // Generate withdraw report
+            if ($withdrawAction == 'approved') {
+                
+                // Send a report to the user
+                $reportName = __('Your withdrawal request has been approved', 'amlm-locale');
+                $this->generateReport($withdrawRow->user_id, $withdrawRow->id, $reportName, $withdrawRow->payment_type, $paid_amount, $amount_charge);
+            } elseif ($withdrawAction == 'declined') {
+
+                $reportName = __('Your withdrawal request has been declined and the amount returned to your balance.', 'amlm-locale');
+                $this->generateReport($withdrawRow->user_id, $withdrawRow->id, $reportName, $withdrawRow->payment_type, $withdrawRow->amount);
+            }
+
+            $this->returnJSON('success', sprintf('%s', __('The payment request has been ', 'amlm-locale') . $withdrawAction ));
+            
+        }
+    }
+
+    /**
+     * Update the withdrarw request
+     *
+     * @return void
+     */
+    public function updateWithdrawRequest($withdrawAction, $withdrawRow)
+    {
+        // Update the database
+        $this->wpdb->update(
+            "{$this->wpdb->prefix}amlm_withdraw",
+            array('payment_status' => $withdrawAction),
+            array('id' => $withdrawRow->id),
+            array('%s'),
+            array('%d')
+        );
+    }
+
 
     /**
      * Generate the withdraw report
@@ -264,19 +361,20 @@ class Class_Withdraw
      * 
      * @return void
      */
-    public function generateReport($user_id, $withdraw_id, $paymentType, $amount)
+    public function generateReport($user_id, $withdraw_id, $reportName, $paymentType, $amount, $serviceCharge = null)
     {
         $this->wpdb->insert(
             "{$this->wpdb->prefix}amlm_report",
             [
                 'user_id' => $user_id,
                 'withdraw_id' => $withdraw_id,
-                'report' => 'Your withdraw request has been made',
+                'report' => $reportName,
                 'payment_type' => $paymentType,
                 'amount' => $amount,
+                'service_charge' => $serviceCharge,
                 'created_at' => date('Y-m-d H:i:s'),
             ],
-            ["%d", "%d", "%s", "%s", "%d", "%s"]
+            ["%d", "%d", "%s", "%s", "%d", "%d", "%s"]
         ); 
     }
 

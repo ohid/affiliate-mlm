@@ -24,7 +24,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
 
 // Get the reports
 $reports = $wpdb->get_results(
-    "SELECT report, payment_type, amount, service_charge FROM {$wpdb->prefix}amlm_report 
+    "SELECT * FROM {$wpdb->prefix}amlm_report 
     WHERE user_id = $user->ID
     ORDER BY created_at DESC
     LIMIT $offset, $no_of_records_per_page"
@@ -38,6 +38,7 @@ $reports = $wpdb->get_results(
         <th>Payment type</th>
         <th>Amount</th>
         <th>Service charge</th>
+        <th>Date</th>
     </tr>
 
     <?php 
@@ -50,11 +51,13 @@ $reports = $wpdb->get_results(
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
+                        <td>%s</td>
                     </tr>', 
                     $report->report,
                     ucfirst($report->payment_type),
                     $report->amount . ' ' . get_option('woocommerce_currency'),
-                    ($report->service_charge) ? $report->service_charge : 'n/a'
+                    ($report->service_charge) ? $report->service_charge . ' ' . get_option('woocommerce_currency') : 'n/a',
+                    date(get_option('date_format'), strtotime($report->created_at))
                 );
             }
 
