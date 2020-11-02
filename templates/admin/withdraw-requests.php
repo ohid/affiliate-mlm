@@ -6,6 +6,17 @@ defined('ABSPATH') || exit;
 global $wpdb;
 
 //
+// Count the withdraw requests
+//
+$new_requests_count = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'pending'");
+
+$approved_requests_count = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'approved'");
+
+$declined_requests_count = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'declined'");
+
+$all_requests_count = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}amlm_withdraw");
+
+//
 // Build the requests URL
 //
 $new_requests = add_query_arg( array(
@@ -14,6 +25,10 @@ $new_requests = add_query_arg( array(
 
 $approved_requests = add_query_arg( array(
     'payment_status' => 'approved',
+), $_SERVER['REQUEST_URI'] );
+
+$declined_requests = add_query_arg( array(
+    'payment_status' => 'declined',
 ), $_SERVER['REQUEST_URI'] );
 
 $all_requests = add_query_arg( array(
@@ -31,7 +46,6 @@ if (isset($_GET['pageno'])) {
 
 $no_of_records_per_page = 5;
 $offset = ($pageno-1) * $no_of_records_per_page;
-
 
     // Build the SQL query
     $sql = "SELECT * FROM {$wpdb->prefix}amlm_withdraw ";
@@ -53,29 +67,33 @@ $offset = ($pageno-1) * $no_of_records_per_page;
     <h2><?php esc_html_e('Withdraw Requests', 'amlm-locale'); ?></h2>
 
     <?php include_once AMLM_PLUGIN_PATH . 'templates/admin/partials/header.php'; ?>
-    
+
     <div class="content-body clearfix">
         <div class="content-info-box">
-        
             <div class="info-box">
                 <a href="<?php echo $new_requests; ?>">
-                    <h3>4</h3>
-                    <p><?php esc_html_e('New witdhraw requests'); ?></p>
+                    <h3><?php echo $new_requests_count; ?></h3>
+                    <p><?php esc_html_e('New witdhraw requests', 'amlm-locale'); ?></p>
                 </a>
             </div>
             <div class="info-box">
                 <a href="<?php echo $approved_requests; ?>">
-                    <h3>15</h3>
-                    <p><?php esc_html_e('Approved widthdraw requests'); ?></p>
+                    <h3><?php echo $approved_requests_count; ?></h3>
+                    <p><?php esc_html_e('Approved widthdraw requests', 'amlm-locale'); ?></p>
+                </a>
+            </div>
+            <div class="info-box">
+                <a href="<?php echo $declined_requests; ?>">
+                    <h3><?php echo $declined_requests_count; ?></h3>
+                    <p><?php esc_html_e('Declined widthdraw requests', 'amlm-locale'); ?></p>
                 </a>
             </div>
             <div class="info-box">
                 <a href="<?php echo $all_requests; ?>">
-                    <h3>19</h3>
-                    <p><?php esc_html_e('All widthdraw requests'); ?></p>
+                    <h3><?php echo $all_requests_count; ?></h3>
+                    <p><?php esc_html_e('All widthdraw requests', 'amlm-locale'); ?></p>
                 </a>
             </div>
-
         </div>
     </div>
 
@@ -87,7 +105,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
         if (isset($_GET['payment_status'])) {
            $argPaymentStatus = filter_var($_GET['payment_status'], FILTER_SANITIZE_STRING);
 
-           if ($argPaymentStatus == 'all' || $argPaymentStatus == 'pending' || $argPaymentStatus == 'approved' ) {
+           if ($argPaymentStatus == 'all' || $argPaymentStatus == 'pending' || $argPaymentStatus == 'approved' || $argPaymentStatus == 'declined') {
                if ($argPaymentStatus == 'pending') {
                    $paymentStatusTxt = 'New';
                } else {
@@ -97,10 +115,10 @@ $offset = ($pageno-1) * $no_of_records_per_page;
         }
 
         printf('%s %s', ucfirst($paymentStatusTxt), __('Withdraw Requests', 'amlm-locale'));
-
-        // echo printf("%$1s %$2s", $paymentStatusTxt, esc_html__( "Withdraw Requests", 'amlm-locale' )) ?>
+        ?>
 
         </h3>
+        
         <table>
             <?php
  
