@@ -5,6 +5,12 @@ defined('ABSPATH') || exit;
 
 global $wpdb, $wp_roles;
 
+// Query for the total pending and approved amount
+$due_payment = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'pending'");
+$approved_payment = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'approved'");
+
+$currency = get_option('woocommerce_currency');
+
 ?>
 <div class="wrap amlm-wrap">
     <h2><?php esc_html_e('Affiliate MLM', 'amlm-locale'); ?></h2>
@@ -22,7 +28,7 @@ global $wpdb, $wp_roles;
                     <p>Total Members</p>
                 </div>
                 <div class="info-box">
-                    <h3>$21354</h3>
+                    <h3><?php echo $currency . ' ' . $due_payment; ?></h3>
                     <p>Total payment</p>
                 </div>
             </div>
@@ -36,7 +42,7 @@ global $wpdb, $wp_roles;
         <div class="content-right">
             <div class="content-info-box">
                 <div class="info-box">
-                    <h3>$21354</h3>
+                    <h3><?php echo $currency . ' ' . $approved_payment; ?></h3>
                     <p>Total Market Due</p>
                 </div>
             </div>
