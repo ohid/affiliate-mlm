@@ -183,7 +183,7 @@
 
                 if( paymentType === 'rocket' ) {
 
-                    if( bkashNumber.length == '' ) {
+                    if( rocketNumber.length == '' ) {
                         resetResponse('error', 'Please enter Rocket number');    
                         return;                    
                     }

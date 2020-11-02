@@ -138,9 +138,11 @@ function amlmLinksPagination($wpdb, $table, $user, $pageno, $offset, $no_of_reco
     $total_rows = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}$table WHERE user_id = $user->ID");
     $total_pages = ceil($total_rows / $no_of_records_per_page);
 
+    if ($total_pages > 1) {
+        printf('<p class="page-current">Currently at page: %s</p>', $pageno);
+    }
     ?>
 
-    <p class="page-current"><?php printf('Currently at page: %s', $pageno); ?></p>
     <ul class="links-pagination">
         <?php 
         // Display the first button 
@@ -162,6 +164,78 @@ function amlmLinksPagination($wpdb, $table, $user, $pageno, $offset, $no_of_reco
         // Display the last button 
         if ($pageno < $total_pages) { 
             printf('<li><a href="?pageno=%s">&#8658;</a></li>', $total_pages);
+        }
+        ?>
+    </ul>
+
+    <?php
+}
+
+
+
+/**
+ * Withdraw requests pagination 
+ * 
+ * @param object  $wpdb pass the $wpdb object
+ * @param object  $user pass the $user object
+ * @param integer $pageno pass the pageno value
+ * @param integer $offset pass the page offset value
+ * @param integer $no_of_records_per_page pass the value
+ * 
+ * @return void
+ */
+function withdrawRequestsPagination($wpdb, $table, $payment_status = null, $pageno, $offset, $no_of_records_per_page)
+{
+
+    if ($payment_status == null || $payment_status == 'all') {
+        $total_rows = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}$table");
+    } else {
+        $total_rows = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}$table WHERE payment_status = '{$payment_status}'");
+    }
+    $total_pages = ceil($total_rows / $no_of_records_per_page);
+    
+    if ($total_pages > 1) {
+        printf('<p class="page-current">Currently at page: %s</p>', $pageno);
+    }
+    ?>
+
+    
+    
+    <ul class="links-pagination">
+        <?php 
+        // Display the first button 
+
+        $current_page_url = $_SERVER['REQUEST_URI'];
+            
+        if ($pageno != 1) {
+            printf(
+                '<li><a href="%s">&#8656;</a></li>', 
+                add_query_arg(array('pageno' => 1), $current_page_url)
+            );
+        }
+
+        // Display the previous button
+        if ($pageno > 1) { 
+            printf(
+                '<li><a href="%s">Prev</a></li>', 
+                add_query_arg(array('pageno' => $pageno - 1), $current_page_url)
+            );
+        }
+
+        // Display the next button
+        if ($pageno < $total_pages) {
+            printf(
+                '<li><a href="%s">Next</a></li>', 
+                add_query_arg(array('pageno' => $pageno + 1), $current_page_url)
+            );
+        }
+
+        // Display the last button 
+        if ($pageno < $total_pages) { 
+            printf(
+                '<li><a href="%s">&#8658;</a></li>', 
+                add_query_arg(array('pageno' => $total_pages), $current_page_url)
+            );
         }
         ?>
     </ul>

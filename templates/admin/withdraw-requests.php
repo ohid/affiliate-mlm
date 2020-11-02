@@ -44,6 +44,8 @@ if (isset($_GET['pageno'])) {
     $pageno = 1;
 }
 
+$argPaymentStatus = null;
+
 $no_of_records_per_page = 5;
 $offset = ($pageno-1) * $no_of_records_per_page;
 
@@ -170,5 +172,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
             echo $output;
             ?>
         </table>
+
+        <?php withdrawRequestsPagination($wpdb, 'amlm_withdraw', $argPaymentStatus, $pageno, $offset, $no_of_records_per_page);?>
 
     </div>
