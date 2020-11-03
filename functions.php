@@ -139,7 +139,7 @@ function amlmLinksPagination($wpdb, $table, $user, $pageno, $offset, $no_of_reco
     $total_pages = ceil($total_rows / $no_of_records_per_page);
 
     if ($total_pages > 1) {
-        printf('<p class="page-current">Currently at page: %s</p>', $pageno);
+        printf('<p class="page-current">%s: %s</p>', esc_html__('Currently at page', 'amlm-locale'), $pageno);
     }
     ?>
 
@@ -153,12 +153,12 @@ function amlmLinksPagination($wpdb, $table, $user, $pageno, $offset, $no_of_reco
 
         // Display the previous button
         if ($pageno > 1) { 
-            printf('<li><a href="?pageno=%s">Prev</a></li>', ($pageno - 1));
+            printf('<li><a href="?pageno=%s">%s</a></li>', esc_html__('Prev', 'amlm-locale'), ($pageno - 1));
         }
 
         // Display the next button
         if ($pageno < $total_pages) { 
-            printf('<li><a href="?pageno=%s">Next</a></li>', ($pageno + 1));
+            printf('<li><a href="?pageno=%s">%s</a></li>', esc_html__('Next', 'amlm-locale'), ($pageno + 1));
         }
 
         // Display the last button 
@@ -195,11 +195,9 @@ function withdrawRequestsPagination($wpdb, $table, $payment_status = null, $page
     $total_pages = ceil($total_rows / $no_of_records_per_page);
     
     if ($total_pages > 1) {
-        printf('<p class="page-current">Currently at page: %s</p>', $pageno);
+        printf('<p class="page-current">%s: %s</p>', esc_html__('Currently at page', 'amlm-locale'), $pageno);
     }
     ?>
-
-    
     
     <ul class="links-pagination">
         <?php 
@@ -217,16 +215,18 @@ function withdrawRequestsPagination($wpdb, $table, $payment_status = null, $page
         // Display the previous button
         if ($pageno > 1) { 
             printf(
-                '<li><a href="%s">Prev</a></li>', 
-                add_query_arg(array('pageno' => $pageno - 1), $current_page_url)
+                '<li><a href="%s">%s</a></li>', 
+                add_query_arg(array('pageno' => $pageno - 1), $current_page_url),
+                esc_html__('Prev', 'amlm-locale')
             );
         }
 
         // Display the next button
         if ($pageno < $total_pages) {
             printf(
-                '<li><a href="%s">Next</a></li>', 
-                add_query_arg(array('pageno' => $pageno + 1), $current_page_url)
+                '<li><a href="%s">%s</a></li>',
+                add_query_arg(array('pageno' => $pageno + 1), $current_page_url),
+                esc_html__('Next', 'amlm-locale')
             );
         }
 

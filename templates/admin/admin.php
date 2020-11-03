@@ -25,16 +25,16 @@ $currency = get_option('woocommerce_currency');
                         [ 'amlm_sales_representative', 'amlm_distributor', 'amlm_unit_manager', 'amlm_manager', 'amlm_senior_manager', 'amlm_executive_manager', 'amlm_ass_g_manager', 'amlm_general_manager' ] 
                     ] ) );
                     ?></h3>
-                    <p>Total Members</p>
+                    <p><?php esc_html_e('Total Members', 'amlm-locale') ?></p>
                 </div>
                 <div class="info-box">
                     <h3><?php echo $currency . ' ' . $approved_payment; ?></h3>
-                    <p>Total payment</p>
+                    <p><?php esc_html_e('Total Payment', 'amlm-locale') ?></p>
                 </div>
             </div>
 
             <div class="growth-performance chart-box">
-                <h3>Growth Performance</h3>
+                <h3><?php esc_html_e('Growth Performance', 'amlm-locale') ?></h3>
 
                 <canvas id="growthChart"></canvas>
             </div>
@@ -43,12 +43,12 @@ $currency = get_option('woocommerce_currency');
             <div class="content-info-box">
                 <div class="info-box">
                     <h3><?php echo $currency . ' ' . $due_payment; ?></h3>
-                    <p>Total Market Due</p>
+                    <p><?php esc_html_e('Total Market Due', 'amlm-locale') ?></p>
                 </div>
             </div>
 
             <div class="members-circle-chart chart-box">
-                <h3>Top</h3>
+                <h3><?php esc_html_e('Top', 'amlm-locale') ?></h3>
                 <canvas id="membersChart" width="400" height="450"></canvas>
             </div>
         </div>
@@ -78,21 +78,21 @@ $currency = get_option('woocommerce_currency');
 
                 $output .= sprintf('<th>%s</th>', userFullName($user_obj)) . $line_break;
 
-                $output .= '<td class="cell-role"><span class="cell-label">Position</span>';
-                $output .=  sprintf('<span class="cell-value">%s</span>', $wp_roles->roles[ aMLMCurrentUserRole($user_obj) ]['name']);
+                $output .= sprintf('<td class="cell-role"><span class="cell-label">%s</span>', esc_html__('Position', 'amlm-locale'));
+                $output .= sprintf('<span class="cell-value">%s</span>', $wp_roles->roles[ aMLMCurrentUserRole($user_obj) ]['name']);
                 $output .= '</td>' . $line_break;
 
-                $output .= '<td class="cell-point"><span class="cell-label">Point</span>';
+                $output .= sprintf('<td class="cell-point"><span class="cell-label">%s</span>', esc_html__('Point', 'amlm-locale'));
                 $output .= sprintf('<span class="cell-value">%s</span>', $user->meta_value ? $user->meta_value : 'n/a') ;
                 $output .= '</td>' . $line_break;
 
                 $output .= '<td class="cell-payment">';
-                $output .= '<span class="cell-label">Payment</span>';
+                $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Payment', 'amlm-locale'));
                 $output .= sprintf('<span class="cell-value">%s</span>', $payment_amount ? $payment_amount : 'n/a');
                 $output .= '</td>' . $line_break;
 
                 $output .= '<td class="cell-actions">';
-                $output .= '<a href="#" class="options overview-button">Options</a>';
+                $output .= sprintf('<a href="#" class="options overview-button">%s</a>', esc_html__('Options', 'amlm-locale'));
                 $output .= sprintf('<a href="%s" class="details overview-button">%s</a>', get_edit_user_link($user->ID), esc_html__('Details', 'amlm_locale'));
                 $output .= '</td>' . $line_break;
             $output .= '</tr>' . $line_break;

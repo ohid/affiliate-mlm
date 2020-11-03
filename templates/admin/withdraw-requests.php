@@ -117,46 +117,40 @@ $offset = ($pageno-1) * $no_of_records_per_page;
         }
 
         printf('%s %s', ucfirst($paymentStatusTxt), __('Withdraw Requests', 'amlm-locale'));
-        ?>
-
-        </h3>
+        ?></h3>
         
         <table>
             <?php
- 
+            $line_break = "\r\n"; // we are using line break to format the HTML table in page source code
+
             $output = '';
 
             foreach ($withdraw_requests as $request) {
                 $requestedUser = get_user_by('id', $request->user_id);
 
-                $output .= '<tr>';
+                $output .= '<tr>' . $line_break;
                     
                     $output .= sprintf('<th><a href="%s">%s</a></th>', get_edit_user_link($request->user_id), userFullName($requestedUser));
 
-                    $output .= '<td>
-                        <span class="cell-label">Amount requested</span>';
-                        $output .= sprintf('<span class="cell-value">%s</span>', $request->amount);
+                    $output .= '<td>';
+                    $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Amount requested', 'amlm-locale'));
+                    $output .= sprintf('<span class="cell-value">%s</span>', $request->amount);
+                    $output .= '</td>' . $line_break;
 
-                    $output .= '</td>';
-                    
-                    $output .= '<td>
-                        <span class="cell-label">Payment method</span>';
-                        $output .= sprintf('<span class="cell-value">%s</span>', ucfirst($request->payment_type));
-                
-                    $output .= '</td>';
-                    
-                    $output .= '<td>
-                        <span class="cell-label">Payment status</span>';
-                        $output .= sprintf('<span class="cell-value">%s</span>', ucfirst($request->payment_status));
-                
-                    $output .= '</td>';
-                
-                    $output .= '<td>
+                    $output .= '<td>';
+                    $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Payment method', 'amlm-locale'));
+                    $output .= sprintf('<span class="cell-value">%s</span>', ucfirst($request->payment_type));
+                    $output .= '</td>' . $line_break;
 
-                        <span class="cell-label">Date requested</span>';
-                        $output .= sprintf('<span class="cell-value">%s</span>', date(get_option('date_format'), strtotime($request->created_at)));
-                    
-                    $output .= '</td>';
+                    $output .= '<td>';
+                    $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Payment status', 'amlm-locale'));
+                    $output .= sprintf('<span class="cell-value">%s</span>', ucfirst($request->payment_status));
+                    $output .= '</td>' . $line_break;
+
+                    $output .= '<td>';
+                    $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Date requested', 'amlm-locale'));
+                    $output .= sprintf('<span class="cell-value">%s</span>', date(get_option('date_format'), strtotime($request->created_at)));
+                    $output .= '</td>' . $line_break;
 
                     $output .= '<td class="cell-actios">';
                     $output .= sprintf(
@@ -164,11 +158,11 @@ $offset = ($pageno-1) * $no_of_records_per_page;
                         add_query_arg(['withdraw_id' => $request->id], admin_url('admin.php?page=amlm-single-requests')),
                         esc_html__('Action', 'amlm-locale')
                     );
-                    
-                    $output .= '</td>
-                </tr>';
+                    $output .= '</td>' . $line_break;
+
+                $output .= '</tr>' . $line_break;
             }
-            
+
             echo $output;
             ?>
         </table>
