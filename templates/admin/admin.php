@@ -28,7 +28,7 @@ $currency = get_option('woocommerce_currency');
                     <p>Total Members</p>
                 </div>
                 <div class="info-box">
-                    <h3><?php echo $currency . ' ' . $due_payment; ?></h3>
+                    <h3><?php echo $currency . ' ' . $approved_payment; ?></h3>
                     <p>Total payment</p>
                 </div>
             </div>
@@ -42,7 +42,7 @@ $currency = get_option('woocommerce_currency');
         <div class="content-right">
             <div class="content-info-box">
                 <div class="info-box">
-                    <h3><?php echo $currency . ' ' . $approved_payment; ?></h3>
+                    <h3><?php echo $currency . ' ' . $due_payment; ?></h3>
                     <p>Total Market Due</p>
                 </div>
             </div>
@@ -68,6 +68,9 @@ $currency = get_option('woocommerce_currency');
             LIMIT 5");
 
             foreach ($users as $user) {
+            // Retrieve the payment amount for members
+            $payment_amount = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'approved' and user_id = {$user->ID}");
+            
 $output = '<tr>';
 
 $user_obj = get_user_by( 'id', $user->ID );
@@ -82,13 +85,14 @@ $output .= '</td>
 <td class="cell-point">
     <span class="cell-label">Point</span>';
 
-    $output .= sprintf('<span class="cell-value">%s</span>', $user->meta_value) ;
+    $output .= sprintf('<span class="cell-value">%s</span>', $user->meta_value ? $user->meta_value : 'n/a') ;
 
 $output .= '</td>
-<td class="cell-payment">
-    <span class="cell-label">Payment</span>
-    <span class="cell-value">48785</span>
-</td>
+<td class="cell-payment">';
+$output .= '<span class="cell-label">Payment</span>';
+$output .= sprintf('<span class="cell-value">%s</span>', $payment_amount ? $payment_amount : 'n/a');
+$output .= '</td>
+
 <td class="cell-actions">
     <a href="#" class="options overview-button">Options</a>';
 
