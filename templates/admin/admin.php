@@ -59,6 +59,8 @@ $currency = get_option('woocommerce_currency');
         <table>
 
         <?php
+            $line_break = "\r\n"; // we are using line break to format the HTML table in page source code
+
             // Query for the users
             $users = $wpdb->get_results("SELECT u.ID, um.meta_value
             FROM $wpdb->users u 
@@ -71,37 +73,31 @@ $currency = get_option('woocommerce_currency');
             // Retrieve the payment amount for members
             $payment_amount = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'approved' and user_id = {$user->ID}");
             
-$output = '<tr>';
+            $output = '<tr>' . $line_break;
+                $user_obj = get_user_by( 'id', $user->ID );
 
-$user_obj = get_user_by( 'id', $user->ID );
+                $output .= sprintf('<th>%s</th>', userFullName($user_obj)) . $line_break;
 
-$output .= sprintf('<th>%s</th>', userFullName($user_obj));
+                $output .= '<td class="cell-role"><span class="cell-label">Position</span>';
+                $output .=  sprintf('<span class="cell-value">%s</span>', $wp_roles->roles[ aMLMCurrentUserRole($user_obj) ]['name']);
+                $output .= '</td>' . $line_break;
 
-$output .= '<td class="cell-role">
-    <span class="cell-label">Position</span>';
-$output .=  sprintf('<span class="cell-value">%s</span>', $wp_roles->roles[ aMLMCurrentUserRole($user_obj) ]['name']);
+                $output .= '<td class="cell-point"><span class="cell-label">Point</span>';
+                $output .= sprintf('<span class="cell-value">%s</span>', $user->meta_value ? $user->meta_value : 'n/a') ;
+                $output .= '</td>' . $line_break;
 
-$output .= '</td>
-<td class="cell-point">
-    <span class="cell-label">Point</span>';
+                $output .= '<td class="cell-payment">';
+                $output .= '<span class="cell-label">Payment</span>';
+                $output .= sprintf('<span class="cell-value">%s</span>', $payment_amount ? $payment_amount : 'n/a');
+                $output .= '</td>' . $line_break;
 
-    $output .= sprintf('<span class="cell-value">%s</span>', $user->meta_value ? $user->meta_value : 'n/a') ;
+                $output .= '<td class="cell-actions">';
+                $output .= '<a href="#" class="options overview-button">Options</a>';
+                $output .= sprintf('<a href="%s" class="details overview-button">%s</a>', get_edit_user_link($user->ID), esc_html__('Details', 'amlm_locale'));
+                $output .= '</td>' . $line_break;
+            $output .= '</tr>' . $line_break;
 
-$output .= '</td>
-<td class="cell-payment">';
-$output .= '<span class="cell-label">Payment</span>';
-$output .= sprintf('<span class="cell-value">%s</span>', $payment_amount ? $payment_amount : 'n/a');
-$output .= '</td>
-
-<td class="cell-actions">
-    <a href="#" class="options overview-button">Options</a>';
-
-    $output .= sprintf('<a href="%s" class="details overview-button">%s</a>', get_edit_user_link($user->ID), esc_html__('Details', 'amlm_locale'));
-
-$output .= '</td>
-</tr>';
-
-echo $output;
+            echo $output;
 
             }
         ?>
