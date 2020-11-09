@@ -20,6 +20,7 @@
                 let params = new URLSearchParams( new FormData( referralForm ) );
                 let username = document.getElementById('username').value;
                 let email = document.getElementById('email').value;
+                let password = document.getElementById('password').value;
 
                 if( username == '' || username.length <= 4 ) {
                     resetResponse( 'error', 'Username should be at least 5 characters');
@@ -28,6 +29,11 @@
 
                 if( false === validateEmail( email ) ) {
                     resetResponse( 'error', 'Email is not validated');
+                    return;
+                }
+
+                if( password == '' || password.length <= 8 ) {
+                    resetResponse( 'error', 'Password should be at least 8 characters');
                     return;
                 }
 
