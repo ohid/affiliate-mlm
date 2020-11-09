@@ -198,10 +198,6 @@ class Class_Main
                         
             $product_link = filter_var($_POST['product_link'], FILTER_VALIDATE_URL);
 
-            // if( $product_link === false ) {
-            //     $this->returnJSON( 'error', 'Product link is invalid.' );
-            // }
-
             $product_link = esc_url_raw($_POST['product_link']);
             $campaign_name = sanitize_text_field($_POST['campaign_name']);
 
