@@ -121,12 +121,17 @@ class Class_Main
 
                 $username = sanitize_text_field($_POST['username']);
                 $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+                $password = sanitize_text_field($_POST['password']);
 
                 if ($email === false) {
                     $this->returnJSON('error', 'Email is invalid.');
                 }
 
-                $this->createReferralUser($username, $email);
+                if (8 > strlen($password)) {
+                    $this->returnJSON('error', 'Password should be at least 8 characters.');
+                }
+
+                $this->createReferralUser($username, $email, $password);
             } else {
                 $this->returnJSON('error', 'Form validation failed.');
             }
@@ -141,7 +146,7 @@ class Class_Main
      * 
      * @return void
      */
-    public function createReferralUser($username, $email)
+    public function createReferralUser($username, $email, $password)
     {
         global $wpdb;
 
@@ -149,11 +154,9 @@ class Class_Main
         $user_id = username_exists($username);
 
         if (! $user_id && false == email_exists($email)) {
-            // Generate a random password
-            $random_password =  wp_generate_password(12, $false);
 
             // Create the users
-            $user_id = wp_create_user($username, $random_password, $email);
+            $user_id = wp_create_user($username, $password, $email);
 
             if ($user_id) {
                 // Set the referral relation
