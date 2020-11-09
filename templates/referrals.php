@@ -33,6 +33,10 @@ if( $referral_count >= $referral_limit ) {
                 <label for="email"><?php esc_html_e('Email:', 'amlm-locale'); ?></label>
                 <input type="email" id="email" name="email" placeholder="Enter email" class="form-control">
             </div>
+            <div class="form-group">
+                <label for="password"><?php esc_html_e('Password:', 'amlm-locale'); ?></label>
+                <input type="password" id="password" name="password" placeholder="Enter password" class="form-control">
+            </div>
 
             <input type="hidden" name="action" value="referral_form">
             <?php wp_nonce_field( 'amlm_nonce', 'referral_nonce' ); ?>
