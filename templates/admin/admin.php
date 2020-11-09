@@ -28,7 +28,7 @@ $currency = get_option('woocommerce_currency');
                     <p><?php esc_html_e('Total Members', 'amlm-locale') ?></p>
                 </div>
                 <div class="info-box">
-                    <h3><?php echo $currency . ' ' . $approved_payment; ?></h3>
+                    <h3><?php echo $currency . ' ' . ($approved_payment ? $approved_payment : '0'); ?></h3>
                     <p><?php esc_html_e('Total Payment', 'amlm-locale') ?></p>
                 </div>
             </div>
@@ -42,7 +42,7 @@ $currency = get_option('woocommerce_currency');
         <div class="content-right">
             <div class="content-info-box">
                 <div class="info-box">
-                    <h3><?php echo $currency . ' ' . $due_payment; ?></h3>
+                    <h3><?php echo $currency . ' ' . ($due_payment ? $due_payment : '0') ; ?></h3>
                     <p><?php esc_html_e('Total Market Due', 'amlm-locale') ?></p>
                 </div>
             </div>
@@ -62,11 +62,11 @@ $currency = get_option('woocommerce_currency');
             $line_break = "\r\n"; // we are using line break to format the HTML table in page source code
 
             // Query for the users
-            $users = $wpdb->get_results("SELECT u.ID, um.meta_value
+            $users = $wpdb->get_results("SELECT u.ID, um.meta_value, convert(um.meta_value, UNSIGNED INTEGER) AS meta_value
             FROM $wpdb->users u 
             LEFT JOIN $wpdb->usermeta um ON u.ID = um.user_id
             WHERE um.meta_key = 'amlm_points'
-            ORDER BY um.meta_value DESC
+            ORDER BY meta_value DESC
             LIMIT 5");
 
             foreach ($users as $user) {
