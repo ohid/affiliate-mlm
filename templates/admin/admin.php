@@ -6,7 +6,8 @@ defined('ABSPATH') || exit;
 global $wpdb, $wp_roles;
 
 // Query for the total pending and approved amount
-$due_payment = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'pending'");
+$due_payment = $wpdb->get_var("SELECT SUM(meta_value) FROM $wpdb->usermeta WHERE meta_key = 'amlm_earning'");
+$total_points = $wpdb->get_var("SELECT SUM(meta_value) FROM $wpdb->usermeta WHERE meta_key = 'amlm_points'");
 $approved_payment = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'approved'");
 
 $currency = get_option('woocommerce_currency');
@@ -28,8 +29,13 @@ $currency = get_option('woocommerce_currency');
                     <p><?php esc_html_e('Total Members', 'amlm-locale') ?></p>
                 </div>
                 <div class="info-box">
+                    <h3><?php echo $currency . ' ' . ($total_points ? $total_points : '0'); ?></h3>
+                    <p><?php esc_html_e('Total Points in Market', 'amlm-locale') ?></p>
+                </div>
+                
+                <div class="info-box">
                     <h3><?php echo $currency . ' ' . ($approved_payment ? $approved_payment : '0'); ?></h3>
-                    <p><?php esc_html_e('Total Payment', 'amlm-locale') ?></p>
+                    <p><?php esc_html_e('Total Payments Approved', 'amlm-locale') ?></p>
                 </div>
             </div>
 
