@@ -33,6 +33,7 @@ class Class_Admin
      */
     public function adminMenu()
     {
+        // Add the Affiliate MLM page
         add_menu_page(
             'Affiliate MLM', 
             'Affiliate MLM', 
@@ -42,6 +43,7 @@ class Class_Admin
             'dashicons-buddicons-buddypress-logo'
         );
 
+        // Add the withdraw requests page
         add_submenu_page(
             'affiliate-mlm', 
             'Withdraw Requests', 
@@ -51,6 +53,17 @@ class Class_Admin
             [$this, 'withdrawRequestsFunc']
         );
 
+        // Add the Affiliate MLM members page
+        add_submenu_page(
+            'affiliate-mlm', 
+            'Members', 
+            'Members', 
+            'manage_options', 
+            'amlm-members', 
+            [$this, 'membersFunc']
+        );
+
+        // Add the single withdraw request page
         add_submenu_page(
             '', 
             'Withdraw Requests', 
@@ -79,6 +92,16 @@ class Class_Admin
     public function withdrawRequestsFunc()
     {
         require_once AMLM_PLUGIN_PATH . 'templates/admin/withdraw-requests.php';
+    }
+
+    /**
+     * The admin members template
+     *
+     * @return void
+     */
+    public function membersFunc()
+    {
+        require_once AMLM_PLUGIN_PATH . 'templates/admin/members.php';
     }
 
     /**
