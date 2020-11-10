@@ -3,7 +3,7 @@
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
-global $wpdb;
+global $wpdb, $wp_roles;
 
 ?>
 <div class="wrap amlm-wrap">
@@ -24,8 +24,6 @@ global $wpdb;
             </tr>
             
             <?php
-                global $wp_roles;
-
                 $line_break = "\r\n"; // we are using line break to format the HTML table in page source code
 
                 //
@@ -76,7 +74,7 @@ global $wpdb;
             ?>
         </table>
 
-        <?php amlmMembersPagination($pageno, $no_of_records_per_page, $offset);?>
+        <?php amlmMembersPagination($pageno, $no_of_records_per_page, $members->get_total());?>
 
     </div>
 </div>

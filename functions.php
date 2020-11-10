@@ -105,6 +105,14 @@ if (! function_exists('amlmEarningMoney')) {
 
 if (! function_exists('amlmMemberPaymentValue')) {
     
+    /**
+     * Get the payment value of the user
+     *
+     * @param integer $user_id gets the user ID
+     * @param string $status gets the payment_status value
+     * 
+     * @return void
+     */
     function amlmMemberPaymentValue($user_id, $status)
     {
         global $wpdb;
@@ -254,13 +262,17 @@ function withdrawRequestsPagination($wpdb, $table, $payment_status = null, $page
     <?php
 }
 
-function amlmMembersPagination($pageno, $no_of_records_per_page, $offset)
+/**
+ * Members pagination
+ *
+ * @param integer $pageno gets the current pageno
+ * @param integer $no_of_records_per_page gets the no of records to show per page
+ * 
+ * @return void
+ */
+function amlmMembersPagination($pageno, $no_of_records_per_page, $total_member)
 {
-    $total_users = new WP_User_Query([
-        'role__in' => ['amlm_sales_representative', 'amlm_distributor', 'amlm_unit_manager', 'amlm_manager', 'amlm_senior_manager', 'amlm_executive_manager', 'amlm_ass_g_manager', 'amlm_general_manager'],
-    ]);
-
-    $total_pages = ceil($total_users->get_total() / $no_of_records_per_page);
+    $total_pages = ceil($total_member / $no_of_records_per_page);
 
     if ($total_pages > 1) {
         printf('<p class="page-current">%s: %s</p>', esc_html__('Currently at page', 'amlm-locale'), $pageno);
@@ -269,8 +281,8 @@ function amlmMembersPagination($pageno, $no_of_records_per_page, $offset)
     
     <ul class="links-pagination">
         <?php 
+        
         // Display the first button 
-
         $current_page_url = $_SERVER['REQUEST_URI'];
             
         if ($pageno != 1) {
