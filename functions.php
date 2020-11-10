@@ -103,6 +103,17 @@ if (! function_exists('amlmEarningMoney')) {
     }
 }
 
+if (! function_exists('amlmMemberPaymentValue')) {
+    
+    function amlmMemberPaymentValue($user_id, $status)
+    {
+        global $wpdb;
+
+        $amount = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE user_id = '{$user_id}' AND payment_status = '{$status}'");
+        return $amount;
+    }
+}
+
 /**
  * Replace 'customer' role (WooCommerce use by default) with your own one.
 **/
