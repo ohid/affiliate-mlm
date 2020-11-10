@@ -253,3 +253,60 @@ function withdrawRequestsPagination($wpdb, $table, $payment_status = null, $page
 
     <?php
 }
+
+function amlmMembersPagination($pageno, $no_of_records_per_page, $offset)
+{
+    $total_users = new WP_User_Query([
+        'role__in' => ['amlm_sales_representative', 'amlm_distributor', 'amlm_unit_manager', 'amlm_manager', 'amlm_senior_manager', 'amlm_executive_manager', 'amlm_ass_g_manager', 'amlm_general_manager'],
+    ]);
+
+    $total_pages = ceil($total_users->get_total() / $no_of_records_per_page);
+
+    if ($total_pages > 1) {
+        printf('<p class="page-current">%s: %s</p>', esc_html__('Currently at page', 'amlm-locale'), $pageno);
+    }
+    ?>
+    
+    <ul class="links-pagination">
+        <?php 
+        // Display the first button 
+
+        $current_page_url = $_SERVER['REQUEST_URI'];
+            
+        if ($pageno != 1) {
+            printf(
+                '<li><a href="%s">&#8656;</a></li>', 
+                add_query_arg(array('pageno' => 1), $current_page_url)
+            );
+        }
+
+        // Display the previous button
+        if ($pageno > 1) { 
+            printf(
+                '<li><a href="%s">%s</a></li>', 
+                add_query_arg(array('pageno' => $pageno - 1), $current_page_url),
+                esc_html__('Prev', 'amlm-locale')
+            );
+        }
+
+        // Display the next button
+        if ($pageno < $total_pages) {
+            printf(
+                '<li><a href="%s">%s</a></li>',
+                add_query_arg(array('pageno' => $pageno + 1), $current_page_url),
+                esc_html__('Next', 'amlm-locale')
+            );
+        }
+
+        // Display the last button 
+        if ($pageno < $total_pages) { 
+            printf(
+                '<li><a href="%s">&#8658;</a></li>', 
+                add_query_arg(array('pageno' => $total_pages), $current_page_url)
+            );
+        }
+        ?>
+    </ul>
+
+    <?php
+}

@@ -74,7 +74,9 @@ global $wpdb;
 
                 echo $output;
             ?>
-
         </table>
+
+        <?php amlmMembersPagination($pageno, $no_of_records_per_page, $offset);?>
+
     </div>
 </div>
