@@ -148,10 +148,10 @@ class Class_User_Rank
             if ($this->amlm_user_current_points >= $this->distributor_points) {
 
                 // The user become a distributor 
-                // Remove the amlm_sales_representative role 
-                $this->removeRole($this->user, 'amlm_sales_representative');
-                // Add the amlm_distributor role
-                $this->addRole($this->user, 'amlm_distributor');
+                // Remove the amlm_distributor role 
+                $this->removeRole($this->user, 'amlm_distributor');
+                // Add the amlm_sales_representative role
+                $this->addRole($this->user, 'amlm_sales_representative');
 
                 // echo 'Your are a <b>Distributor</b> now <br>';
                 // echo 'current rank ' . $this->current_rank . '<br>';
@@ -187,8 +187,8 @@ class Class_User_Rank
                     if (count(array_unique($all_flr_distributorship)) === 1 && end($all_flr_distributorship) === true) {
                         // echo '<br>So you become a <b>Unit Manager<b> <br><br>';
                         // The user become a Unit Manager 
-                        // Remove the amlm_distributor role 
-                        $this->removeRole($this->user, 'amlm_distributor');
+                        // Remove the amlm_sales_representative role 
+                        $this->removeRole($this->user, 'amlm_sales_representative');
                         // Add the amlm_unit_manager role
                         $this->addRole($this->user, 'amlm_unit_manager');
 

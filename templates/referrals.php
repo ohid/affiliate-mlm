@@ -16,7 +16,7 @@ if( $referral_count >= $referral_limit ) {
     // do nothing
 } else {
     printf(
-        '<p>You can add <b>%s Sales Representitives</b> <button id="test" class="add-new-referral create-btn button">Add new</button> </p>',
+        '<p>You can add <b>%s Distributors</b> <button id="test" class="add-new-referral create-btn button">Add new</button> </p>',
         $referral_limit - $referral_count
     );
     
@@ -60,6 +60,7 @@ if( $referral_count > 0 ) :
 
 <table>
     <tr>
+        <th>ID</th>
         <th>Username</th>
         <th>Emails</th>
         <th>Rank</th>
@@ -81,7 +82,9 @@ if( $referral_count > 0 ) :
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
+                        <td>%s</td>
                     </tr>', 
+                    $user->id,
                     $user->user_login,
                     $user->user_email,
                     $wp_roles->roles[ $current_role ]['name'],

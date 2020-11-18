@@ -136,7 +136,7 @@ add_filter('woocommerce_new_customer_data', 'wcAssignCustomRole', 10, 1);
  */
 function wcAssignCustomRole($args)
 {
-    $args['role'] = 'amlm_sales_representative';
+    $args['role'] = 'amlm_distributor';
 
     return $args;
 }

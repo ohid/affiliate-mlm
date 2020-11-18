@@ -15,6 +15,7 @@ global $wpdb, $wp_roles;
 
         <table>
             <tr>
+                <th><?php _e('ID', 'amlm-locale'); ?></th>
                 <th><?php _e('Name', 'amlm-locale'); ?></th>
                 <th><?php _e('Designation', 'amlm-locale'); ?></th>
                 <th><?php _e('Points', 'amlm-locale'); ?></th>
@@ -59,6 +60,7 @@ global $wpdb, $wp_roles;
 
                         $output .= '<tr>' . $line_break;
 
+                        $output .= sprintf('<td>%s</td>', $member->id) . $line_break;
                         $output .= sprintf('<td>%s</td>', userFullName($member)) . $line_break;
                         $output .= sprintf('<td>%s</td>', $wp_roles->roles[aMLMCurrentUserRole($member)]['name']) . $line_break;
                         $output .= sprintf('<td>%s</td>', ($user_points) ? $user_points : 0) . $line_break;

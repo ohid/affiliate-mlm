@@ -39,17 +39,17 @@ class AMLM_Activate
     public static function setRole() 
     {
         add_role( 
+            'amlm_distributor', 
+            __('Distributor', 'amlm-locale'), 
+            ['read' => true] 
+        );
+
+        add_role( 
             'amlm_sales_representative', 
             __('Sales Representative', 'amlm-locale'), 
             ['read' => true]
         );
 
-        add_role( 
-            'amlm_distributor', 
-            __('Distributor', 'amlm-locale'), 
-            ['read' => true] 
-        );
-        
         add_role( 
             'amlm_unit_manager', 
             __('Unit Manager', 'amlm-locale'), 

@@ -168,7 +168,7 @@ class Class_Main
                 $user = get_user_by('id', $user_id);
 
                 $user->remove_role('subscriber');
-                $user->add_role('amlm_sales_representative');
+                $user->add_role('amlm_distributor');
 
                 // Send a notification to the user
                 wp_send_new_user_notifications($user_id, 'both');
