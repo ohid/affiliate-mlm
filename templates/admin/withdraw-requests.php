@@ -126,7 +126,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
                         printf(
                             '<input type="search" class="withdraw-search" value="%s" placeholder="%s">',
                             'Value',
-                            esc_attr__('Enter withdraw #id or username', 'amlm-locale')
+                            esc_attr__('Enter withdraw id or username', 'amlm-locale')
                         );
                     ?>
                     <input type="submit" value="Search">
