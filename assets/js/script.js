@@ -113,9 +113,9 @@
                 })
             });
         }
-
+ 
         // Make the input field select all text on click
-        const affiliateInput = document.querySelectorAll('.affiliate-links-table .affiliate-link input');
+        const affiliateInput = document.querySelectorAll('.affiliate-links-table .affiliate-link-td input');
 
         affiliateInput.forEach(function(el) {
             el.addEventListener('focus', function() {

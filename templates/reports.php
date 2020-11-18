@@ -34,6 +34,7 @@ $reports = $wpdb->get_results(
 
 <table class="report-table">
     <tr>
+        <th>ID</th>
         <th>Title</th>
         <th>Payment type</th>
         <th>Amount</th>
@@ -47,12 +48,14 @@ $reports = $wpdb->get_results(
             if( $report ) {
                 printf(
                     '<tr>
+                        <td>#%s</td>
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
                     </tr>', 
+                    $report->id,
                     $report->report,
                     ucfirst($report->payment_type),
                     $report->amount . ' ' . get_option('woocommerce_currency'),

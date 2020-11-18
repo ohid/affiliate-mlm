@@ -79,7 +79,7 @@ if( $affiliate_links > 0 ) :
             if( $link ) {
                 printf(
                     '<tr>
-                        <td class="affiliate-link"><input value="%s"/></td>
+                        <td class="affiliate-link-td"><input value="%s"/></td>
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>

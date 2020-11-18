@@ -100,24 +100,39 @@ $offset = ($pageno-1) * $no_of_records_per_page;
     </div>
 
     <div class="all-requests">
-        <h3><?php
+        <div class="before-table">
+            <h3><?php
 
-        $paymentStatusTxt = '';
+            $paymentStatusTxt = '';
 
-        if (isset($_GET['payment_status'])) {
-           $argPaymentStatus = filter_var($_GET['payment_status'], FILTER_SANITIZE_STRING);
+            if (isset($_GET['payment_status'])) {
+            $argPaymentStatus = filter_var($_GET['payment_status'], FILTER_SANITIZE_STRING);
 
-           if ($argPaymentStatus == 'all' || $argPaymentStatus == 'pending' || $argPaymentStatus == 'approved' || $argPaymentStatus == 'declined') {
-               if ($argPaymentStatus == 'pending') {
-                   $paymentStatusTxt = 'New';
-               } else {
-                   $paymentStatusTxt = $argPaymentStatus;
-               }
-           }
-        }
+            if ($argPaymentStatus == 'all' || $argPaymentStatus == 'pending' || $argPaymentStatus == 'approved' || $argPaymentStatus == 'declined') {
+                if ($argPaymentStatus == 'pending') {
+                    $paymentStatusTxt = 'New';
+                } else {
+                    $paymentStatusTxt = $argPaymentStatus;
+                }
+            }
+            }
 
-        printf('%s %s', ucfirst($paymentStatusTxt), __('Withdraw Requests', 'amlm-locale'));
-        ?></h3>
+            printf('%s %s', ucfirst($paymentStatusTxt), __('Withdraw Requests', 'amlm-locale'));
+            ?></h3>
+
+            <div class="sorting-form">
+                <form action="" method="get">
+                    <?php 
+                        printf(
+                            '<input type="search" class="withdraw-search" value="%s" placeholder="%s">',
+                            'Value',
+                            esc_attr__('Enter withdraw #id or username', 'amlm-locale')
+                        );
+                    ?>
+                    <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
         
         <table>
             <?php
