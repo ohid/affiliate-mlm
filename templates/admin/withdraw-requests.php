@@ -50,14 +50,23 @@ $no_of_records_per_page = 5;
 $offset = ($pageno-1) * $no_of_records_per_page;
 
     // Build the SQL query
-    $sql = "SELECT * FROM {$wpdb->prefix}amlm_withdraw ";
+    $sql = "SELECT w.id, w.user_id, w.amount, w.payment_type, w.payment_status, w.created_at, u.user_login FROM {$wpdb->prefix}amlm_withdraw w ";
+    
+    $sql .= "LEFT JOIN $wpdb->users u on w.user_id = u.id ";
 
     // If the payment status is selected
     if (isset($_GET['payment_status'])) {
         $argPaymentStatus = filter_var($_GET['payment_status'], FILTER_SANITIZE_STRING);
         if ($argPaymentStatus !== 'all') {
-            $sql .= "WHERE payment_status = '{$argPaymentStatus}'";
-        }
+            $sql .= "WHERE w.payment_status = '{$argPaymentStatus}' ";
+    }
+    }
+
+
+    if (isset($_GET['withdraw-search'])) {
+        $searchWithdrawUserName = filter_var($_GET['withdraw-search'], FILTER_SANITIZE_STRING);
+        $searchWithdrawID = filter_var($_GET['withdraw-search'], FILTER_SANITIZE_NUMBER_INT);
+        $sql .= "WHERE u.user_login = '$searchWithdrawUserName' OR w.id = $searchWithdrawID ";
     }
     $sql .= "ORDER BY created_at DESC LIMIT $offset, $no_of_records_per_page";
 
@@ -121,12 +130,13 @@ $offset = ($pageno-1) * $no_of_records_per_page;
             ?></h3>
 
             <div class="sorting-form">
-                <form action="" method="get">
-                    <?php 
+                <form action="?page=amlm-withdraw-requests" method="get">
+                    <input type="hidden" name="page" value="amlm-withdraw-requests">
+                    <?php
                         printf(
-                            '<input type="search" class="withdraw-search" value="%s" placeholder="%s">',
-                            'Value',
-                            esc_attr__('Enter withdraw id or username', 'amlm-locale')
+                            '<input type="search" name="withdraw-search" class="withdraw-search" value="%s" placeholder="%s">',
+                            isset($_GET['withdraw-search']) ? $_GET['withdraw-search'] : '',
+                            esc_attr__('Enter withdraw id', 'amlm-locale')
                         );
                     ?>
                     <input type="submit" value="Search">
@@ -139,13 +149,22 @@ $offset = ($pageno-1) * $no_of_records_per_page;
             $line_break = "\r\n"; // we are using line break to format the HTML table in page source code
 
             $output = '';
-
+            
+            if (count($withdraw_requests) <= 0) {
+                printf('<tr><td>%s</td></tr>', esc_html__('Sorry, nothing found!', 'amlm-locale'));
+                exit;
+            }
             foreach ($withdraw_requests as $request) {
                 $requestedUser = get_user_by('id', $request->user_id);
 
                 $output .= '<tr>' . $line_break;
                     
                     $output .= sprintf('<th><a href="%s">%s</a></th>', get_edit_user_link($request->user_id), userFullName($requestedUser));
+
+                    $output .= '<td>';
+                    $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Withdraw #ID', 'amlm-locale'));
+                    $output .= sprintf('<span class="cell-value">%s</span>', $request->id);
+                    $output .= '</td>' . $line_break;
 
                     $output .= '<td>';
                     $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Amount requested', 'amlm-locale'));

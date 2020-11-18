@@ -24,8 +24,10 @@ $offset = ($pageno-1) * $no_of_records_per_page;
 
 // Get the reports
 $reports = $wpdb->get_results(
-    "SELECT * FROM {$wpdb->prefix}amlm_report 
-    WHERE user_id = $user->ID
+    "SELECT r.report, r.payment_type, r.amount, r.service_charge, r.created_at, w.id as withdrawID  
+    FROM {$wpdb->prefix}amlm_report r
+    LEFT JOIN {$wpdb->prefix}amlm_withdraw w on r.withdraw_id = w.id
+    WHERE r.user_id = $user->ID
     ORDER BY created_at DESC
     LIMIT $offset, $no_of_records_per_page"
 );
@@ -34,7 +36,7 @@ $reports = $wpdb->get_results(
 
 <table class="report-table">
     <tr>
-        <th>ID</th>
+        <th>Withdraw ID</th>
         <th>Title</th>
         <th>Payment type</th>
         <th>Amount</th>
@@ -55,7 +57,7 @@ $reports = $wpdb->get_results(
                         <td>%s</td>
                         <td>%s</td>
                     </tr>', 
-                    $report->id,
+                    $report->withdrawID,
                     $report->report,
                     ucfirst($report->payment_type),
                     $report->amount . ' ' . get_option('woocommerce_currency'),

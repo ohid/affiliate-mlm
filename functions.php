@@ -172,12 +172,12 @@ function amlmLinksPagination($wpdb, $table, $user, $pageno, $offset, $no_of_reco
 
         // Display the previous button
         if ($pageno > 1) { 
-            printf('<li><a href="?pageno=%s">%s</a></li>', esc_html__('Prev', 'amlm-locale'), ($pageno - 1));
+            printf('<li><a href="?pageno=%s">%s</a></li>', ($pageno - 1), esc_html__('Prev', 'amlm-locale'));
         }
 
         // Display the next button
         if ($pageno < $total_pages) { 
-            printf('<li><a href="?pageno=%s">%s</a></li>', esc_html__('Next', 'amlm-locale'), ($pageno + 1));
+            printf('<li><a href="?pageno=%s">%s</a></li>', ($pageno + 1), esc_html__('Next', 'amlm-locale'));
         }
 
         // Display the last button 
