@@ -63,8 +63,10 @@
         //
         // Expand referral users
         //
-        const expandReferral = $('#referral-users-table .referral-expander'); 
-        expandReferral.on('click', function() {
+        const referralTable = $('#referral-users-table');
+
+        referralTable.on('click', '.referral-expander', function() {
+            console.log('button clicked');
 
             var counter = 0;
             var buttonEl = $(this);
@@ -113,8 +115,13 @@
                         for (let [key, value] of Object.entries(data.message)) {
 
                             var childNodes = `<tr class="border-color-${randomColor}" data-user-id="${value.id}">`;
+                            const referralExpanderNode = '<button class="referral-expander">+</button>';
 
-                            childNodes += `<td>${value.id}</td>`;
+                            if (value.referral_users == 'has-referral') {
+                                childNodes += `<td>${referralExpanderNode} ${value.id}</td>`;
+                            } else {
+                                childNodes += `<td>${value.id}</td>`;
+                            }
                             childNodes += `<td>${value.user_login}</td>`;
                             childNodes += `<td>${value.user_email}</td>`;
                             childNodes += `<td>${value.role}</td>`;
