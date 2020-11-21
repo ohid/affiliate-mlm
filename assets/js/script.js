@@ -66,7 +66,6 @@
         const referralTable = $('#referral-users-table');
 
         referralTable.on('click', '.referral-expander', function() {
-            console.log('button clicked');
 
             var counter = 0;
             var buttonEl = $(this);
@@ -85,7 +84,7 @@
             }
             
             // Set the interval
-            var loaderInterval = setInterval(loaderInterval, 100);
+            var loaderInterval = setInterval(loaderInterval, 150);
 
             // Get the user ID
             const userId = $(this).closest('tr').data('user-id');
