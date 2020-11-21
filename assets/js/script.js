@@ -21,7 +21,8 @@
                 let username = document.getElementById('username').value;
                 let email = document.getElementById('email').value;
                 let password = document.getElementById('password').value;
-
+                console.log(params);
+                
                 if( username == '' || username.length <= 4 ) {
                     resetResponse( 'error', 'Username should be at least 5 characters');
                     return;
@@ -58,6 +59,79 @@
 
             });
         }
+
+        //
+        // Expand referral users
+        //
+        const expandReferral = $('#referral-users-table .referral-expander'); 
+        expandReferral.on('click', function() {
+
+            var counter = 0;
+            var buttonEl = $(this);
+
+            // Loader interval that displays a nice and intuitive loader in the expander button
+            function loaderInterval() {
+                counter++;
+                if (counter == 1) {
+                    buttonEl.html('.');
+                } else if (counter == 2) {
+                    buttonEl.html('..');
+                } else if (counter == 3) {
+                    buttonEl.html('...');
+                    counter = 0;
+                }
+            }
+            
+            // Set the interval
+            var loaderInterval = setInterval(loaderInterval, 100);
+
+            // Get the user ID
+            const userId = $(this).closest('tr').data('user-id');
+            
+            const url = wc_add_to_cart_params.ajax_url;
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {'action': 'expand_referral_users', 'user_id': userId},
+                dataType: 'json',
+                success: function(data) {
+                    if( data === 0 || data.status === 'error' ) {
+                        alert(data.message)
+                        return;
+                    } else if( data === 1  || data.status === 'success' ) {
+
+                        // Clear the loader inverval
+                        clearInterval(loaderInterval);
+                        buttonEl.hide();
+
+                        // Generate a random color that will distinguish the child user nodes
+                        let colorArray = ['one', 'two', 'three', 'four', 'five', 'six'];
+                        let randomColor = colorArray[Math.floor(Math.random() * colorArray.length)];
+
+                        // Loop over the child users and add the node after the parent user
+                        for (let [key, value] of Object.entries(data.message)) {
+
+                            var childNodes = `<tr class="border-color-${randomColor}" data-user-id="${value.id}">`;
+
+                            childNodes += `<td>${value.id}</td>`;
+                            childNodes += `<td>${value.user_login}</td>`;
+                            childNodes += `<td>${value.user_email}</td>`;
+                            childNodes += `<td>${value.role}</td>`;
+                            childNodes += `<td>${value.points}</td>`;
+
+                            childNodes += "</tr>";
+
+                            buttonEl.closest('tr').after(childNodes);
+                        }
+                    }
+                },
+                error: function(error) {
+                }
+            })
+
+        });
+        
 
 
         // The affiliate link form

@@ -32,6 +32,7 @@ class Class_Main
 
         add_action('wp_ajax_referral_form', [$this, 'referralForm']);
         add_action('wp_ajax_affiliate_form', [$this, 'affiliateForm']);
+        add_action('wp_ajax_expand_referral_users', [$this, 'expandReferralUsers']);
     }
 
     /**
@@ -116,6 +117,7 @@ class Class_Main
             if ($this->userReferralCount() >= $this->referral_limit) {
                 $this->returnJSON('error', 'You can not add more referral users.');
             }
+            $this->returnJSON('error', 'You can not add more referral users.');
 
             if (isset($_POST['referral_nonce']) && wp_verify_nonce($_POST['referral_nonce'], 'amlm_nonce')) {
 
@@ -249,6 +251,50 @@ class Class_Main
         );
         
         $this->returnJSON('success', $affiliate_link);
+    }
+
+    /**
+     * Expand referral users
+     *
+     * @return void
+     */
+    public function expandReferralUsers()
+    {
+        global $wpdb, $wp_roles;
+
+        $user_id = filter_var($_POST['user_id'], FILTER_VALIDATE_INT);
+
+        $childUsers = [];
+        
+        $users = $wpdb->get_col("SELECT referral_id from {$wpdb->prefix}amlm_referrals WHERE user_id = $user_id");
+        
+        if (! count($users) > 0) {
+            $this->returnJSON('error', __("Doesn't have referral users", 'amlm-locale'));
+        }
+        
+        foreach ($users as $user) {
+            $childNodes = $wpdb->get_results("SELECT id, user_login, user_email from $wpdb->users WHERE id = $user");
+        
+            foreach ($childNodes as $user) {
+                $point = get_user_meta( $user->id, 'amlm_points', true );
+        
+                $userS = get_user_by( 'id', $user->id );
+                $current_role = aMLMCurrentUserRole( $userS );
+                $role = $wp_roles->roles[ $current_role ]['name'];
+                $referral_users = hasReferralUsers($user->id) ? 'has-referral' : 'no-referral';
+        
+                $childUsers[] = array(
+                    'id' => $user->id,
+                    'user_login' => $user->user_login,
+                    'user_email' => $user->user_email,
+                    'role' => $role,
+                    'points' => $point,
+                    'referral_users' => $referral_users
+                );
+            }
+        }
+
+        $this->returnJSON('success', $childUsers);
     }
 
     /**

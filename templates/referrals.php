@@ -85,8 +85,8 @@ if( $referral_count > 0 ) :
                         <td>%s</td>
                     </tr>',
                     $user->id,
-                    $user->id,
                     hasReferralUsers($user_id) ? '<button class="referral-expander">+</button>' : ' ',
+                    $user->id,
                     $user->user_login,
                     $user->user_email,
                     $wp_roles->roles[ $current_role ]['name'],
