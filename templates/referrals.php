@@ -58,7 +58,7 @@ if( $referral_count > 0 ) :
 ?>
 
 
-<table>
+<table id="referral-users-table">
     <tr>
         <th>ID</th>
         <th>Username</th>
@@ -71,20 +71,22 @@ if( $referral_count > 0 ) :
         foreach( $referral_users as $user_id ) :
             // $user = get_user_by( $user );
             $points = get_user_meta( $user_id, 'amlm_points', true);
-            
+
             $user = get_user_by( 'id', $user_id );
             $current_role = aMLMCurrentUserRole( $user );
 
             if( $user ) {
                 printf(
-                    '<tr>
+                    '<tr data-user-id="%s">
+                        <td>%s %s</td>
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
-                        <td>%s</td>
-                    </tr>', 
+                    </tr>',
                     $user->id,
+                    $user->id,
+                    hasReferralUsers($user_id) ? '<button class="referral-expander">+</button>' : ' ',
                     $user->user_login,
                     $user->user_email,
                     $wp_roles->roles[ $current_role ]['name'],

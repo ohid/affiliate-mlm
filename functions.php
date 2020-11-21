@@ -141,6 +141,15 @@ function wcAssignCustomRole($args)
     return $args;
 }
 
+function hasReferralUsers($user_id)
+{
+    global $wpdb;
+
+    $users = $wpdb->get_results("SELECT referral_id from {$wpdb->prefix}amlm_referrals WHERE user_id = $user_id");
+
+    return (count($users) > 0);
+}
+
 /**
  * Generate the pagiation for the affilaites link template
  *
