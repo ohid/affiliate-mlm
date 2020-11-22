@@ -62,3 +62,6 @@ if (class_exists('AMLM\AMLM_Init')) {
     AMLM\AMLM_Init::registerClasses();
 }
 
+if (file_exists(AMLM_PLUGIN_PATH . '/inc/Gateways/Balance_Payment_Gateway.php')) {
+    require_once AMLM_PLUGIN_PATH . '/inc/Gateways/Balance_Payment_Gateway.php';
+}
