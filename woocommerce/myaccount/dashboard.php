@@ -51,7 +51,7 @@ $my_points = get_user_meta( get_current_user_id(), 'amlm_points', true );
 	<?php
 		printf(
 			__('Your points: <b>%s</b> '),
-			$my_points ? $my_points : 0
+			$my_points ? round($my_points, 2) : 0
 		);
 	?>
 </p>

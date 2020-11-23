@@ -63,10 +63,10 @@ global $wpdb, $wp_roles;
                         $output .= sprintf('<td>%s</td>', $member->id) . $line_break;
                         $output .= sprintf('<td>%s</td>', userFullName($member)) . $line_break;
                         $output .= sprintf('<td>%s</td>', $wp_roles->roles[aMLMCurrentUserRole($member)]['name']) . $line_break;
-                        $output .= sprintf('<td>%s</td>', ($user_points) ? $user_points : 0) . $line_break;
-                        $output .= sprintf('<td>%1$s %2$s</td>', $currency . ' ', ($user_balance) ? $user_balance : 0) . $line_break;
-                        $output .= sprintf('<td>%1$s %2$s</td>', $currency . ' ', ($user_approved_balance) ? $user_approved_balance : 0) . $line_break;
-                        $output .= sprintf('<td>%1$s %2$s</td>', $currency . ' ', ($user_due_balance) ? $user_due_balance : 0) . $line_break;
+                        $output .= sprintf('<td>%s</td>', ($user_points) ? round($user_points, 2) : 0) . $line_break;
+                        $output .= sprintf('<td>%1$s %2$s</td>', $currency . ' ', ($user_balance) ? round($user_balance, 2) : 0) . $line_break;
+                        $output .= sprintf('<td>%1$s %2$s</td>', $currency . ' ', ($user_approved_balance) ? round($user_approved_balance, 2) : 0) . $line_break;
+                        $output .= sprintf('<td>%1$s %2$s</td>', $currency . ' ', ($user_due_balance) ? round($user_due_balance, 2) : 0) . $line_break;
         
                         $output .= '</tr>' . $line_break;
                     }

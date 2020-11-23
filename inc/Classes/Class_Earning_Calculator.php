@@ -91,6 +91,11 @@ class Class_Earning_Calculator
         $order = wc_get_order($order_id);
         $order_total = $order->get_total();
         $user_id = $order->get_user_id();
+        $payment_method = $order->get_payment_method();
+
+        if ($payment_method == 'balance_payment_gateway') {
+            return;
+        }
 
         // Check if the order was an affiliate sale
         $affiliate_user_id = $this->wpdb->get_var("SELECT user_id from {$this->wpdb->prefix}amlm_affiliate_earnings WHERE order_id = $order_id AND paid_status = 'unpaid'");

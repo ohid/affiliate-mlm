@@ -39,17 +39,36 @@ function amlm_wc_balanace_payment_gateway_init() {
 
 	class AMLM_Balance_Payment_Gateway extends WC_Payment_Gateway {
 
+		private $user;
+
+		private $distributor_point = 400;
+
+		private $current_point = 0;
+    
+		private $current_balance = 0;
+
 		/**
 		 * Constructor for the gateway.
 		 */
 		public function __construct() {
+
+			if (is_user_logged_in()) {
+
+				$this->user = wp_get_current_user();
+				
+				$amlm_points = get_user_meta($this->user->ID, 'amlm_points', true);
+				$amlm_earning = get_user_meta($this->user->ID, 'amlm_earning', true);
+		
+				$this->current_point = $amlm_points;
+				$this->current_balance = $amlm_earning;
+			}
 	  
 			$this->id                 = 'balance_payment_gateway';
 			$this->icon               = apply_filters('woocommerce_offline_icon', '');
 			$this->has_fields         = false;
 			$this->method_title       = __( 'Site Balance Payment', 'wc-gateway-offline' );
 			$this->method_description = __( 'Allows offline payments. Very handy if you use your cheque gateway for another payment method, and can help with testing. Orders are marked as "on-hold" when received.', 'wc-gateway-offline' );
-		  
+
 			// Load the settings.
 			$this->init_form_fields();
 			$this->init_settings();
@@ -70,14 +89,22 @@ function amlm_wc_balanace_payment_gateway_init() {
 		public function balance_payment_instruction() {
 			$points = 0;
 			$currency = get_option('woocommerce_currency');
+			$point_to_shop_balance = $this->current_point * 10;
+			$shop_point = ( $this->current_point / 100 ) * 70;
+			$shop_balance = ( $this->current_balance / 100 ) * 70;
 			
 			if (is_user_logged_in()){
 				$points = get_user_meta( get_current_user_id(), 'amlm_points', true );
 			}
-			$information = sprintf('<p>Your current point balance is <b>%1$s %2$s.</b></p>', $currency, $points ? $points : 0);
-
+			
+			$information = '';
+			
 			if ($points >= 400) {
-				$information .= sprintf('</br><p>You need to keep minimum balance of <b>BDT 400</b> and you can now shop with <b>%1$s %2$s.</b></p>', $currency, $points - 400);
+				$information .= sprintf('<p>Your current balance is <b>%s.</b></p>', $this->current_balance ? round($this->current_balance, 2) : 0);		
+				$information .= sprintf('<p>You can shop maximum of <b>%1$s %2$s.</b></p>', $currency, $shop_balance ? round($shop_balance, 2) : 0);
+			} else {
+				$information .= sprintf('<p>Your current point is <b>%s.</b></p>', $points ? round($points, 2) : 0);
+				$information .= sprintf('<p>You can shop maximum of <b>%1$s %2$s.</b></p>', $currency, $shop_point);
 			}
 
 			return $information;
@@ -145,16 +172,53 @@ function amlm_wc_balanace_payment_gateway_init() {
 	
 		/**
 		 * Process the payment and return the result
-		 *
+		 * 
 		 * @param int $order_id
 		 * @return array
 		 */
 		public function process_payment( $order_id ) {
 	
 			$order = wc_get_order( $order_id );
-			
-			// Mark as on-hold (we're awaiting the payment)
-			$order->update_status( 'on-hold', __( 'Awaiting offline payment', 'wc-gateway-offline' ) );
+			$order_total = $order->get_total();
+			$allowed_point = ( 70 / 100 ) * $this->current_point;
+			$allowed_balance = ( 70 / 100 ) * $this->current_balance;
+
+			// Check if the user is a distributor
+			if ($this->current_point >= $this->distributor_point) {
+				// Order value should not more than current balance
+				if ($order_total > $this->current_balance ) {
+					// Mark as failed order
+					$order->update_status( 'failed', __( 'Failed balance order', 'amlm-locale' ) );
+				}  else if ($order_total > $allowed_balance) {
+					// Order value should not more than allowed balance
+					$order->update_status( 'failed', __( 'Failed balance order', 'amlm-locale' ) );
+				} else {
+
+					$make_order_100 = ( $order_total / 70 ) * 100;
+
+					update_user_meta( $this->user->ID, 'amlm_earning', ($this->current_balance - $make_order_100) );
+
+					$order->update_status( 'completed', __( 'Completed balance order', 'amlm-locale' ) );
+				}
+			} else {
+				// If the user is not a distributor
+				// Order value should not more than distributor point
+				if ($order_total > $this->distributor_point ) {
+					// Mark as failed order
+					$order->update_status( 'failed', __( 'Failed balance order', 'amlm-locale' ) );
+				} else if ($order_total > $allowed_point) {
+					// Order value should not more than allowed point
+					$order->update_status( 'failed', __( 'Failed balance order', 'amlm-locale' ) );
+				} else {
+
+					$make_order_100 = ( $order_total / 70 ) * 100;
+
+					update_user_meta( $this->user->ID, 'amlm_points', ($this->current_point - $make_order_100) );
+
+					$order->update_status( 'completed', __( 'Completed balance order', 'amlm-locale' ) );
+					
+				}
+			}
 
 			// Reduce stock levels
 			$order->reduce_order_stock();
