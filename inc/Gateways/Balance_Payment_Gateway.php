@@ -26,7 +26,7 @@ add_filter( 'woocommerce_payment_gateways', 'amlm_wc_add_balance_payment_gateway
 /**
  * AMLM Balance Payment Gateway
  *
- * Provides an way to purchase products through the earned balance of Affiliate MLM users
+ * Provides an way to purchase products through the earned balance of NeerLab MLM users
  * 
  * @class 		AMLM_Balance_Payment_Gateway
  * @extends		WC_Payment_Gateway
@@ -195,8 +195,9 @@ function amlm_wc_balanace_payment_gateway_init() {
 				} else {
 
 					$make_order_100 = ( $order_total / 70 ) * 100;
+					$updated_balance = $this->current_balance - $make_order_100;
 
-					update_user_meta( $this->user->ID, 'amlm_earning', ($this->current_balance - $make_order_100) );
+					update_user_meta( $this->user->ID, 'amlm_earning', round($updated_balance, 2));
 
 					$order->update_status( 'completed', __( 'Completed balance order', 'amlm-locale' ) );
 				}
@@ -212,8 +213,9 @@ function amlm_wc_balanace_payment_gateway_init() {
 				} else {
 
 					$make_order_100 = ( $order_total / 70 ) * 100;
+					$updated_points = $this->current_point - $make_order_100;
 
-					update_user_meta( $this->user->ID, 'amlm_points', ($this->current_point - $make_order_100) );
+					update_user_meta( $this->user->ID, 'amlm_points', round($updated_points, 2));
 
 					$order->update_status( 'completed', __( 'Completed balance order', 'amlm-locale' ) );
 					

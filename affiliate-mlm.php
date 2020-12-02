@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: Affiliate MLM
+ * Plugin Name: NeerLab MLM
  * Plugin URI: 
- * Description: This is a custom built Affiliate MLM plugin.
+ * Description: This is a custom built plugin for NeerLab MLM.
  * Version: 1.0
  * Requires at least: 4.6
  * Requires PHP: 7.0
- * Author: Ohid
+ * Author: NeerLab MLM
  * Licence: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: affiliate-mlm

@@ -33,10 +33,10 @@ class Class_Admin
      */
     public function adminMenu()
     {
-        // Add the Affiliate MLM page
+        // Add the NeerLab MLM page
         add_menu_page(
-            'Affiliate MLM', 
-            'Affiliate MLM', 
+            'NeerLab MLM', 
+            'NeerLab MLM', 
             'manage_options', 
             'affiliate-mlm', 
             [$this, 'affiliateMLMFunc'],
@@ -53,7 +53,7 @@ class Class_Admin
             [$this, 'withdrawRequestsFunc']
         );
 
-        // Add the Affiliate MLM members page
+        // Add the NeerLab MLM members page
         add_submenu_page(
             'affiliate-mlm', 
             'Members', 

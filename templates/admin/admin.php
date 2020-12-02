@@ -14,7 +14,7 @@ $currency = get_option('woocommerce_currency');
 
 ?>
 <div class="wrap amlm-wrap">
-    <h2><?php esc_html_e('Affiliate MLM', 'amlm-locale'); ?></h2>
+    <h2><?php esc_html_e('NeerLab MLM', 'amlm-locale'); ?></h2>
 
     <?php include_once AMLM_PLUGIN_PATH . 'templates/admin/partials/header.php'; ?>
 
@@ -29,12 +29,12 @@ $currency = get_option('woocommerce_currency');
                     <p><?php esc_html_e('Total Members', 'amlm-locale') ?></p>
                 </div>
                 <div class="info-box">
-                    <h3><?php echo $currency . ' ' . ($total_points ? $total_points : '0'); ?></h3>
+                    <h3><?php echo $currency . ' ' . ($total_points ? round($total_points, 2) : '0'); ?></h3>
                     <p><?php esc_html_e('Total Points in Market', 'amlm-locale') ?></p>
                 </div>
                 
                 <div class="info-box">
-                    <h3><?php echo $currency . ' ' . ($approved_payment ? $approved_payment : '0'); ?></h3>
+                    <h3><?php echo $currency . ' ' . ($approved_payment ? round($approved_payment, 2) : '0'); ?></h3>
                     <p><?php esc_html_e('Total Payments Approved', 'amlm-locale') ?></p>
                 </div>
             </div>
@@ -48,7 +48,7 @@ $currency = get_option('woocommerce_currency');
         <div class="content-right">
             <div class="content-info-box">
                 <div class="info-box">
-                    <h3><?php echo $currency . ' ' . ($due_payment ? $due_payment : '0') ; ?></h3>
+                    <h3><?php echo $currency . ' ' . ($due_payment ? round($due_payment, 2) : '0') ; ?></h3>
                     <p><?php esc_html_e('Total Market Due', 'amlm-locale') ?></p>
                 </div>
             </div>

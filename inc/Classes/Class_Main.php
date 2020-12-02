@@ -117,7 +117,6 @@ class Class_Main
             if ($this->userReferralCount() >= $this->referral_limit) {
                 $this->returnJSON('error', 'You can not add more referral users.');
             }
-            $this->returnJSON('error', 'You can not add more referral users.');
 
             if (isset($_POST['referral_nonce']) && wp_verify_nonce($_POST['referral_nonce'], 'amlm_nonce')) {
 
