@@ -122,6 +122,24 @@ if (! function_exists('amlmMemberPaymentValue')) {
     }
 }
 
+if (! function_exists('amlmMemberWithdrawCount')) {
+    
+    /**
+     * Get the withdraw count of the user
+     *
+     * @param integer $user_id gets the user ID
+     * @param string $status gets the payment_status value
+     * 
+     * @return void
+     */
+    function amlmMemberWithdrawCount($user_id, $status)
+    {
+        global $wpdb;
+        $requests_count = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}amlm_withdraw WHERE user_id = '{$user_id}' AND payment_status = '{$status}'");
+        return $requests_count;
+    }
+}
+
 /**
  * Replace 'customer' role (WooCommerce use by default) with your own one.
 **/
