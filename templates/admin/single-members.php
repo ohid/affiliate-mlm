@@ -82,7 +82,6 @@ $bank_details = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_bank_details W
             </div>
         <?php endif; ?>
 
-        <?php if($bank_details) : ?>
             <br>
             <h4><?php esc_html_e( 'Site Information', 'amlm-locale' ); ?></h4>
 
@@ -133,7 +132,6 @@ $bank_details = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_bank_details W
                     </p>
                 </div>
             </div>
-        <?php endif; ?>
         
     </div>
 </div>

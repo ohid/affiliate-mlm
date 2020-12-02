@@ -157,9 +157,11 @@ $offset = ($pageno-1) * $no_of_records_per_page;
             foreach ($withdraw_requests as $request) {
                 $requestedUser = get_user_by('id', $request->user_id);
 
+                $member_url = add_query_arg( ['id' => $request->user_id], admin_url( 'admin.php?page=amlm-member' ) );
+
                 $output .= '<tr>' . $line_break;
                     
-                    $output .= sprintf('<th><a href="%s">%s</a></th>', get_edit_user_link($request->user_id), userFullName($requestedUser));
+                    $output .= sprintf('<th><a href="%s">%s</a></th>', $member_url, userFullName($requestedUser));
 
                     $output .= '<td>';
                     $output .= sprintf('<span class="cell-label">%s</span>', esc_html__('Withdraw #ID', 'amlm-locale'));

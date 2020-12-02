@@ -78,6 +78,8 @@ $currency = get_option('woocommerce_currency');
             foreach ($users as $user) {
             // Retrieve the payment amount for members
             $payment_amount = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'approved' and user_id = {$user->ID}");
+
+            $member_profile_url = add_query_arg( ['id' => $user->ID], admin_url( 'admin.php?page=amlm-member' ) );
             
             $output = '<tr>' . $line_break;
                 $user_obj = get_user_by( 'id', $user->ID );
@@ -99,7 +101,7 @@ $currency = get_option('woocommerce_currency');
 
                 $output .= '<td class="cell-actions">';
                 $output .= sprintf('<a href="#" class="options overview-button">%s</a>', esc_html__('Options', 'amlm-locale'));
-                $output .= sprintf('<a href="%s" class="details overview-button">%s</a>', get_edit_user_link($user->ID), esc_html__('Details', 'amlm_locale'));
+                $output .= sprintf('<a href="%s" class="details overview-button">%s</a>', $member_profile_url, esc_html__('Details', 'amlm_locale'));
                 $output .= '</td>' . $line_break;
             $output .= '</tr>' . $line_break;
 
