@@ -173,6 +173,27 @@ CREATE TABLE {$amlm_withdraw_table} (
     UNIQUE KEY id (id)
 )$charset_collate;";
         }
+        
+        // Check if the amlm_bank_details table does not exists then create the table
+        $amlm_bank_details_table = $wpdb->prefix.'amlm_bank_details';
+
+        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($amlm_bank_details_table));
+ 
+        if ($wpdb->get_var($query) !== $amlm_bank_details_table) {
+            $sql .= "
+CREATE TABLE {$amlm_bank_details_table} (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    user_id bigint(20) NOT NULL,
+    bkash_number varchar(255) NULL,
+    rocket_number varchar(255) NULL,
+    bank_account_name varchar(255) NULL,
+    bank_account_number varchar(255) NULL,
+    bank_name varchar(255) NULL,
+    bank_branch varchar(255) NULL,
+    created_at datetime NOT NULL,
+    UNIQUE KEY id (id)
+)$charset_collate;";
+        }
 
         // Check if the amlm_report table does not exists then create the table
         $amlm_report_table = $wpdb->prefix.'amlm_report';
