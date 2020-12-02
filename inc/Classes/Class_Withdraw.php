@@ -186,7 +186,7 @@ class Class_Withdraw
      */
     public function makeMobileWithdrawRequest($paymentType, $number, $currentBalance, $withdrawAmount)
     {
-        // Inserting the data into the table
+        // Inserting the data into the amlm_withdraw table
         $paymentRequest = $this->wpdb->insert(
             "{$this->wpdb->prefix}amlm_withdraw",
             [
@@ -198,6 +198,20 @@ class Class_Withdraw
                 'created_at' => date('Y-m-d H:i:s'),
             ],
             ["%d", "%s", "%s", "%d", "%s", "%s"]
+        );
+
+        // Inserting the data into the amlm_bank_details table
+        $number_type = ( $paymentType == 'bkash' ) ? 'bkash_number' : 'rocket_number';
+
+        amlmBankDetailsInsertOrUpdate(
+            $this->user->ID,
+            "{$this->wpdb->prefix}amlm_bank_details",
+            [
+                'user_id' => $this->user->ID,
+                $number_type => $number,
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            ["%d", "%d", "%s"]
         );
 
         if ($paymentRequest) {
@@ -235,7 +249,7 @@ class Class_Withdraw
         $bankName = filter_var($_POST['bank-name'], FILTER_SANITIZE_STRING);
         $bankBranch = filter_var($_POST['bank-branch'], FILTER_SANITIZE_STRING);
 
-        // Inserting the data into the table
+        // Inserting the data into the amlm_withdraw table
         $paymentRequest = $this->wpdb->insert(
             "{$this->wpdb->prefix}amlm_withdraw",
             [
@@ -250,6 +264,22 @@ class Class_Withdraw
                 'created_at' => date('Y-m-d H:i:s'),
             ],
             ["%d", "%s", "%s", "%d", "%s", "%s", "%d", "%s", "%s"]
+        );
+
+        // Insert or update the data into the amlm_bank_details table for the user
+
+        amlmBankDetailsInsertOrUpdate(
+            $this->user->ID,
+            "{$this->wpdb->prefix}amlm_bank_details",
+            [
+                'user_id' => $this->user->ID,
+                'bank_account_name' => $bankAccountName,
+                'bank_account_number' => $bankAccountNumber,
+                'bank_name' => $bankName,
+                'bank_branch' => $bankBranch,
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            ["%d", "%s", "%d", "%s", "%s", "%s"]
         );
 
         if ($paymentRequest) {

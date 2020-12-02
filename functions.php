@@ -140,6 +140,44 @@ if (! function_exists('amlmMemberWithdrawCount')) {
     }
 }
 
+if (! function_exists('amlmBankDetailsInsertOrUpdate')) {
+
+    /**
+     * Insert or update the bank details for the user
+     *
+     * @param integer $user_id
+     * @param string $table_name
+     * @param array $data
+     * @param array $format
+     * 
+     * @return void
+     */
+    function amlmBankDetailsInsertOrUpdate($user_id, $table_name, $data, $format)
+    {
+        global $wpdb;
+
+        $bank_details = $wpdb->get_var("SELECT ID FROM {$wpdb->prefix}amlm_bank_details WHERE user_id= '{$user_id}'");
+
+        // If the bank details exists then update the data
+        if ($bank_details) {
+            $wpdb->update(
+                $table_name,
+                $data,
+                array('user_id' => $user_id),
+                $format,
+                array('%d')
+            );
+        } else {
+            // If the bank details doesn't exists then create the row
+            $wpdb->insert(
+                $table_name,
+                $data,
+                $format
+            );
+        }
+    }
+}
+
 /**
  * Replace 'customer' role (WooCommerce use by default) with your own one.
 **/

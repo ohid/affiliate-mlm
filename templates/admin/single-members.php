@@ -25,7 +25,7 @@ if (!$member) {
 }
 
 // Get the withdraw information
-$withdraw = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_withdraw WHERE user_id = '{$member->ID}'");
+$bank_details = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_bank_details WHERE user_id = '{$member->ID}'");
 
 ?>
 
@@ -42,7 +42,8 @@ $withdraw = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_withdraw WHERE use
             <div class="request-information">
                 <p>
                     <?php
-                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Name', 'amlm-locale'), userFullName($member));
+                        $user = get_user_by( 'id', $member->ID );
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Name', 'amlm-locale'), userFullName($user));
                         printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Email', 'amlm-locale'), $member->user_email);
 
                     ?>
@@ -50,7 +51,7 @@ $withdraw = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_withdraw WHERE use
             </div>
         </div>
 
-        <?php if($withdraw) : ?>
+        <?php if($bank_details) : ?>
             <br>
             <h4><?php esc_html_e( 'Bank Information', 'amlm-locale' ); ?></h4>
 
@@ -58,15 +59,30 @@ $withdraw = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_withdraw WHERE use
                 <div class="request-information">
                     <p>
                         <?php
-                            printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Name', 'amlm-locale'), 'Ohidul Islam');
+                            if ($bank_details->bank_account_name) :
+                                printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Bank Account Name', 'amlm-locale'), $bank_details->bank_account_name);
 
+                                printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Bank Account Number', 'amlm-locale'), $bank_details->bank_account_number);
+                                
+                                printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Bank Name', 'amlm-locale'), $bank_details->bank_name);
+                                
+                                printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Bank Branch', 'amlm-locale'), $bank_details->bank_branch);
+                            endif;
+
+                            if ($bank_details->bkash_number) :
+                                printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('bKash Number', 'amlm-locale'), $bank_details->bkash_number);
+                            endif;
+
+                            if ($bank_details->rocket_number) :
+                                printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Rocket Number', 'amlm-locale'), $bank_details->rocket_number);
+                            endif;
                         ?>
                     </p>
                 </div>
             </div>
         <?php endif; ?>
 
-        <?php if($withdraw) : ?>
+        <?php if($bank_details) : ?>
             <br>
             <h4><?php esc_html_e( 'Site Information', 'amlm-locale' ); ?></h4>
 
@@ -74,6 +90,21 @@ $withdraw = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_withdraw WHERE use
                 <div class="request-information">
                     <p>
                         <?php
+                            $current_points = get_user_meta($member->ID, 'amlm_points', true);
+                            $current_earning = get_user_meta($member->ID, 'amlm_earning', true);
+
+                            printf(
+                                '<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', 
+                                __('Current Points', 'amlm-locale'),
+                                $current_points ? round($current_points, 2) : 0
+                            );
+
+                            printf(
+                                '<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', 
+                                __('Current Earning', 'amlm-locale'),
+                                $current_earning ? round($current_earning, 2) : 0
+                            );
+                            
                             printf(
                                 '<span class="info-label">%s</span>: <span class="info-value">%s - %s %s</span> <br>', 
                                 __('New withdraw requests', 'amlm-locale'),
