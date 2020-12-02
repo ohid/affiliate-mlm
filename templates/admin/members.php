@@ -58,10 +58,12 @@ global $wpdb, $wp_roles;
                         $user_approved_balance = amlmMemberPaymentValue($member->ID, 'approved');
                         $user_due_balance = amlmMemberPaymentValue($member->ID, 'pending');
 
+                        $member_url = add_query_arg( ['id' => $member->ID], admin_url( 'admin.php?page=amlm-member' ) );
+
                         $output .= '<tr>' . $line_break;
 
-                        $output .= sprintf('<td>%s</td>', $member->id) . $line_break;
-                        $output .= sprintf('<td>%s</td>', userFullName($member)) . $line_break;
+                        $output .= sprintf('<td>%s</td>', $member->ID) . $line_break;
+                        $output .= sprintf('<td><a href="%s">%s</a></td>', $member_url, userFullName($member)) . $line_break;
                         $output .= sprintf('<td>%s</td>', $wp_roles->roles[aMLMCurrentUserRole($member)]['name']) . $line_break;
                         $output .= sprintf('<td>%s</td>', ($user_points) ? round($user_points, 2) : 0) . $line_break;
                         $output .= sprintf('<td>%1$s %2$s</td>', $currency . ' ', ($user_balance) ? round($user_balance, 2) : 0) . $line_break;

@@ -63,6 +63,16 @@ class Class_Admin
             [$this, 'membersFunc']
         );
 
+        // Add the NeerLab MLM single member page
+        add_submenu_page(
+            '', 
+            'Members', 
+            'Members', 
+            'manage_options', 
+            'amlm-member', 
+            [$this, 'singleMmemberFunc']
+        );
+
         // Add the single withdraw request page
         add_submenu_page(
             '', 
@@ -102,6 +112,16 @@ class Class_Admin
     public function membersFunc()
     {
         require_once AMLM_PLUGIN_PATH . 'templates/admin/members.php';
+    }
+
+    /**
+     * The admin single member template
+     *
+     * @return void
+     */
+    public function singleMmemberFunc()
+    {
+        require_once AMLM_PLUGIN_PATH . 'templates/admin/single-members.php';
     }
 
     /**
