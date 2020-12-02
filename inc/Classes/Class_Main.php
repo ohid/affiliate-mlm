@@ -33,7 +33,23 @@ class Class_Main
         add_action('wp_ajax_referral_form', [$this, 'referralForm']);
         add_action('wp_ajax_affiliate_form', [$this, 'affiliateForm']);
         add_action('wp_ajax_expand_referral_users', [$this, 'expandReferralUsers']);
+
+        add_filter( 'plugin_action_links_' . AMLM_PLUGIN, [$this, 'amlmPluginLinks'] );
+
     }
+
+    /**
+     * Adds plugin page links
+     */
+    function amlmPluginLinks( $links ) {
+
+        $plugin_links = array(
+            '<a href="' . admin_url( 'admin.php?page=affiliate-mlm' ) . '">' . __( 'Dashboard', 'amlm-locale' ) . '</a>'
+        );
+
+        return array_merge( $plugin_links, $links );
+    }
+
 
     /**
      * Initialize the main class
