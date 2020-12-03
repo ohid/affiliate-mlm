@@ -20,6 +20,7 @@
                 let params = new URLSearchParams( new FormData( referralForm ) );
                 let username = document.getElementById('username').value;
                 let email = document.getElementById('email').value;
+                let phone = document.getElementById('phone').value;
                 let password = document.getElementById('password').value;
                 console.log(params);
                 
@@ -33,7 +34,12 @@
                     return;
                 }
 
-                if( password == '' || password.length <= 8 ) {
+                if( phone == '' || phone.length <= 10 ) {
+                    resetResponse( 'error', 'Phone should be at least 11 characters');
+                    return;
+                }
+
+                if( password == '' || password.length <= 7 ) {
                     resetResponse( 'error', 'Password should be at least 8 characters');
                     return;
                 }

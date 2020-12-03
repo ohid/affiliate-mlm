@@ -25,14 +25,16 @@ if (!$withdraw) {
 
 ?>
 
-<div class="wrap amlm-wrap withdraw-requests-wrap">
+<div class="wrap amlm-wrap withdraw-requests-wrap" id="withdraw-request">
     <h2><?php printf('%s #%s', __('Withdraw request', 'amlm-locale'), $withdraw_id); ?></h2>
 
     <?php include_once AMLM_PLUGIN_PATH . 'templates/admin/partials/header.php'; ?>
     
     <div class="request-body">
 
-        <h4><?php esc_html_e( 'Review request', 'amlm-locale' ); ?></h4>
+        <h4 class="hide-print"><?php esc_html_e( 'Review request', 'amlm-locale' ); ?></h4>
+        <h4 class="hide-screen"><?php esc_html_e( 'Withdraw request', 'amlm-locale' ); ?></h4>
+        <button id="printWithdraw" onclick="window.print()"><?php esc_html_e('Print this page', 'amlm-locale'); ?></button>
 
         <div class="review-request">
 
@@ -58,10 +60,10 @@ if (!$withdraw) {
 
                         echo '<br>';
 
-                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Requested Amount'), get_option('woocommerce_currency') . ' ' .$withdraw->amount);
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Requested amount'), get_option('woocommerce_currency') . ' ' .$withdraw->amount);
 
-                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Amount should pay'), get_option('woocommerce_currency') . ' ' . ( (70 / 100) * $withdraw->amount ) );
-                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Service charge deduct'), get_option('woocommerce_currency') . ' ' . ( (30 / 100) * $withdraw->amount ));
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Payable amount'), get_option('woocommerce_currency') . ' ' . ( (80 / 100) * $withdraw->amount ) );
+                        printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Service charge deduct'), get_option('woocommerce_currency') . ' ' . ( (20 / 100) * $withdraw->amount ));
 
                         echo '<br>';
 

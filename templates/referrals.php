@@ -34,6 +34,10 @@ if( $referral_count >= $referral_limit ) {
                 <input type="email" id="email" name="email" placeholder="Enter email" class="form-control">
             </div>
             <div class="form-group">
+                <label for="phone"><?php esc_html_e('Phone:', 'amlm-locale'); ?></label>
+                <input type="text" id="phone" name="phone" placeholder="Enter phone" class="form-control">
+            </div>
+            <div class="form-group">
                 <label for="password"><?php esc_html_e('Password:', 'amlm-locale'); ?></label>
                 <input type="password" id="password" name="password" placeholder="Enter password" class="form-control">
             </div>
@@ -63,6 +67,7 @@ if( $referral_count > 0 ) :
         <th>ID</th>
         <th>Username</th>
         <th>Emails</th>
+        <th>Phone</th>
         <th>Rank</th>
         <th>Points</th>
     </tr>
@@ -71,6 +76,7 @@ if( $referral_count > 0 ) :
         foreach( $referral_users as $user_id ) :
             // $user = get_user_by( $user );
             $points = get_user_meta( $user_id, 'amlm_points', true);
+            $userPhone = get_user_meta( $user_id, 'amlm_user_phone', true);
 
             $user = get_user_by( 'id', $user_id );
             $current_role = aMLMCurrentUserRole( $user );
@@ -83,12 +89,14 @@ if( $referral_count > 0 ) :
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
+                        <td>%s</td>
                     </tr>',
                     $user->id,
                     hasReferralUsers($user_id) ? '<button class="referral-expander">+</button>' : ' ',
                     $user->id,
                     $user->user_login,
                     $user->user_email,
+                    $userPhone?: 'n/a',
                     $wp_roles->roles[ $current_role ]['name'],
                     $points
                 );

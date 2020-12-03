@@ -1,8 +1,7 @@
 ( function($) {
 	// Wait for DOM to be ready.
 	document.addEventListener( 'DOMContentLoaded', function() {
-        
-        //
+
         // Withdraw approval form
         //
         let withdrawApprovalForm = document.getElementById('withdraw-action-form');

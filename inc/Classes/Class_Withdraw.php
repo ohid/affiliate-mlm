@@ -345,8 +345,8 @@ class Class_Withdraw
             
     
             // Calculate the amount should pay and service charge
-            $paid_amount = (70 / 100) * $withdrawRow->amount;
-            $amount_charge = (30 / 100) * $withdrawRow->amount;
+            $paid_amount = (80 / 100) * $withdrawRow->amount;
+            $amount_charge = (20 / 100) * $withdrawRow->amount;
             
             // Generate withdraw report
             if ($withdrawAction == 'approved') {

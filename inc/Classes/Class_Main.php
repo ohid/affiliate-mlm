@@ -138,17 +138,26 @@ class Class_Main
 
                 $username = sanitize_text_field($_POST['username']);
                 $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+                $phone = sanitize_text_field( $_POST['phone'] );
                 $password = sanitize_text_field($_POST['password']);
 
                 if ($email === false) {
                     $this->returnJSON('error', 'Email is invalid.');
                 }
 
+                if (strlen($phone) <= 10) {
+                    $this->returnJSON('error', 'Phone should be at least 11 characters.');
+                }
+
+                if ($this->phoneNumberExists($phone)) {
+                    $this->returnJSON('error', 'The phone number already exists, please try a different phone number.');
+                }
+
                 if (8 > strlen($password)) {
                     $this->returnJSON('error', 'Password should be at least 8 characters.');
                 }
 
-                $this->createReferralUser($username, $email, $password);
+                $this->createReferralUser($username, $email, $phone, $password);
             } else {
                 $this->returnJSON('error', 'Form validation failed.');
             }
@@ -158,12 +167,14 @@ class Class_Main
     /**
      * Create the referral user
      *
-     * @param [type] $username get the username
-     * @param [type] $email    get the email
+     * @param string $username get the username
+     * @param string $email    get the phone
+     * @param integer $phone    get the email
+     * @param string $password    get the password
      * 
      * @return void
      */
-    public function createReferralUser($username, $email, $password)
+    public function createReferralUser($username, $email, $phone, $password)
     {
         global $wpdb;
 
@@ -181,11 +192,12 @@ class Class_Main
 
                 // Add the amlm_points meta data for the user
                 add_user_meta($user_id, 'amlm_points', 0);
+                
+                add_user_meta($user_id, 'amlm_user_phone', $phone);
 
                 $user = get_user_by('id', $user_id);
 
-                $user->remove_role('subscriber');
-                $user->add_role('amlm_distributor');
+                $user->set_role('amlm_distributor');
 
                 // Send a notification to the user
                 wp_send_new_user_notifications($user_id, 'both');
@@ -310,6 +322,21 @@ class Class_Main
         }
 
         $this->returnJSON('success', $childUsers);
+    }
+
+    /**
+     * Check if the phone number already exists in the database
+     *
+     * @param [type] $phone
+     * @return void
+     */
+    public function phoneNumberExists($phone)
+    {
+        global $wpdb;
+        
+        $phone = $wpdb->get_results("SELECT meta_key FROM $wpdb->usermeta WHERE meta_key = 'amlm_user_phone' AND meta_value = '{$phone}'");
+
+        return $phone;
     }
 
     /**

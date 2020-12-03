@@ -1,3 +1,33 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .hide-screen{
+        visibility: visible;
+    }
+    .request-body, .request-body * {
+        visibility: visible;
+    }
+    .hide-print{
+        visibility: hidden;
+    }
+    .request-body #printWithdraw{
+        visibility: hidden;
+    }
+    .request-body {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+@media screen {
+    .hide-screen{
+        visibility: hidden;
+    } 
+}
+
 /* start commented backslash hack \*/
 * html .clearfix { 
     height: 1%; 
@@ -305,6 +335,7 @@
         background-color: #fff;
         border-bottom: 1px solid #ddd;
         padding: 20px;
+        position: relative;
 
         h4 {
             margin: 10px 0 0 0;
@@ -320,6 +351,17 @@
                 bottom: -20px;
                 left: -16px;
             }
+        }
+
+        button#printWithdraw {
+            position: absolute;
+            right: 10px;
+            background: #eae6e6;
+            border: transparent;
+            padding: 5px 10px;
+            border-radius: 2px;
+            top: 10px;
+            cursor: pointer;
         }
 
         h5 {

@@ -90,8 +90,8 @@ function amlm_wc_balanace_payment_gateway_init() {
 			$points = 0;
 			$currency = get_option('woocommerce_currency');
 			$point_to_shop_balance = $this->current_point * 10;
-			$shop_point = ( $this->current_point / 100 ) * 70;
-			$shop_balance = ( $this->current_balance / 100 ) * 70;
+			$shop_point = ( $this->current_point / 100 ) * 80;
+			$shop_balance = ( $this->current_balance / 100 ) * 80;
 			
 			if (is_user_logged_in()){
 				$points = get_user_meta( get_current_user_id(), 'amlm_points', true );
@@ -180,8 +180,8 @@ function amlm_wc_balanace_payment_gateway_init() {
 	
 			$order = wc_get_order( $order_id );
 			$order_total = $order->get_total();
-			$allowed_point = ( 70 / 100 ) * $this->current_point;
-			$allowed_balance = ( 70 / 100 ) * $this->current_balance;
+			$allowed_point = ( 80 / 100 ) * $this->current_point;
+			$allowed_balance = ( 80 / 100 ) * $this->current_balance;
 
 			// Check if the user is a distributor
 			if ($this->current_point >= $this->distributor_point) {
@@ -194,7 +194,7 @@ function amlm_wc_balanace_payment_gateway_init() {
 					$order->update_status( 'failed', __( 'Failed balance order', 'amlm-locale' ) );
 				} else {
 
-					$make_order_100 = ( $order_total / 70 ) * 100;
+					$make_order_100 = ( $order_total / 80 ) * 100;
 					$updated_balance = $this->current_balance - $make_order_100;
 
 					update_user_meta( $this->user->ID, 'amlm_earning', round($updated_balance, 2));
@@ -212,7 +212,7 @@ function amlm_wc_balanace_payment_gateway_init() {
 					$order->update_status( 'failed', __( 'Failed balance order', 'amlm-locale' ) );
 				} else {
 
-					$make_order_100 = ( $order_total / 70 ) * 100;
+					$make_order_100 = ( $order_total / 80 ) * 100;
 					$updated_points = $this->current_point - $make_order_100;
 
 					update_user_meta( $this->user->ID, 'amlm_points', round($updated_points, 2));

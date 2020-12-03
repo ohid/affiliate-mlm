@@ -159,12 +159,12 @@ class Class_User_Rank
      */
     public function userRank() 
     {
-        // return if the current user is an admin
-        if ($this->user->has_cap('manage_options')) {
-            return;
-        }
-
         if (is_user_logged_in()) {
+            
+            // return if the current user is an admin
+            if ($this->user->has_cap('manage_options')) {
+                return;
+            }
 
             // echo $this->current_rank;
             $user_id = $this->user->ID;
