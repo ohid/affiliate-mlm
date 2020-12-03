@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: NeerLab MLM
+ * Plugin Name: Novozatra.com.bd
  * Plugin URI: 
- * Description: This is a custom built plugin for NeerLab MLM.
+ * Description: This is a custom built plugin for Novozatra.com.bd
  * Version: 1.0
  * Requires at least: 4.6
  * Requires PHP: 7.0

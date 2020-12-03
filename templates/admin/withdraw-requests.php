@@ -130,8 +130,8 @@ $offset = ($pageno-1) * $no_of_records_per_page;
             ?></h3>
 
             <div class="sorting-form">
-                <form action="?page=amlm-withdraw-requests" method="get">
-                    <input type="hidden" name="page" value="amlm-withdraw-requests">
+                <form action="?page=novozatra-withdraw-requests" method="get">
+                    <input type="hidden" name="page" value="novozatra-withdraw-requests">
                     <?php
                         printf(
                             '<input type="search" name="withdraw-search" class="withdraw-search" value="%s" placeholder="%s">',
@@ -157,7 +157,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
             foreach ($withdraw_requests as $request) {
                 $requestedUser = get_user_by('id', $request->user_id);
 
-                $member_url = add_query_arg( ['id' => $request->user_id], admin_url( 'admin.php?page=amlm-member' ) );
+                $member_url = add_query_arg( ['id' => $request->user_id], admin_url( 'admin.php?page=novozatra-member' ) );
 
                 $output .= '<tr>' . $line_break;
                     
@@ -191,7 +191,7 @@ $offset = ($pageno-1) * $no_of_records_per_page;
                     $output .= '<td class="cell-actios">';
                     $output .= sprintf(
                         '<a href="%s" class="overview-button">%s</a>',
-                        add_query_arg(['withdraw_id' => $request->id], admin_url('admin.php?page=amlm-single-requests')),
+                        add_query_arg(['withdraw_id' => $request->id], admin_url('admin.php?page=novozatra-single-requests')),
                         esc_html__('Action', 'amlm-locale')
                     );
                     $output .= '</td>' . $line_break;

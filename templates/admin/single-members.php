@@ -8,7 +8,7 @@ $currency = get_option('woocommerce_currency');
 
 // Redirect the user if id is not set
 if ( ! isset($_GET['id'])) {
-    wp_safe_redirect(admin_url('admin.php?page=affiliate-mlm'));
+    wp_safe_redirect(admin_url('admin.php?page=novozatra-mlm'));
     exit;
 }
 
@@ -20,7 +20,7 @@ $member = $wpdb->get_row("SELECT * FROM $wpdb->users WHERE id= '{$id}'");
 
 // If the member doesn't exists, redirect and exit
 if (!$member) {
-    wp_safe_redirect(admin_url('admin.php?page=affiliate-mlm'));
+    wp_safe_redirect(admin_url('admin.php?page=novozatra-mlm'));
     exit;
 }
 

@@ -35,31 +35,31 @@ class Class_Admin
     {
         // Add the NeerLab MLM page
         add_menu_page(
-            'NeerLab MLM', 
-            'NeerLab MLM', 
+            'Novozatra', 
+            'Novozatra', 
             'manage_options', 
-            'affiliate-mlm', 
+            'novozatra-mlm',
             [$this, 'affiliateMLMFunc'],
             'dashicons-buddicons-buddypress-logo'
         );
 
         // Add the withdraw requests page
         add_submenu_page(
-            'affiliate-mlm', 
+            'novozatra-mlm', 
             'Withdraw Requests', 
             'Withdraw Requests', 
             'manage_options', 
-            'amlm-withdraw-requests', 
+            'novozatra-withdraw-requests', 
             [$this, 'withdrawRequestsFunc']
         );
 
         // Add the NeerLab MLM members page
         add_submenu_page(
-            'affiliate-mlm', 
+            'novozatra-mlm', 
             'Members', 
             'Members', 
             'manage_options', 
-            'amlm-members', 
+            'novozatra-members', 
             [$this, 'membersFunc']
         );
 
@@ -69,7 +69,7 @@ class Class_Admin
             'Members', 
             'Members', 
             'manage_options', 
-            'amlm-member', 
+            'novozatra-member',
             [$this, 'singleMmemberFunc']
         );
 
@@ -79,7 +79,7 @@ class Class_Admin
             'Withdraw Requests', 
             'Withdraw Requests', 
             'manage_options', 
-            'amlm-single-requests', 
+            'novozatra-single-requests', 
             [$this, 'withdrawSingleRequestsFunc']
         );
     }

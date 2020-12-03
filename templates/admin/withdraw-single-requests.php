@@ -8,7 +8,7 @@ global $wpdb;
 // Check if the withdraw requests exists
 // Redirect the request if there's no withdraw_id query arg set
 if (! isset($_GET['withdraw_id'])) {
-    wp_safe_redirect(admin_url('admin.php?page=affiliate-mlm'));
+    wp_safe_redirect(admin_url('admin.php?page=novozatra-mlm'));
     exit;
 }
 
@@ -19,7 +19,7 @@ $withdraw = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_withdraw WHERE id=
 // If the withdraw request does not exists
 // Redirect the request to the affiliate-amlm page
 if (!$withdraw) {
-    wp_safe_redirect(admin_url('admin.php?page=affiliate-mlm'));
+    wp_safe_redirect(admin_url('admin.php?page=novozatra-mlm'));
     exit;
 }
 

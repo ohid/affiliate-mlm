@@ -58,7 +58,7 @@ global $wpdb, $wp_roles;
                         $user_approved_balance = amlmMemberPaymentValue($member->ID, 'approved');
                         $user_due_balance = amlmMemberPaymentValue($member->ID, 'pending');
 
-                        $member_url = add_query_arg( ['id' => $member->ID], admin_url( 'admin.php?page=amlm-member' ) );
+                        $member_url = add_query_arg( ['id' => $member->ID], admin_url( 'admin.php?page=novozatra-member' ) );
 
                         $output .= '<tr>' . $line_break;
 

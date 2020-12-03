@@ -127,9 +127,29 @@ class Class_User_Rank
     {
         // Remove the role from the user
         $user->remove_role($role);
+        
+        // Always try to remove the default 'customer' role
+        $user->remove_role('customer');
 
         // Also change the current rank of the user
         $this->setUserRank($user);
+    }
+
+    /**
+     * Remove all other roles and set the current role
+     *
+     * @param object $user
+     * @param string $role
+     * 
+     * @return void
+     */
+    public function setRole($user, $role)
+    {
+        // Remove the role from the user
+        $user->set_role($role);
+
+        // Also change the current rank of the user
+        $this->setUserRank($user); 
     }
 
     /**
@@ -139,6 +159,10 @@ class Class_User_Rank
      */
     public function userRank() 
     {
+        // return if the current user is an admin
+        if ($this->user->has_cap('manage_options')) {
+            return;
+        }
 
         if (is_user_logged_in()) {
 
@@ -149,9 +173,9 @@ class Class_User_Rank
 
                 // The user become a distributor 
                 // Remove the amlm_distributor role 
-                $this->removeRole($this->user, 'amlm_distributor');
+                // $this->removeRole($this->user, 'amlm_distributor');
                 // Add the amlm_sales_representative role
-                $this->addRole($this->user, 'amlm_sales_representative');
+                $this->setRole($this->user, 'amlm_sales_representative');
 
                 // echo 'Your are a <b>Distributor</b> now <br>';
                 // echo 'current rank ' . $this->current_rank . '<br>';
@@ -188,9 +212,9 @@ class Class_User_Rank
                         // echo '<br>So you become a <b>Unit Manager<b> <br><br>';
                         // The user become a Unit Manager 
                         // Remove the amlm_sales_representative role 
-                        $this->removeRole($this->user, 'amlm_sales_representative');
+                        // $this->removeRole($this->user, 'amlm_sales_representative');
                         // Add the amlm_unit_manager role
-                        $this->addRole($this->user, 'amlm_unit_manager');
+                        $this->setRole($this->user, 'amlm_unit_manager');
 
                         // echo 'current rank ' . $this->current_rank . '<br>';
 
@@ -202,9 +226,9 @@ class Class_User_Rank
                             // echo '<br>So you are a Manager now <br><br>';
                             // The user become a Manager 
                             // Remove the amlm_unit_manager role 
-                            $this->removeRole($this->user, 'amlm_unit_manager');
+                            // $this->removeRole($this->user, 'amlm_unit_manager');
                             // Add the amlm_manager role
-                            $this->addRole($this->user, 'amlm_manager');
+                            $this->setRole($this->user, 'amlm_manager');
 
                             // Now check if the member is a Senior Manager
                             $third_level_referrals = $this->checkForManager($second_level_referrals['users']);
@@ -214,9 +238,9 @@ class Class_User_Rank
                                 // echo '<br>So you are a Senior Manager now <br><br>';
                                 // The user become a Senior Manager 
                                 // Remove the amlm_manager role 
-                                $this->removeRole($this->user, 'amlm_manager');
+                                // $this->removeRole($this->user, 'amlm_manager');
                                 // Add the amlm_senior_manager role
-                                $this->addRole($this->user, 'amlm_senior_manager');
+                                $this->setRole($this->user, 'amlm_senior_manager');
                                 
                                 $fourth_level_referrals = $this->checkForManager($third_level_referrals['users']);
 
@@ -224,9 +248,9 @@ class Class_User_Rank
                                     // echo '<br>So you are a Executive Manager now <br><br>';
                                     // The user become a Senior Manager 
                                     // Remove the amlm_senior_manager role 
-                                    $this->removeRole($this->user, 'amlm_senior_manager');
+                                    // $this->removeRole($this->user, 'amlm_senior_manager');
                                     // Add the amlm_executive_manager role
-                                    $this->addRole($this->user, 'amlm_executive_manager');
+                                    $this->setRole($this->user, 'amlm_executive_manager');
                                     
                                     $fifth_level_referrals = $this->checkForManager($fourth_level_referrals['users']);
 
@@ -234,18 +258,18 @@ class Class_User_Rank
                                         // echo '<br>So you are a Ass. G. Manager now <br><br>';
                                         // The user become a Senior Manager 
                                         // Remove the amlm_executive_manager role 
-                                        $this->removeRole($this->user, 'amlm_executive_manager');
+                                        // $this->removeRole($this->user, 'amlm_executive_manager');
                                         // Add the amlm_ass_g_manager role
-                                        $this->addRole($this->user, 'amlm_ass_g_manager');
+                                        $this->setRole($this->user, 'amlm_ass_g_manager');
 
                                         $sixth_level_referrals = $this->checkForManager($fifth_level_referrals['users']);
 
                                         if ($sixth_level_referrals['count'] >= 243) {
                                             // The user become a Senior Manager 
                                             // Remove the amlm_ass_g_manager role 
-                                            $this->removeRole($this->user, 'amlm_ass_g_manager');
+                                            // $this->removeRole($this->user, 'amlm_ass_g_manager');
                                             // Add the amlm_general_manager role
-                                            $this->addRole($this->user, 'amlm_general_manager');
+                                            $this->setRole($this->user, 'amlm_general_manager');
                                             // echo '<br>So you are a General Manager now <br><br>';
                                         }
                                     }

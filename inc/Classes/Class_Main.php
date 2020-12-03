@@ -44,7 +44,7 @@ class Class_Main
     function amlmPluginLinks( $links ) {
 
         $plugin_links = array(
-            '<a href="' . admin_url( 'admin.php?page=affiliate-mlm' ) . '">' . __( 'Dashboard', 'amlm-locale' ) . '</a>'
+            '<a href="' . admin_url( 'admin.php?page=novozatra-mlm' ) . '">' . __( 'Dashboard', 'amlm-locale' ) . '</a>'
         );
 
         return array_merge( $plugin_links, $links );

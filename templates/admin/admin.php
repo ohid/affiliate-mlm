@@ -14,7 +14,7 @@ $currency = get_option('woocommerce_currency');
 
 ?>
 <div class="wrap amlm-wrap">
-    <h2><?php esc_html_e('NeerLab MLM', 'amlm-locale'); ?></h2>
+    <h2><?php esc_html_e('Novozatra.com.bd', 'amlm-locale'); ?></h2>
 
     <?php include_once AMLM_PLUGIN_PATH . 'templates/admin/partials/header.php'; ?>
 
@@ -79,7 +79,7 @@ $currency = get_option('woocommerce_currency');
             // Retrieve the payment amount for members
             $payment_amount = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}amlm_withdraw WHERE payment_status = 'approved' and user_id = {$user->ID}");
 
-            $member_profile_url = add_query_arg( ['id' => $user->ID], admin_url( 'admin.php?page=amlm-member' ) );
+            $member_profile_url = add_query_arg( ['id' => $user->ID], admin_url( 'admin.php?page=novozatra-member' ) );
             
             $output = '<tr>' . $line_break;
                 $user_obj = get_user_by( 'id', $user->ID );
