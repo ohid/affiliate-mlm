@@ -15,6 +15,8 @@ namespace AMLM\Classes;
 class Class_Main
 {
 
+    protected $wpdb;
+
     protected $user;
 
     protected $referral_limit = 3;
@@ -33,6 +35,8 @@ class Class_Main
         add_action('wp_ajax_referral_form', [$this, 'referralForm']);
         add_action('wp_ajax_affiliate_form', [$this, 'affiliateForm']);
         add_action('wp_ajax_expand_referral_users', [$this, 'expandReferralUsers']);
+
+        add_action( 'delete_user', [$this, 'afterDeleteUser'] );
 
         add_filter( 'plugin_action_links_' . AMLM_PLUGIN, [$this, 'amlmPluginLinks'] );
 
@@ -58,6 +62,9 @@ class Class_Main
      */
     public function mainInit()
     {
+        global $wpdb;
+
+        $this->wpdb = $wpdb;
         // If the user logged in
         if (is_user_logged_in()) {
             $this->user = wp_get_current_user();
@@ -112,11 +119,9 @@ class Class_Main
      */
     public function userReferralCount()
     {
-        global $wpdb;
-
         $user = wp_get_current_user();
 
-        $user_referrals_count = $wpdb->get_var("SELECT COUNT(*) from {$wpdb->prefix}amlm_referrals WHERE user_id = $user->ID");
+        $user_referrals_count = $this->wpdb->get_var("SELECT COUNT(*) from {$this->wpdb->prefix}amlm_referrals WHERE user_id = $user->ID");
         return $user_referrals_count;
     }
 
@@ -332,11 +337,47 @@ class Class_Main
      */
     public function phoneNumberExists($phone)
     {
-        global $wpdb;
         
-        $phone = $wpdb->get_results("SELECT meta_key FROM $wpdb->usermeta WHERE meta_key = 'amlm_user_phone' AND meta_value = '{$phone}'");
+        $phone = $this->wpdb->get_results("SELECT meta_key FROM $this->wpdb->usermeta WHERE meta_key = 'amlm_user_phone' AND meta_value = '{$phone}'");
 
         return $phone;
+    }
+
+    /**
+     * Delete the plugin related data associated with user
+     *
+     * @param integer $user_id
+     * 
+     * @return void
+     */
+    public function afterDeleteUser($user_id)
+    {
+
+        if ($user_id) {
+            // Delete from referral users link
+            $query = "DELETE FROM {$this->wpdb->prefix}amlm_referrals WHERE referral_id = $user_id";
+            $this->wpdb->query($query);
+
+            // Delete bank details
+            $query = "DELETE FROM {$this->wpdb->prefix}amlm_bank_details WHERE user_id = $user_id";
+            $this->wpdb->query($query);
+            
+            // Delete withdraw
+            $query = "DELETE FROM {$this->wpdb->prefix}amlm_withdraw WHERE user_id = $user_id";
+            $this->wpdb->query($query);
+            
+            // Delete report
+            $query = "DELETE FROM {$this->wpdb->prefix}amlm_report WHERE user_id = $user_id";
+            $this->wpdb->query($query);
+
+            // Delete affiliate link
+            $query = "DELETE FROM {$this->wpdb->prefix}amlm_affiliates_link WHERE user_id = $user_id";
+            $this->wpdb->query($query);
+
+            // Delete affiliate earning
+            $query = "DELETE FROM {$this->wpdb->prefix}amlm_affiliate_earnings WHERE user_id = $user_id";
+            $this->wpdb->query($query);
+        }
     }
 
     /**

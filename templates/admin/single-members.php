@@ -46,6 +46,7 @@ $bank_details = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_bank_details W
 
                         $phone = get_user_meta($member->ID, 'amlm_user_phone', true);
 
+                        printf('<span class="info-label">%s</span>: <span class="info-value">#%s</span> <br>', __('User ID', 'amlm-locale'), $member->ID);
                         printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Name', 'amlm-locale'), userFullName($user));
                         printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Email', 'amlm-locale'), $member->user_email);
                         printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Phone', 'amlm-locale'), $phone ?: 'n/a' );
