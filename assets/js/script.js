@@ -129,6 +129,7 @@
                             }
                             childNodes += `<td>${value.user_login}</td>`;
                             childNodes += `<td>${value.user_email}</td>`;
+                            childNodes += `<td>${value.phone}</td>`;
                             childNodes += `<td>${value.role}</td>`;
                             childNodes += `<td>${value.points}</td>`;
 

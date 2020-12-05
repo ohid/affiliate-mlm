@@ -309,6 +309,7 @@ class Class_Main
         
             foreach ($childNodes as $user) {
                 $point = get_user_meta( $user->id, 'amlm_points', true );
+                $phone = get_user_meta( $user->id, 'amlm_user_phone', true );
         
                 $userS = get_user_by( 'id', $user->id );
                 $current_role = aMLMCurrentUserRole( $userS );
@@ -319,6 +320,7 @@ class Class_Main
                     'id' => $user->id,
                     'user_login' => $user->user_login,
                     'user_email' => $user->user_email,
+                    'phone' => $phone,
                     'role' => $role,
                     'points' => $point,
                     'referral_users' => $referral_users
@@ -337,8 +339,7 @@ class Class_Main
      */
     public function phoneNumberExists($phone)
     {
-        
-        $phone = $this->wpdb->get_results("SELECT meta_key FROM $this->wpdb->usermeta WHERE meta_key = 'amlm_user_phone' AND meta_value = '{$phone}'");
+        $phone = $this->wpdb->get_results("SELECT meta_key FROM {$this->wpdb->usermeta} WHERE meta_key = 'amlm_user_phone' AND meta_value = '{$phone}'");
 
         return $phone;
     }
