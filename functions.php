@@ -200,25 +200,6 @@ if (! function_exists('amlmFilemtime')) {
 }
 
 /**
- * Replace 'customer' role (WooCommerce use by default) with your own one.
-**/
-add_filter('woocommerce_new_customer_data', 'wcAssignCustomRole', 10, 1);
-
-/**
- * Assign a custom role for the new registered users via WooCommerce
- *
- * @param [type] $args gets the funciton argument
- * 
- * @return array
- */
-function wcAssignCustomRole($args)
-{
-    $args['role'] = 'amlm_distributor';
-
-    return $args;
-}
-
-/**
  * Check if the given user has referral users
  *
  * @param inteter $user_id
@@ -234,59 +215,29 @@ function hasReferralUsers($user_id)
     return (count($users) > 0);
 }
 
-if (! function_exists('amlmMyaccountAdditionalFields')) {
+/**
+ * Add additional fields on the registration form
+ *
+ * @return void
+ */
+function amlmAdditionalRegistrationFields() {?>
+    <p class="form-row form-row-first">
+    <label for="reg_billing_first_name"><?php _e( 'First name', 'woocommerce' ); ?><span class="required">*</span></label>
+    <input type="text" class="input-text" name="billing_first_name" id="reg_billing_first_name" value="<?php if ( ! empty( $_POST['billing_first_name'] ) ) esc_attr_e( $_POST['billing_first_name'] ); ?>" />
+    </p>
+    <p class="form-row form-row-last">
+    <label for="reg_billing_last_name"><?php _e( 'Last name', 'woocommerce' ); ?><span class="required">*</span></label>
+    <input type="text" class="input-text" name="billing_last_name" id="reg_billing_last_name" value="<?php if ( ! empty( $_POST['billing_last_name'] ) ) esc_attr_e( $_POST['billing_last_name'] ); ?>" />
+    </p>
+    <div class="clear"></div>
 
-    /**
-     * Additional my-account fields
-     *
-     * @param integer $user_id
-     * 
-     * @return void
-     */
-    function amlmMyaccountAdditionalFields( $user_id ) {
-
-        // Check if the account_phone field is set then update the value
-        if ( isset( $_POST['account_phone'] ) ) {
-            // $phoneNumber = filter_var($_POST['account_phone'], FILTER_VALIDATE_INT);
-            $phoneNumber = sanitize_text_field($_POST['account_phone']);
-
-            if($phoneNumber) {
-                update_user_meta( $user_id, 'amlm_user_phone', $phoneNumber );
-            }
-        }
-        
-        // Check if the amlm_iamge field is set then update the value
-        if ( isset( $_FILES['amlm_image'] ) ) {
-            require_once( ABSPATH . 'wp-admin/includes/image.php' );
-            require_once( ABSPATH . 'wp-admin/includes/file.php' );
-            require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-            $attachment_id = media_handle_upload( 'amlm_image', 0 );
-
-            if ( is_wp_error( $attachment_id ) ) {
-                update_user_meta( $user_id, 'amlm_image', $_FILES['amlm_image'] . ": " . $attachment_id->get_error_message() );
-            } else {
-                update_user_meta( $user_id, 'amlm_image', $attachment_id );
-            }
-        }
-    }
-    add_action( 'woocommerce_save_account_details', 'amlmMyaccountAdditionalFields', 10, 1 );
+    <p class="form-row form-row-wide">
+    <label for="reg_billing_phone"><?php _e( 'Phone', 'woocommerce' ); ?><span class="required">*</span></label>
+    <input type="text" class="input-text" name="billing_phone" id="reg_billing_phone" value="<?php esc_attr_e( $_POST['billing_phone'] ); ?>" />
+    </p>
+    <?php
 }
-
-// Add enctype to form to allow image upload
-function action_woocommerce_edit_account_form_tag() {
-    echo 'enctype="multipart/form-data"';
-} 
-add_action( 'woocommerce_edit_account_form_tag', 'action_woocommerce_edit_account_form_tag' );
-
-// Validate
-function action_woocommerce_save_account_details_errors( $args ){
-    if ( isset($_POST['image']) && empty($_POST['image']) ) {
-        $args->add( 'image_error', __( 'Please provide a valid image', 'woocommerce' ) );
-    }
-}
-add_action( 'woocommerce_save_account_details_errors','action_woocommerce_save_account_details_errors', 10, 1 );
-
+add_action( 'woocommerce_register_form_start', 'amlmAdditionalRegistrationFields' );
 
 /**
  * Generate the pagiation for the affilaites link template

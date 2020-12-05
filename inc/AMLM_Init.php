@@ -33,6 +33,7 @@ final class AMLM_Init
             Classes\Class_MyAccount_Tabs::class,
             Classes\Class_User_Rank::class,
             Classes\Class_Enqueue::class,
+            Classes\Class_Custom_Woo::class,
         ];
     }
 
