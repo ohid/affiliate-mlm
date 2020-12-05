@@ -31,41 +31,90 @@ global $wp_roles;
 $current_role = aMLMCurrentUserRole();
 
 // get the current points
-$my_points = get_user_meta( get_current_user_id(), 'amlm_points', true );
+$points = get_user_meta( $current_user->ID, 'amlm_points', true );
+$earning = get_user_meta( $current_user->ID, 'amlm_earning', true );
+
+// Get the profile picture attachment ID
+$image_id = get_user_meta($current_user->ID, 'amlm_image', true);
+
+// User phone number
+$user_phone = get_user_meta($current_user->ID, 'amlm_user_phone', true);
 
 ?>
 
-<p>
 	<?php
-		// Only display the rank when the user has minimum 400 points and is a distributor or has above role
-		if( $my_points >= 400 ) {
-			printf(
-				__('Your rank is: <b>%s</b> '),
-				$wp_roles->roles[ $current_role ]['name']
-			);
+		if($image_id) {
+			$img = wp_get_attachment_image_src( $image_id, 'medium' );
+
+			printf('<div class="profile-picture"><img src="%s" alt="Profile picture"></div>', $img[0]);
 		}
-	?>
-</p>
 
-<p>
-	<?php
-		printf(
-			__('Your points: <b>%s</b> '),
-			$my_points ? round($my_points, 2) : 0
-		);
-	?>
-</p>
+		echo '<div class="profile-information">';
 
-<p>
-	<?php
-	printf(
-		/* translators: 1: user display name 2: logout url */
-		wp_kses( __( 'Hello %1$s (not %1$s? <a href="%2$s">Log out</a>)', 'woocommerce' ), $allowed_html ),
-		'<strong>' . esc_html( $current_user->display_name ) . '</strong>',
-		esc_url( wc_logout_url() )
-	);
+			printf(
+				__('Name: <b>%s</b> '),
+				userFullName()
+			);
+
+			echo '<br>';
+			
+			printf(
+				__('Username: <b>%s</b> '),
+				$current_user->display_name
+			);
+
+			echo '<br>';
+
+			printf(
+				__('Email: <b>%s</b> '),
+				$current_user->user_email
+			);
+
+			echo '<br>';
+
+			if($user_phone) {
+				printf(
+					__('Phone: <b>%s</b> '),
+					$user_phone
+				);
+			}
+				
+			echo '<br>';
+
+			// Only display the rank when the user has minimum 400 points and is a distributor or has above role
+			if( $points >= 400 ) {
+				printf(
+					__('Rank: <b>%s</b> '),
+					$wp_roles->roles[ $current_role ]['name']
+				);
+
+				echo '<br>';
+			}
+
+			printf(
+				__('Points: <b>%s</b> '),
+				$points ? round($points, 2) : 0
+			);
+
+			echo '<br>';
+
+			printf(
+				__('Earning: <b>%s %s</b> '),
+				get_option('woocommerce_currency'),
+				$earning ? round($earning, 2) : 0
+			);
+
+			echo '<br>';
+
+			printf(
+				__('Logout?: <b><a href="%s">%s</a></b> '),
+				esc_url( wc_logout_url() ),
+				__('Logout', 'amlm-locale')
+			);
+
+		echo '</div>';
+
 	?>
-</p>
 
 <p>
 	<?php

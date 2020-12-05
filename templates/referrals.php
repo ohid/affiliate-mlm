@@ -19,12 +19,19 @@ if( $referral_count >= $referral_limit ) {
         '<p>You can add <b>%s Distributors</b> <button id="test" class="add-new-referral create-btn button">Add new</button> </p>',
         $referral_limit - $referral_count
     );
-    
 
     ?>
 
     <div class="referral-form amlm-form">
         <form action="" method="post" id="referral-form">
+            <div class="form-group">
+                <label for="first_name"><?php esc_html_e('First name:', 'amlm-locale'); ?></label>
+                <input type="text" id="first_name" name="first_name" placeholder="Enter first name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="last_name"><?php esc_html_e('Last name:', 'amlm-locale'); ?></label>
+                <input type="text" id="last_name" name="last_name" placeholder="Enter last name" class="form-control">
+            </div>
             <div class="form-group">
                 <label for="username"><?php esc_html_e('Username:', 'amlm-locale'); ?></label>
                 <input type="text" id="username" name="username" placeholder="Enter username" class="form-control">

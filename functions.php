@@ -234,6 +234,60 @@ function hasReferralUsers($user_id)
     return (count($users) > 0);
 }
 
+if (! function_exists('amlmMyaccountAdditionalFields')) {
+
+    /**
+     * Additional my-account fields
+     *
+     * @param integer $user_id
+     * 
+     * @return void
+     */
+    function amlmMyaccountAdditionalFields( $user_id ) {
+
+        // Check if the account_phone field is set then update the value
+        if ( isset( $_POST['account_phone'] ) ) {
+            // $phoneNumber = filter_var($_POST['account_phone'], FILTER_VALIDATE_INT);
+            $phoneNumber = sanitize_text_field($_POST['account_phone']);
+
+            if($phoneNumber) {
+                update_user_meta( $user_id, 'amlm_user_phone', $phoneNumber );
+            }
+        }
+        
+        // Check if the amlm_iamge field is set then update the value
+        if ( isset( $_FILES['amlm_image'] ) ) {
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+            $attachment_id = media_handle_upload( 'amlm_image', 0 );
+
+            if ( is_wp_error( $attachment_id ) ) {
+                update_user_meta( $user_id, 'amlm_image', $_FILES['amlm_image'] . ": " . $attachment_id->get_error_message() );
+            } else {
+                update_user_meta( $user_id, 'amlm_image', $attachment_id );
+            }
+        }
+    }
+    add_action( 'woocommerce_save_account_details', 'amlmMyaccountAdditionalFields', 10, 1 );
+}
+
+// Add enctype to form to allow image upload
+function action_woocommerce_edit_account_form_tag() {
+    echo 'enctype="multipart/form-data"';
+} 
+add_action( 'woocommerce_edit_account_form_tag', 'action_woocommerce_edit_account_form_tag' );
+
+// Validate
+function action_woocommerce_save_account_details_errors( $args ){
+    if ( isset($_POST['image']) && empty($_POST['image']) ) {
+        $args->add( 'image_error', __( 'Please provide a valid image', 'woocommerce' ) );
+    }
+}
+add_action( 'woocommerce_save_account_details_errors','action_woocommerce_save_account_details_errors', 10, 1 );
+
+
 /**
  * Generate the pagiation for the affilaites link template
  *

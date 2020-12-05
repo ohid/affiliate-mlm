@@ -62,7 +62,13 @@ class Class_Enqueue
             amlmFilemtime('assets/css/main.css')
         );
 
-        wp_enqueue_script('amlm-script', AMLM_PLUGIN_URL . 'assets/js/build/script.js', ['jquery'], '', true);
+        wp_enqueue_script(
+            'amlm-script', 
+            AMLM_PLUGIN_URL . 'assets/js/build/script.js', 
+            ['jquery'], 
+            amlmFilemtime('assets/js/build/script.js'), 
+            true
+        );
         
         wp_localize_script( 'amlm-script', 'amlm_object',
             array( 
@@ -87,6 +93,13 @@ class Class_Enqueue
             amlmFilemtime('assets/css/admin.css')
         );
         wp_enqueue_script('chart-js', '//cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js', ['jquery'], '', false);
-        wp_enqueue_script('amlm-script', AMLM_PLUGIN_URL . 'assets/js/build/admin-script.js', ['jquery'], '', true);
+        
+        wp_enqueue_script(
+            'amlm-admin-script', 
+            AMLM_PLUGIN_URL . 'assets/js/build/admin-script.js', 
+            ['jquery'], 
+            amlmFilemtime('assets/js/build/admin-script.js'), 
+            true
+        );
     }
 }

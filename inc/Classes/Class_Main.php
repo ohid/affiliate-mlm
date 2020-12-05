@@ -141,6 +141,8 @@ class Class_Main
 
             if (isset($_POST['referral_nonce']) && wp_verify_nonce($_POST['referral_nonce'], 'amlm_nonce')) {
 
+                $first_name = sanitize_text_field($_POST['first_name']);
+                $last_name = sanitize_text_field($_POST['last_name']);
                 $username = sanitize_text_field($_POST['username']);
                 $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
                 $phone = sanitize_text_field( $_POST['phone'] );
@@ -162,7 +164,7 @@ class Class_Main
                     $this->returnJSON('error', 'Password should be at least 8 characters.');
                 }
 
-                $this->createReferralUser($username, $email, $phone, $password);
+                $this->createReferralUser($first_name, $last_name, $username, $email, $phone, $password);
             } else {
                 $this->returnJSON('error', 'Form validation failed.');
             }
@@ -172,6 +174,8 @@ class Class_Main
     /**
      * Create the referral user
      *
+     * @param string $first_name get the first_name
+     * @param string $last_name get the last_name
      * @param string $username get the username
      * @param string $email    get the phone
      * @param integer $phone    get the email
@@ -179,7 +183,7 @@ class Class_Main
      * 
      * @return void
      */
-    public function createReferralUser($username, $email, $phone, $password)
+    public function createReferralUser($first_name, $last_name, $username, $email, $phone, $password)
     {
         global $wpdb;
 
@@ -194,6 +198,10 @@ class Class_Main
             if ($user_id) {
                 // Set the referral relation
                 $wpdb->insert($wpdb->prefix . 'amlm_referrals', ['user_id' => $this->user->ID, 'referral_id' => $user_id]);
+
+                // Update the user first and last name
+                update_user_meta($user_id, 'first_name', $first_name);
+                update_user_meta($user_id, 'last_name', $last_name);
 
                 // Add the amlm_points meta data for the user
                 add_user_meta($user_id, 'amlm_points', 0);

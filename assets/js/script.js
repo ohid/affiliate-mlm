@@ -18,13 +18,25 @@
 
                 const url = wc_add_to_cart_params.ajax_url;
                 let params = new URLSearchParams( new FormData( referralForm ) );
+                let firstname = document.getElementById('first_name').value;
+                let lastname = document.getElementById('last_name').value;
                 let username = document.getElementById('username').value;
                 let email = document.getElementById('email').value;
                 let phone = document.getElementById('phone').value;
                 let password = document.getElementById('password').value;
                 console.log(params);
                 
-                if( username == '' || username.length <= 4 ) {
+                if( firstname == '' || firstname.length <= 3 ) {
+                    resetResponse( 'error', 'First name should be at least 4 characters');
+                    return;
+                }
+                
+                if( lastname == '' || lastname.length <= 3 ) {
+                    resetResponse( 'error', 'Last name should be at least 4 characters');
+                    return;
+                }
+                
+                if( username == '' || username.length <= 3 ) {
                     resetResponse( 'error', 'Username should be at least 5 characters');
                     return;
                 }
