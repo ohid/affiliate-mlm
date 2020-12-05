@@ -178,6 +178,27 @@ if (! function_exists('amlmBankDetailsInsertOrUpdate')) {
     }
 }
 
+if (! function_exists('amlmFilemtime')) {
+
+    /**
+     * Return the filemtime of a given file path
+     *
+     * @param [string] $file
+     * @return [string] filemtime string
+     */
+    function amlmFilemtime($file) {
+        // Retrieve the theme data.
+        $the_theme = wp_get_theme();
+
+        // Get the current version of the theme
+        $theme_version = $the_theme->get('Version');
+
+        if (file_exists(AMLM_PLUGIN_PATH . $file)) {
+            return $theme_version . '.' . filemtime(wp_normalize_path(AMLM_PLUGIN_PATH . $file));
+        }
+    }
+}
+
 /**
  * Replace 'customer' role (WooCommerce use by default) with your own one.
 **/
@@ -197,6 +218,13 @@ function wcAssignCustomRole($args)
     return $args;
 }
 
+/**
+ * Check if the given user has referral users
+ *
+ * @param inteter $user_id
+ * 
+ * @return boolean
+ */
 function hasReferralUsers($user_id)
 {
     global $wpdb;

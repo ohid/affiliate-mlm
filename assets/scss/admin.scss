@@ -47,7 +47,7 @@
 /* close commented backslash hack */
 
 .amlm-wrap {
-    max-width: 1140px;
+    max-width: 1270px;
 
     .header {
         margin-top: 20px;
@@ -175,6 +175,32 @@
             }
         }
 
+        .before-table {
+            display: flex;
+            justify-content: space-between;
+
+            input[type='search']{
+                border: 1px solid #9e9e9e;
+                height: 35px;
+                min-width: 250px;
+            }
+            input[type='submit']{
+                height: 35px;
+                background: #ebebeb;
+                border: none;
+                border: 1px solid #9e9e9e;
+                padding: 6px 12px;
+                transition: all 0.3s ease;
+
+                &:focus{
+                    outline: none;
+                }
+                &:hover{
+                    background-color: #d2cfcf;
+                }
+            }
+        }
+
         table {
             margin-top: 40px;
             width: calc(100% + 34px);
@@ -290,32 +316,6 @@
     }
 
     .all-requests {
-
-        .before-table {
-            display: flex;
-            justify-content: space-between;
-
-            input[type='search']{
-                border: 1px solid #9e9e9e;
-                height: 35px;
-                min-width: 250px;
-            }
-            input[type='submit']{
-                height: 35px;
-                background: #ebebeb;
-                border: none;
-                border: 1px solid #9e9e9e;
-                padding: 6px 12px;
-                transition: all 0.3s ease;
-
-                &:focus{
-                    outline: none;
-                }
-                &:hover{
-                    background-color: #d2cfcf;
-                }
-            }
-        }
         table {
             th {
                 a {
