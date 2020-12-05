@@ -107,7 +107,7 @@ $user_phone = get_user_meta($current_user->ID, 'amlm_user_phone', true);
 			echo '<br>';
 
 			printf(
-				__('Logout?: <b><a href="%s">%s</a></b> '),
+				__('Logout? <b><a href="%s">%s</a></b> '),
 				esc_url( wc_logout_url() ),
 				__('Logout', 'amlm-locale')
 			);

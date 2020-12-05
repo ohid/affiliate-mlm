@@ -40,19 +40,29 @@ $bank_details = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}amlm_bank_details W
 
         <div class="review-request">
             <div class="request-information">
-                <p>
+                
                     <?php
                         $user = get_user_by( 'id', $member->ID );
 
                         $phone = get_user_meta($member->ID, 'amlm_user_phone', true);
 
+                        // Get the profile picture attachment ID
+                        $image_id = get_user_meta($member->ID, 'amlm_image', true);
+
+                        if($image_id) {
+                            $img = wp_get_attachment_image_src( $image_id, 'medium' );
+                
+                            printf('<div class="profile-picture"><img src="%s" alt="Profile picture"/></div>', $img[0]);
+                        }
+
+                        echo '<p>';
                         printf('<span class="info-label">%s</span>: <span class="info-value">#%s</span> <br>', __('User ID', 'amlm-locale'), $member->ID);
                         printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Name', 'amlm-locale'), userFullName($user));
                         printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Email', 'amlm-locale'), $member->user_email);
                         printf('<span class="info-label">%s</span>: <span class="info-value">%s</span> <br>', __('Phone', 'amlm-locale'), $phone ?: 'n/a' );
+                        echo '</p>';
 
                     ?>
-                </p>
             </div>
         </div>
 
