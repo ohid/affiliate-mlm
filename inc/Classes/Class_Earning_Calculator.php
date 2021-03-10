@@ -132,12 +132,12 @@ class Class_Earning_Calculator
                         $applicable_earning_value = $sum_of_total_point - $this->distributor_points;
 
                         // update the user meta
-                        update_user_meta($user_id, 'amlm_points', $amlm_points + $bonus_point);
+                        // update_user_meta($user_id, 'amlm_points', $amlm_points + $bonus_point);
 
                         $generate_order_amount = $applicable_earning_value * 10;
 
                         // Update the user balance for the amount that exceeds 400 points
-                        $this->updateUserBalance($user_id, $generate_order_amount, $bonus = 10);
+                        // $this->updateUserBalance($user_id, $generate_order_amount, $bonus = 10);
 
                         // Update the parent earning balance for the amount that exceeds 400 points
                         $this->parentEarningCalculation($user_id, $generate_order_amount);
@@ -146,7 +146,7 @@ class Class_Earning_Calculator
                         $bonus_point = ( 10 / 100 ) * $order_total;
 
                         // update the user meta
-                        update_user_meta($user_id, 'amlm_points', $amlm_points + $bonus_point);
+                        // update_user_meta($user_id, 'amlm_points', $amlm_points + $bonus_point);
                     }
 
                 } else {
@@ -157,10 +157,10 @@ class Class_Earning_Calculator
                     $bonus_point = ( 10 / 100 ) * $order_total;
 
                     // update the user meta
-                    update_user_meta($user_id, 'amlm_points', $amlm_points + $bonus_point);
+                    // update_user_meta($user_id, 'amlm_points', $amlm_points + $bonus_point);
 
                     // Update the user balance for the amount that exceeds 400 points
-                    $this->updateUserBalance($user_id, $order_total, $bonus = 10);
+                    // $this->updateUserBalance($user_id, $order_total, $bonus = 10);
 
                     // Update the parent earning balance for the amount that exceeds 400 points
                     $this->parentEarningCalculation($user_id, $order_total);
@@ -175,7 +175,7 @@ class Class_Earning_Calculator
                     $bonus_point = ( 10 / 100 ) * $order_total;
 
                     // update the user meta
-                    update_user_meta($user_id, 'amlm_points', $bonus_point);
+                    // update_user_meta($user_id, 'amlm_points', $bonus_point);
                 } elseif ($order_total > $this->distributor_order_value) {
 
                     // If the ordered amount is more than 4000 BDT then
@@ -185,11 +185,11 @@ class Class_Earning_Calculator
                     $bonus_point = ( 10 / 100 ) * $order_total;
                     
                     // update the user meta
-                    update_user_meta($user_id, 'amlm_points', $bonus_point);
+                    // update_user_meta($user_id, 'amlm_points', $bonus_point);
 
                     // Update the user balance
                     // The user will only earn for the amount that exceeds 4000 BDT limit
-                    $this->updateUserBalance($user_id, $earning_value, $bonus = 10);
+                    // $this->updateUserBalance($user_id, $earning_value, $bonus = 10);
 
                     // Give referral earning balance for the parent users
                     // The parent users will only also earn for the amount that exceeds 4000 BDT limit
