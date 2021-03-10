@@ -103,6 +103,33 @@ if (! function_exists('amlmEarningMoney')) {
     }
 }
 
+if (! function_exists('getEarningHistory')) {
+
+    /**
+     * Get the earning history of the user
+     * 
+     * @return void
+     */
+    function getEarningHistory()
+    {
+        global $wpdb;
+
+        if (is_user_logged_in()) {
+            $user = wp_get_current_user();
+            
+            $history = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}amlm_earning_history WHERE user_id=$user->ID");
+
+            if ( $history ) {
+                return $history;
+            }
+
+            return;
+        }
+
+        return;
+    }
+}
+
 if (! function_exists('amlmMemberPaymentValue')) {
     
     /**

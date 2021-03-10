@@ -215,6 +215,24 @@ CREATE TABLE {$amlm_report_table} (
 )$charset_collate;";
         }
 
+        // Check if the amlm_earning_history table does not exists then create the table
+        $amlm_earning_history_table = $wpdb->prefix.'amlm_earning_history';
+
+        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($amlm_earning_history_table));
+ 
+        if ($wpdb->get_var($query) !== $amlm_earning_history_table) {
+            $sql .= "
+CREATE TABLE {$amlm_earning_history_table} (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    user_id bigint(20) NOT NULL,
+    child_user_id bigint(20) NOT NULL,
+    order_total float NOT NULL,
+    bonus float NOT NULL,
+    created_at datetime NOT NULL,
+    UNIQUE KEY id (id)
+)$charset_collate;";
+        }
+
         include_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta($sql);
     }
