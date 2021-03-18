@@ -237,59 +237,67 @@ class Class_Earning_Calculator
      */
     public function parentEarningCalculation(int $user_id, float $order_total)
     {
+        // Get the level commission values
+        $amlm_unit_manager         = get_option( 'amlm_unit_manager' );
+        $amlm_manager              = get_option( 'amlm_manager' );
+        $amlm_senior_manager       = get_option( 'amlm_senior_manager' );
+        $amlm_executive_manager    = get_option( 'amlm_executive_manager' );
+        $amlm_ass_g_manager        = get_option( 'amlm_ass_g_manager' );
+        $amlm_general_manager      = get_option( 'amlm_general_manager' );
+
         $parentLevelTwo = $this->findParent($user_id);
 
         if ($parentLevelTwo) {
             // Check if the parent exists 
             // then update their balance
-            $this->updateUserBalance($parentLevelTwo, $order_total, $bonus = 7.5);
+            $this->updateUserBalance($parentLevelTwo, $order_total, $amlm_unit_manager );
 
-            $this->generateEarningHistory( $parentLevelTwo, $user_id, $order_total, $bonus = 7.5 );
+            $this->generateEarningHistory( $parentLevelTwo, $user_id, $order_total, $amlm_unit_manager );
 
             $parentLevelThree = $this->findParent($parentLevelTwo);
             
             if ($parentLevelThree) {
                 // Check if the parent exists 
                 // then update their balance
-                $this->updateUserBalance($parentLevelThree, $order_total, $bonus = 6.5);
+                $this->updateUserBalance($parentLevelThree, $order_total, $amlm_manager );
     
-                $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $bonus = 6.5 );
+                $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $amlm_manager );
 
                 $parentLevelFour = $this->findParent($parentLevelThree);
 
                 if ($parentLevelFour) {
                     // Check if the parent exists 
                     // then update their balance
-                    $this->updateUserBalance($parentLevelFour, $order_total, $bonus = 5.5);
+                    $this->updateUserBalance($parentLevelFour, $order_total, $amlm_senior_manager );
         
-                    $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $bonus = 5.5 );
+                    $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $amlm_senior_manager );
 
                     $parentLevelFive = $this->findParent($parentLevelFour);
 
                     if ($parentLevelFive) {
                         // Check if the parent exists 
                         // then update their balance
-                        $this->updateUserBalance($parentLevelFive, $order_total, $bonus = 4.5);
+                        $this->updateUserBalance($parentLevelFive, $order_total, $amlm_executive_manager);
 
-                        $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $bonus = 4.5 );
+                        $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $amlm_executive_manager );
 
                         $parentLevelSix = $this->findParent($parentLevelFive);
 
                         if ($parentLevelSix) {
                             // Check if the parent exists 
                             // then update their balance
-                            $this->updateUserBalance($parentLevelSix, $order_total, $bonus = 3.5);
+                            $this->updateUserBalance($parentLevelSix, $order_total, $amlm_ass_g_manager );
     
-                            $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $bonus = 3.5 );
+                            $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $amlm_ass_g_manager );
 
                             $parentLevelSeven = $this->findParent($parentLevelSix);
     
                             if ($parentLevelSeven) {
                                 // Check if the parent exists 
                                 // then update their balance
-                                $this->updateUserBalance($parentLevelSeven, $order_total, $bonus = 2.5);
+                                $this->updateUserBalance($parentLevelSeven, $order_total, $amlm_general_manager );
                                 
-                                $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $bonus = 2.5 );
+                                $this->generateEarningHistory( $parentLevelThree, $user_id, $order_total, $amlm_general_manager );
                             }
                         }
                     }

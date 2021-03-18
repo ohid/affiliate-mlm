@@ -27,6 +27,7 @@ final class AMLM_Init
         return [
             Classes\Class_Admin::class,
             Classes\Class_Main::class,
+            Classes\Class_Settings::class,
             Classes\Class_Earning_Calculator::class,
             Classes\Class_Affiliate_Link::class,
             Classes\Class_Withdraw::class,

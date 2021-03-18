@@ -45,6 +45,50 @@
     }
 }
 /* close commented backslash hack */
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-control {
+    color: #232333;
+    border-radius: 3px;
+    box-shadow: none;
+    border: 2px solid #e7e7e7 !important;
+    height: 50px;
+    line-height: 32px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-color: #babacc;
+    width: 100%;
+    padding: 0px 15px !important;
+    transition: all 0.3s ease;
+}
+.form-control.error {
+    border-color:#ce1111 !important;
+}
+.form-control:not(.error):focus {
+    box-shadow: 0px 0px 0px 2px #652e90;
+}
+.form-submit {
+    background-color: #652e90 !important;
+    color: #FFF;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    font-size: 18px;
+    padding: 15px 25px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.form-submit:hover {
+    background-color: #562180 !important;
+}
 
 .amlm-wrap {
     max-width: 1270px;
@@ -275,6 +319,23 @@
                 &:nth-child(odd) {
                     background-color: #FBFBFB;
                 }
+            }
+        }
+    }
+
+    div.main-settings {
+        margin-top: 20px;
+        background-color: #fff;
+        border: 1px solid #e0d7d7;
+        padding: 15px;
+
+        form {
+            width: 100%;
+            max-width: 560px;
+            margin: 20px 0;
+
+            .form-response { 
+                margin-bottom: 10px;
             }
         }
     }

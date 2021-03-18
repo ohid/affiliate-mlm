@@ -82,6 +82,16 @@ class Class_Admin
             'novozatra-single-requests', 
             [$this, 'withdrawSingleRequestsFunc']
         );
+
+        // Add the single withdraw request page
+        add_submenu_page(
+            'novozatra-mlm', 
+            'Settings', 
+            'Settings', 
+            'manage_options', 
+            'novozatra-settings', 
+            [$this, 'adminSettingsFunc']
+        );
     }
 
     /**
@@ -132,5 +142,15 @@ class Class_Admin
     public function withdrawSingleRequestsFunc()
     {
         require_once AMLM_PLUGIN_PATH . 'templates/admin/withdraw-single-requests.php';
+    }
+
+    /**
+     * The admin settings page template
+     *
+     * @return void
+     */
+    public function adminSettingsFunc()
+    {
+        require_once AMLM_PLUGIN_PATH . 'templates/admin/settings.php';
     }
 }
